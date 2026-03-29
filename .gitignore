@@ -1,3 +1,4 @@
 docs.txt
 .agents/
 skills-lock.json
+__pycache__
