@@ -1,0 +1,4 @@
+interface:
+  display_name: "Downshift"
+  short_description: "Guidance for accessible Downshift UIs"
+  default_prompt: "Use $downshift to build or debug an accessible Downshift combobox, select, tag group, or multi-select UI."
