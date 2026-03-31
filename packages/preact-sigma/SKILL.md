@@ -19,6 +19,9 @@ Use this skill when developing, refactoring, or reviewing code that leverages `p
    - **computed:** Argument-free derived state declared with `.computed({ ... })`.
    - **query:** A tracked method declared with `.queries({ ... })` or created with `query(fn)`.
    - **action:** A method declared with `.actions({ ... })` that reads and writes through one Immer draft for one synchronous call.
+   - **ref:** A helper that marks a value so sigma's `Draft` and `Immutable` types keep it by reference. No runtime effect — purely a type-level annotation.
+   - **setup handler:** A function declared with `.setup(fn)` that returns an array of cleanup resources (cleanup functions, `AbortController`, or objects with `[Symbol.dispose]()`). Setup is explicit — it does not run automatically on construction; call `instance.setup(...)` or use `useSigma(...)` to trigger it.
+   - **signal access:** Reading the underlying `ReadonlySignal` for a state property or computed via `instance.get(key)`.
 
 2. **Follow Type Inference and Architectural Rules:**
    - Prefer explicit type arguments only on `new SigmaType<TState, TEvents>()`. Let builder methods infer from their inputs (do not pass explicit types to `.defaultState(...)`, `.actions(...)`, etc.).

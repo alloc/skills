@@ -18,6 +18,7 @@ import {
   isSigmaState,
   listen,
   query,
+  ref,
   replaceState,
   setAutoFreeze,
   snapshot,
@@ -41,6 +42,98 @@ import {
 - `SigmaObserveChange`: Describes the object received by `.observe(...)` listeners.
 - `SigmaObserveOptions`: Describes the options object accepted by `.observe(...)`.
 - `SigmaState`: Describes the public instance shape produced by a configured sigma type.
+
+## `get(key)`
+
+`instance.get(key)` returns the underlying `ReadonlySignal` for one top-level state property or computed.
+
+Behavior:
+
+- state-property keys return that property's signal
+- computed keys return that computed getter's signal
+
+## `computed`
+
+Computeds are added with `.computed({ ... })`.
+
+Behavior:
+
+- each computed is exposed as a tracked getter property
+- computed getters are non-enumerable on the public instance
+- `this` inside a computed exposes readonly state plus other computeds
+- computeds do not receive query or action methods on `this`
+- computeds cannot accept arguments
+
+## `queries`
+
+Queries are added with `.queries({ ... })`.
+
+Behavior:
+
+- queries may accept arbitrary parameters
+- `this` inside a query exposes readonly state, computeds, and other queries
+- queries do not receive action methods on `this`
+- when a query runs inside an action, it reads from the current draft-aware state
+- query results are reactive at the call site but are not memoized across calls
+- prefer `.queries({ ... })` for commonly needed instance methods
+- not every calculation belongs in `.queries({ ... })`; keeping a calculation local to the module that uses it is often clearer until it becomes a common use case
+- query wrappers are shared across instances
+- query typing only exposes computeds and queries that were already present when its `.queries(...)` call happened
+
+## `observe`
+
+Observers are added with `.observe(listener, options?)`.
+
+Behavior:
+
+- each observer runs after a successful action commit that changes base state
+- observers do not run for actions that leave base state unchanged
+- `change.newState` is the committed base-state snapshot for that action
+- `change.oldState` is the base-state snapshot from before that action started
+- `this` inside an observer exposes readonly state, computeds, and queries
+- observers do not receive action methods or `emit(...)` on `this`
+- same-instance sync nested action calls produce one observer notification after the outer action commits
+- patch generation is opt-in with `{ patches: true }`
+- when patch generation is enabled, `change.patches` and `change.inversePatches` come from Immer
+- applications are responsible for calling `enablePatches()` before using observer patch generation
+- observer typing only exposes computeds and queries that were already present when that `.observe(...)` call happened
+
+## `setup`
+
+Setup is added with `.setup(fn)`.
+
+Behavior:
+
+- setup is explicit; a new instance does not run setup automatically
+- each `.setup(...)` call adds another setup handler
+- `useSigma(...)` calls `.setup(...)` for component-owned instances that define setup
+- calling `.setup(...)` again cleans up the previous setup first
+- one `.setup(...)` call runs every registered setup handler in definition order
+- the public `.setup(...)` method always returns one cleanup function
+- `this` inside a setup handler exposes the public instance plus `emit(...)`
+- each setup handler returns an array of cleanup resources
+- setup typing only exposes computeds, queries, and actions that were already present when that `.setup(...)` call happened
+
+Supported cleanup resources:
+
+- cleanup functions
+- objects with `[Symbol.dispose]()`
+- `AbortController`
+
+When a parent setup wants to own a nested sigma state's setup, call the child sigma state's `setup(...)` method and return that cleanup function.
+
+Cleanup runs in reverse order. If multiple cleanup steps throw, cleanup rethrows an `AggregateError`.
+
+## `ref(value)`
+
+`ref(value)` returns `value` unchanged and marks its type so sigma's `Draft` and `Immutable` helpers keep that value by reference.
+
+Behavior:
+
+- it has no runtime effect
+- it only changes sigma's local `Draft` and `Immutable` typing
+- it prevents type-level recursive immerization for that value
+- it does not change whether Immer drafts or freezes the value at runtime
 
 ## Public Instance Shape
 
@@ -106,7 +199,7 @@ Behavior:
 - **`immerable`**: Re-exported from Immer so custom classes can opt into drafting with `[immerable] = true`. Unmarked custom classes stay outside Immer drafting and deep-freezing. Plain objects, arrays, `Map`, and `Set` work by default.
 - **`setAutoFreeze(autoFreeze)`**: Controls whether sigma deep-freezes published public state at runtime (enabled by default).
 - **`snapshot(instance)`**: Returns a shallow snapshot of an instance's committed public state (does not include computeds, queries, or recurse into nested sigma states).
-- **`replaceState(instance, snapshot)`**: Replaces committed public state from a plain snapshot object, notifying observers.
+- **`replaceState(instance, snapshot)`**: Replaces committed public state from a plain snapshot object, notifying observers. Throws if an action still owns unpublished changes. When observer patch generation is enabled, also delivers patches and inverse patches.
 - **`query(fn)`**: Creates a standalone tracked query helper, useful for helpers that are large or rarely needed and can live outside the sigma state.
 
 ## Hooks & Listeners
