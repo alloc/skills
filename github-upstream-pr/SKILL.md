@@ -1,6 +1,6 @@
 ---
 name: github-upstream-pr
-description: Create a branch from upstream/main, commit local changes, push to a fork, and open a pull request against the upstream repository with the gh CLI. Use when the user wants an upstream PR created from local work and cares about branch naming, concise PR copy, or avoiding GitHub app skills/connectors.
+description: Create a branch from upstream/main when available, otherwise origin/main, commit local changes, push the branch to origin, and open a pull request with the gh CLI. Use when the user wants a PR created from local work and cares about branch naming, concise PR copy, or avoiding GitHub app skills/connectors.
 ---
 
 # github-upstream-pr
@@ -10,15 +10,15 @@ Use `git` and `gh` only. Do not use GitHub skills, MCP tools, or connector-backe
 ## Inspect the repo first
 
 - Run `git status --short --branch`, `git branch --show-current`, and `git remote -v`.
-- Confirm that `upstream` exists. If it does not, stop and ask the user how to proceed.
-- Fetch `upstream main` before creating the PR branch.
+- Set a base remote: use `upstream` when it exists, otherwise fall back to `origin`.
+- Fetch `<base-remote> main` before creating the PR branch.
 
-## Create the branch from upstream
+## Create the branch from the base remote
 
-- Base the new branch on `upstream/main`, not `origin/main`.
+- Base the new branch on `<base-remote>/main`.
 - Prefer `fix/<slug>` for fixes and `feat/<slug>` for features.
 - Never include `codex` in the branch name, commit message, PR title, or PR body unless the user explicitly asks for it.
-- If the relevant changes are on another branch, preserve them with a stash or patch, switch to the new branch from `upstream/main`, and reapply only the requested changes.
+- If the relevant changes are on another branch, preserve them with a stash or patch, switch to the new branch from `<base-remote>/main`, and reapply only the requested changes.
 
 ## Commit carefully
 
@@ -33,10 +33,11 @@ Use `git` and `gh` only. Do not use GitHub skills, MCP tools, or connector-backe
 
 ## Open the PR with gh
 
-- Use the `gh` CLI to create the PR against the upstream repository.
+- Use the `gh` CLI to create the PR against the repository that matches the base remote.
 - Resolve the fork owner with `gh api user -q .login` when needed.
-- Prefer `gh pr create --repo <upstream-owner>/<repo> --base main --head <login>:<branch>`.
-- Target `upstream/main` unless the user explicitly asks for another base.
+- If the base remote is `upstream`, prefer `gh pr create --repo <base-owner>/<repo> --base main --head <login>:<branch>`.
+- If the base remote is `origin`, prefer `gh pr create --repo <base-owner>/<repo> --base main --head <branch>`.
+- Target `<base-remote>/main` unless the user explicitly asks for another base.
 
 ## Write the PR body
 

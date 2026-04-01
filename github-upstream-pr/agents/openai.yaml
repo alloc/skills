@@ -1,4 +1,4 @@
 interface:
   display_name: "GitHub Upstream PR"
-  short_description: "Open upstream PRs with gh from local work"
-  default_prompt: "Use $github-upstream-pr to branch from upstream/main, commit my local changes, and open a concise upstream PR with gh."
+  short_description: "Open PRs with gh from local work"
+  default_prompt: "Use $github-upstream-pr to branch from upstream/main when available, otherwise origin/main, commit my local changes, and open a concise PR with gh."
