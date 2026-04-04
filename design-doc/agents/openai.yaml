@@ -1,0 +1,4 @@
+interface:
+  display_name: "Technical Design Doc"
+  short_description: "Drafts and reviews technical design docs"
+  default_prompt: "Use $design-doc to draft or tighten a technical design document for this library proposal."
