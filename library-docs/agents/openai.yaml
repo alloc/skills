@@ -1,0 +1,4 @@
+interface:
+  display_name: "Library Docs"
+  short_description: "Maintains low-drift library documentation"
+  default_prompt: "Use $library-docs to create or tighten the documentation system for this TypeScript library."
