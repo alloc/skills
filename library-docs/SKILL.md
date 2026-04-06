@@ -28,7 +28,7 @@ Use this skill to build or repair a compact documentation system for a TypeScrip
    - Flag duplicated explanations, stale guides, and hand-maintained API-prose content.
 2. Assign each kind of information to one owner.
    - Move factual API behavior into public TSDoc.
-   - Move usage patterns into runnable `examples/*.ts`.
+   - Use runnable `examples/*.ts` only for canonical or materially different usage patterns.
    - Keep non-local conceptual material in `docs/context.md`.
    - Keep `README.md` focused on purpose, installation, one minimal example, and links.
    - Use emitted `dist/**/*.d.ts` or `dist/**/*.d.mts` files for exact signature lookup.
@@ -41,14 +41,14 @@ Use this skill to build or repair a compact documentation system for a TypeScrip
    - Keep declaration output aligned with the library's public entrypoints and published surface.
 5. Re-read the edited docs against the source.
    - Verify that every public export is documented somewhere appropriate.
-   - Verify that examples use real imports, valid options, and preferred defaults.
+   - Verify that each example earns its existence by covering a materially different pattern, and that it uses real imports, valid options, and preferred defaults.
    - Verify that conceptual docs still match the library's abstractions, invariants, and lifecycle.
 
 ## Decision Rules
 
 - Update `docs/context.md` only when abstractions, lifecycle, invariants, terminology, or API-selection guidance changes.
 - Update `README.md` only when the user-facing entry path, install path, or documentation routing changes.
-- Add or update `examples/*.ts` whenever a user-facing task, workflow, or composition pattern changes.
+- Add or update `examples/*.ts` only when a change introduces a materially different user-facing task, workflow, or composition pattern.
 - Use emitted `dist/**/*.d.ts` or `dist/**/*.d.mts` files as the exact exported-signature surface instead of hand-maintaining reference prose.
 - Add migration or decision documents only when breaking changes or recurring architectural constraints justify them.
 
