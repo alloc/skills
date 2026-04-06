@@ -9,7 +9,6 @@
 - [Fixed Section Schemas](#fixed-section-schemas)
 - [Public API Coverage Rules](#public-api-coverage-rules)
 - [Example Design Rules](#example-design-rules)
-- [Generation Pipeline](#generation-pipeline)
 - [Drift-Control Policy](#drift-control-policy)
 - [Maintenance Workflow](#maintenance-workflow)
 - [Retrieval Model for AI Consumers](#retrieval-model-for-ai-consumers)
@@ -235,7 +234,7 @@ Use examples to replace most narrative guides.
 
 Requirements:
 
-- one example per task or usage pattern
+- add an example only when it covers a materially different task or usage pattern than the existing examples
 - executable in CI
 - no pseudo-code
 - minimal fixture setup
@@ -256,34 +255,6 @@ Examples should demonstrate:
 - preferred defaults
 - edge-safe usage
 - realistic object shapes
-
-## Generation Pipeline
-
-### Inputs
-
-- public entrypoints
-- exported symbols
-- TypeScript source
-- declaration emit configuration
-
-### Outputs
-
-- `dist/**/*.d.ts` or `dist/**/*.d.mts`
-- optionally README API link sections or symbol indices
-
-### Pipeline steps
-
-1. discover public entrypoints
-2. resolve exported symbols
-3. emit declaration files from the build
-4. compare emitted output against published or checked-in artifacts when applicable
-5. fail CI if declaration artifacts are stale or missing
-
-### Constraints
-
-- emitted declaration files must never be the primary authoring surface
-- source comments must remain the editable truth
-- declaration emit must be deterministic
 
 ## Drift-Control Policy
 
@@ -307,7 +278,7 @@ Practical rule:
 Update:
 
 - source TSDoc
-- one or more examples if user-facing
+- one or more examples only if the new API introduces a materially different user-facing pattern
 - declaration output
 
 Do not update:
