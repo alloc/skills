@@ -30,6 +30,7 @@ Design a minimal documentation system for TypeScript libraries that:
 
 ```text
 README.md
+CHANGELOG.md            # optional release notes; not a canonical API surface
 docs/
   context.md
 dist/
@@ -58,6 +59,8 @@ src/
    Generated declaration files used for exact signature and module-shape lookup.
 5. `README.md`
    Thin entry document; may be partially generated or manually maintained, but should not duplicate exact API detail.
+6. `CHANGELOG.md` (optional)
+   Summary of shipped user-visible changes; should not become the owner of detailed API behavior.
 
 ## Document Responsibilities
 
@@ -78,6 +81,23 @@ Should not contain:
 - duplicated conceptual explanations
 - task-specific guides
 - version-sensitive details better owned by source comments or examples
+
+### `CHANGELOG.md`
+
+Purpose: optional release notes for consumers.
+
+Should contain:
+
+- concise summaries of shipped user-visible changes
+- upgrade-significant notes when they help consumers evaluate impact
+- links to migration docs, PRs, or release artifacts when useful
+
+Should not contain:
+
+- canonical API semantics
+- exhaustive per-symbol change logs
+- duplicated examples or conceptual explanations
+- unreleased planning notes unless the repo intentionally uses an unreleased-changes workflow
 
 ### `src/**/*.ts` TSDoc
 
@@ -128,6 +148,7 @@ Should contain:
 - core abstractions
 - lifecycle / data flow
 - invariants
+- stable best practices and recommended patterns
 - tradeoffs
 - terminology
 - non-goals
@@ -138,6 +159,7 @@ Should remain:
 - short
 - stable
 - library-specific
+- prescriptive only where guidance is expected to hold across examples and releases
 - intentionally non-redundant with TSDoc
 
 ### `dist/**/*.d.ts` and `dist/**/*.d.mts`
@@ -172,6 +194,10 @@ Should not:
 # Data Flow / Lifecycle
 
 # Common Tasks -> Recommended APIs
+
+# Recommended Patterns
+
+# Patterns to Avoid
 
 # Invariants and Constraints
 
@@ -262,9 +288,10 @@ The system reduces drift by enforcing these rules:
 
 - facts belong in TSDoc, not prose
 - usage belongs in runnable examples, not guides
-- concepts belong in exactly one prose file
+- concepts and stable prescriptive guidance belong in exactly one prose file
 - exact signatures belong in emitted declaration files, not hand-maintained reference pages
 - README is routing-only
+- changelog entries summarize releases, not API ownership
 - no parallel explanations of the same API behavior
 
 Practical rule:
@@ -285,6 +312,7 @@ Do not update:
 
 - `docs/context.md` unless the conceptual model changed
 - `README.md` unless the primary entry path changed
+- `CHANGELOG.md` unless the repo already maintains release notes for unreleased or newly shipped consumer-facing changes
 
 ### When changing API behavior
 
@@ -300,6 +328,13 @@ Also update `docs/context.md` only if:
 - invariants changed
 - lifecycle changed
 - recommended API selection changed
+- stable recommended patterns or anti-pattern guidance changed
+
+Update `CHANGELOG.md` only if:
+
+- the behavior change is consumer-visible
+- the repo expects manual changelog maintenance
+- the entry can stay summary-level instead of becoming reference prose
 
 ### When making breaking changes
 
@@ -309,6 +344,8 @@ Update:
 - examples
 - declaration output
 - `docs/context.md` if conceptual behavior changed
+
+Usually update `CHANGELOG.md` when the repo maintains one and the change is intended for a consumer-visible release.
 
 Add migration material only if the change is significant enough to justify it.
 
@@ -326,7 +363,7 @@ This structure is optimized for AI because:
 
 - exact exports live in emitted declaration files
 - facts are local to source
-- concepts are centralized
+- concepts and stable recommendations are centralized
 - examples are executable
 
 ## Non-Goals
@@ -362,3 +399,5 @@ For most libraries, the default implementation is:
 - `src/**/*.ts` with strong TSDoc coverage
 - `examples/*.ts`
 - emitted `dist/**/*.d.ts` or `dist/**/*.d.mts`
+
+Add `CHANGELOG.md` only when the repo expects human-maintained release notes.
