@@ -1,17 +1,24 @@
 ---
 name: library-docs
-description: Design, audit, and update low-maintenance documentation systems for TypeScript libraries where factual API behavior lives in source TSDoc, usage lives in runnable `examples/*.ts`, concepts live in `docs/context.md`, and exact exported signatures live in emitted declaration files such as `dist/**/*.d.ts` or `dist/**/*.d.mts`. Use when Codex needs to create or revise library documentation structure, tighten ownership boundaries between `README.md`, source comments, examples, and docs, or reduce documentation drift in a library repository.
+description: Design, audit, and update low-maintenance downstream-user documentation systems for TypeScript libraries where factual public API behavior lives in source TSDoc, usage lives in runnable `examples/*.ts`, concepts live in `docs/context.md`, and exact exported signatures live in emitted declaration files such as `dist/**/*.d.ts` or `dist/**/*.d.mts`. Use when Codex needs to create or revise consumer-facing library documentation structure, tighten ownership boundaries between `README.md`, source comments, examples, and docs, or reduce documentation drift in a library repository.
 ---
 
 # Library Docs
 
-Use this skill to build or repair a compact documentation system for a TypeScript library without letting prose drift away from the source.
+Use this skill to build or repair a compact documentation system for downstream users of a TypeScript library's public API without letting prose drift away from the source.
+
+## Scope Boundary
+
+- Treat `README.md`, `docs/context.md`, public TSDoc, runnable examples, emitted declarations, and optional release notes as downstream-user documentation surfaces.
+- Keep maintainer or contributor docs such as repo workflows, release procedures, contributor setup, and internal-only architecture notes separate from this system unless the user explicitly asks for them.
 
 ## Default Stance
 
+- Optimize for downstream users of the published surface.
 - Keep canonical facts adjacent to code.
 - Prefer runnable examples over narrative guides.
 - Keep one prose owner for each concept.
+- Keep maintainer or contributor guidance out of consumer docs by default.
 - Keep stable prescriptive guidance centralized in `docs/context.md`, not scattered across guides.
 - Treat emitted declaration files in `dist/` as generated output, not an editing surface.
 - Keep `README.md` thin and routing-oriented.
@@ -26,19 +33,21 @@ Use this skill to build or repair a compact documentation system for a TypeScrip
 ## Workflow
 
 1. Inventory the current documentation surfaces.
-   - Identify where API facts, concepts, examples, top-level routing, and release notes currently live.
+   - Identify where API facts, concepts, examples, top-level routing, release notes, and any maintainer-only guidance currently live.
    - Flag duplicated explanations, stale guides, and hand-maintained API-prose content.
    - Note whether `CHANGELOG.md` exists and whether the repo expects manual release-note maintenance.
 2. Assign each kind of information to one owner.
    - Move factual API behavior into public TSDoc.
    - Use runnable `examples/*.ts` only for canonical or materially different usage patterns.
    - Keep non-local conceptual material and stable best-practice guidance in `docs/context.md`.
+   - Keep maintainer or contributor guidance in separate surfaces instead of folding it into `README.md`, `docs/context.md`, or examples.
    - Keep `README.md` focused on purpose, installation, one minimal example, and links.
    - Keep `CHANGELOG.md` limited to summary-level release notes for shipped user-visible changes.
    - Use emitted `dist/**/*.d.ts` or `dist/**/*.d.mts` files for exact signature lookup.
 3. Rewrite the docs to match those boundaries.
    - Remove duplicated API detail from `README.md` and conceptual prose from surfaces that should only route or summarize.
    - Remove API facts from `CHANGELOG.md` when they belong in TSDoc, examples, or conceptual docs instead.
+   - Remove contributor setup, release-process notes, and internal-only implementation details from consumer-facing docs unless they are directly relevant to downstream users.
    - Normalize terminology across TSDoc, examples, and prose.
    - Preserve only the prose that cannot be derived from code or examples.
 4. Tighten drift control.
@@ -48,6 +57,7 @@ Use this skill to build or repair a compact documentation system for a TypeScrip
    - Verify that every public export is documented somewhere appropriate.
    - Verify that each example earns its existence by covering a materially different pattern, and that it uses real imports, valid options, and preferred defaults.
    - Verify that conceptual docs still match the library's abstractions, invariants, and lifecycle.
+   - Verify that maintainer-only guidance is not mixed into downstream-user surfaces.
 
 ## Decision Rules
 
@@ -57,6 +67,7 @@ Use this skill to build or repair a compact documentation system for a TypeScrip
 - Add or update `examples/*.ts` only when a change introduces a materially different user-facing task, workflow, or composition pattern.
 - Use emitted `dist/**/*.d.ts` or `dist/**/*.d.mts` files as the exact exported-signature surface instead of hand-maintaining reference prose.
 - Add migration or decision documents only when breaking changes or recurring architectural constraints justify them.
+- Add or update maintainer or contributor docs only when explicitly requested; do not repurpose `README.md`, `docs/context.md`, or examples for repo-internal workflow guidance.
 
 ## Output Rules
 
@@ -64,4 +75,5 @@ Use this skill to build or repair a compact documentation system for a TypeScrip
 - Keep ownership boundaries explicit so future changes have one obvious place to land.
 - Prefer deleting redundant prose over polishing duplicate explanations.
 - Keep examples executable and small.
+- Do not blend consumer-facing docs with contributor instructions or release-process playbooks.
 - When the repo does not yet emit declarations into `dist/`, add that as part of the migration instead of creating a manual `reference.md`.

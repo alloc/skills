@@ -5,6 +5,7 @@
 - [Objective](#objective)
 - [File Layout](#file-layout)
 - [Source-of-Truth Model](#source-of-truth-model)
+- [Scope Boundary](#scope-boundary)
 - [Document Responsibilities](#document-responsibilities)
 - [Fixed Section Schemas](#fixed-section-schemas)
 - [Public API Coverage Rules](#public-api-coverage-rules)
@@ -20,6 +21,7 @@
 
 Design a minimal documentation system for TypeScript libraries that:
 
+- helps downstream users discover, evaluate, and use the public API
 - keeps canonical facts adjacent to source code
 - minimizes hand-maintained prose
 - reduces documentation drift
@@ -62,6 +64,26 @@ src/
 6. `CHANGELOG.md` (optional)
    Summary of shipped user-visible changes; should not become the owner of detailed API behavior.
 
+## Scope Boundary
+
+This system is for downstream users of the published library surface.
+
+In scope:
+
+- docs that help consumers choose, understand, and use public exports
+- conceptual guidance that affects how downstream users compose the library
+- examples and release notes that clarify user-visible behavior
+
+Out of scope unless explicitly requested:
+
+- contributor onboarding
+- repo workflow docs
+- release checklists
+- internal-only architecture notes
+- test, fixture, or local development maintenance playbooks
+
+If maintainer-facing docs are needed, keep them in separate surfaces such as `CONTRIBUTING.md`, `docs/maintainers.md`, or internal docs instead of folding them into `README.md` or `docs/context.md`.
+
 ## Document Responsibilities
 
 ### `README.md`
@@ -79,6 +101,7 @@ Should not contain:
 
 - exhaustive API reference
 - duplicated conceptual explanations
+- contributor setup or repo workflows
 - task-specific guides
 - version-sensitive details better owned by source comments or examples
 
@@ -161,6 +184,13 @@ Should remain:
 - library-specific
 - prescriptive only where guidance is expected to hold across examples and releases
 - intentionally non-redundant with TSDoc
+
+Should not contain:
+
+- contributor onboarding
+- release procedures
+- repo maintenance checklists
+- internal-only architecture notes that do not change public behavior
 
 ### `dist/**/*.d.ts` and `dist/**/*.d.mts`
 
@@ -292,6 +322,7 @@ The system reduces drift by enforcing these rules:
 - exact signatures belong in emitted declaration files, not hand-maintained reference pages
 - README is routing-only
 - changelog entries summarize releases, not API ownership
+- maintainer docs stay separate from consumer docs
 - no parallel explanations of the same API behavior
 
 Practical rule:
@@ -372,6 +403,9 @@ Do not optimize the system for:
 
 - a large tutorial tree
 - a course-based learning path
+- contributor onboarding or maintainer playbooks
+- release-process documentation
+- repo-internal architecture notes that do not affect consumers
 - manually maintained guides for every use case
 - duplicate reference content in prose form
 - human-first editorial polish across many pages
@@ -388,7 +422,13 @@ Use only if architectural decisions or policy constraints recur often enough to 
 
 Use only for major or externally disruptive upgrades.
 
-Do not create either by default.
+### `CONTRIBUTING.md` or `docs/maintainers.md`
+
+Use only when the user explicitly asks for maintainer-facing docs.
+
+Keep contributor setup, release procedures, and repo-internal guidance separate from `README.md`, `docs/context.md`, examples, and public TSDoc.
+
+Do not create any of these by default.
 
 ## Recommended Default System
 
