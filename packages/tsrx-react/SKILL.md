@@ -177,16 +177,23 @@ Use prop shorthand when the prop name matches the variable name.
 
 ### Refs
 
-Use `{ref variable}` for mutable references or `{ref callback}` for callback refs.
+Use `let`-bound refs for local current-value bindings and `{ref callback}` for callback refs.
 
 ```tsrx
 component AutoFocus() {
-  let input: HTMLInputElement | undefined;
+  let input: HTMLInputElement | null = null;
 
   <input {ref input} type="text" />
-  <input {ref (node) => node.focus()} />
+  <button onClick={() => input?.focus()}>{'Focus'}</button>
+  <input {ref (node) => node?.focus()} />
 }
 ```
+
+Passing an identifier to the JSX `ref` prop is just the binding site. That still counts as a local `let` ref case.
+
+Keep `useRef(...)` when another API needs the ref container itself rather than just the current node or handle value. Preserve `RefObject` usage when you pass the ref through props, return it from a hook, store it in another coordination object, expect another consumer to read `.current`, or need stable ref identity beyond a local binding.
+
+Use `let node: T | null = null` with `{ref node}` when the ref stays local and you only read `node` directly in the same component or hook body, effects, or callbacks.
 
 Refs also work through composite components when the child forwards the ref to DOM.
 
@@ -426,6 +433,7 @@ Treat `.tsrx` as a superset of TypeScript. Props, generics, utility types, and s
 - Use `component`, not `function`, for TSRX components.
 - Keep text inside `{...}`.
 - Use `<tsx>` for JSX in expression position, and keep its contents to standard TSX or JSX.
+- Treat `let` refs as local current-value bindings, not as general `RefObject` replacements.
 - Use bare `return;` only as a guard.
 - Use top-level `await` only when the surrounding React app expects async component behavior.
 - Validate the rendered React behavior before assuming the edit is correct.
