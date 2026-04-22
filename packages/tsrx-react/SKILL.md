@@ -46,7 +46,7 @@ Key traits:
    - Declare UI building blocks with `component` or `export component`.
    - Place JSX elements directly in the component body as statements.
    - Wrap text and inline values in `{...}`. Bare text is invalid.
-   - Use `<tsx>...</tsx>` only when JSX must appear in expression position.
+   - Use `<tsx>...</tsx>` only when JSX must appear in expression position; see [components-and-expression-rules.md](./references/components-and-expression-rules.md) for the exact constraints.
    - Use a bare `return;` only to stop later template output after rendering a guard branch.
 3. Use TSRX-specific features deliberately.
    - Use `&{ ... }` or `&[ ... ]` lazy destructuring when deferred property or index access is clearer than repeated lookups.

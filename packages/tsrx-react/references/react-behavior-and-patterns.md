@@ -52,7 +52,7 @@ Treat `.tsrx` as a superset of TypeScript. Props, generics, utility types, and s
 
 - Use `component`, not `function`, for TSRX components.
 - Keep text inside `{...}`.
-- Use `<tsx>` for JSX in expression position.
+- Use `<tsx>` for JSX in expression position. See [components-and-expression-rules.md](./components-and-expression-rules.md) for the exact constraints.
 - Use bare `return;` only as a guard.
 - Use top-level `await` only when the surrounding React app expects async component behavior.
 - Validate the rendered React behavior before assuming the edit is correct.

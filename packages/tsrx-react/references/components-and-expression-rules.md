@@ -64,7 +64,11 @@ Use `<tsx>` when:
 - Returning JSX from a plain helper function
 - Passing JSX through a prop value
 
-Do not assign or return bare JSX outside `<tsx>`.
+Inside `<tsx>`, write ordinary TSX or JSX only. `<tsx>` is an expression-position escape hatch, not a nested TSRX template, so TSRX-only syntax such as template `if` blocks, `for ... of` loops with `index` or `key`, `switch`, `try` / `pending` / `catch`, lazy destructuring, or statement-position declarations does not apply there.
+
+If you need TSRX-specific control flow or local declarations, keep them in the surrounding component body and use `<tsx>` only for the final JSX expression.
+
+Do not assign or return bare JSX outside `<tsx>`, and do not expect `<tsx>` to accept TSRX-specific syntax.
 
 ## Text Containers
 
