@@ -1,0 +1,4 @@
+interface:
+  display_name: "Terminal Screencast SVG"
+  short_description: "Creates polished terminal screencast SVGs"
+  default_prompt: "Use $terminal-screencast-svg to record and embed a polished terminal demo as an SVG."
