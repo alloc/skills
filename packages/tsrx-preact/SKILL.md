@@ -1,6 +1,6 @@
 ---
 name: tsrx-preact
-description: Build, refactor, debug, review, and explain Preact `.tsrx` code written with TSRX. Use when Codex must translate JSX or TSX into TSRX syntax, preserve statement-based JSX and lexical template scoping, or handle Preact template control flow such as `if`, `for`, `switch`, and `try` / `pending` / `catch`.
+description: Author and maintain Preact components in `.tsrx` files. Use when code uses TSRX `component` declarations or component arrow functions, statement-position markup, double-quoted text nodes, `<tsrx>` expression-position blocks, render props that return markup, lexical template scopes, or template control flow such as `if`, `for`, `switch`, and `try` / `pending` / `catch`.
 ---
 
 ## Overview
