@@ -1,70 +1,63 @@
 ---
-name: tsrx-react
-description: Build, refactor, debug, review, and explain React `.tsrx` code written with TSRX. Use when Codex must translate JSX or TSX into TSRX syntax, preserve statement-based JSX and lexical template scoping, work with lazy destructuring or refs, edit scoped style blocks, or handle template control flow such as `if`, `for`, `switch`, and `try` / `pending` / `catch`.
+name: tsrx-preact
+description: Build, refactor, debug, review, and explain Preact `.tsrx` code written with TSRX. Use when Codex must translate JSX or TSX into TSRX syntax, preserve statement-based JSX and lexical template scoping, or handle Preact template control flow such as `if`, `for`, `switch`, and `try` / `pending` / `catch`.
 ---
 
 ## Overview
 
-TSRX is a TypeScript language extension for authoring React UI in `.tsrx` files.
+TSRX is a TypeScript language extension for authoring Preact UI in `.tsrx` files.
 
 Key traits:
 
 - Treat JSX elements as statements rather than expressions.
 - Keep control flow directly in the template with `if`, `for`, `switch`, and `try`.
 - Keep locals scoped near the JSX that uses them.
-- Support lazy destructuring with `&{ ... }` and `&[ ... ]`.
-- Scope component styles automatically with hashed selectors.
 - Preserve TypeScript types through the compile step.
+- Emit Preact-compatible JSX for the rest of the build pipeline.
 
 ## Mental Model
 
-- Treat `.tsrx` as a React authoring language, not as plain JSX with a few helpers.
-- Keep markup, control flow, local declarations, and style blocks close together in the component body.
+- Treat `.tsrx` as a Preact authoring language, not as plain JSX with a few helpers.
+- Keep markup, control flow, and local declarations close together in the component body.
 - Prefer local clarity over JSX habits carried over from function components.
-- Let TSRX features such as lexical scoping, lazy destructuring, and statement-position JSX do the structural work instead of recreating JSX-era patterns.
+- Let TSRX features such as lexical scoping and statement-position JSX do the structural work instead of recreating JSX-era patterns.
 
 ## Start Here
 
-- Inspect the current `.tsrx` authoring patterns first: component shape, control flow, refs, styles, and any use of top-level `await`.
+- Inspect the current `.tsrx` authoring patterns first: component shape, control flow, hook placement, and local scopes.
 - Use the in-file sections below as needed:
-  - Read `Components and Expression Rules` before editing component declarations, text, props, refs, children, or `<tsx>` expression-position JSX.
-  - Read `Control Flow and Styles` before editing `if`, `for`, `switch`, `try` / `pending` / `catch`, early returns, or scoped styles.
-  - Read `React Behavior and Common Patterns` before relying on React hook lifting, top-level `await`, or common escape-hatch patterns.
-- Preserve the existing React semantics before abstracting anything.
+  - Read `Components and Expression Rules` before editing component declarations, text, props, children, or expression-position TSRX.
+  - Read `Control Flow` before editing `if`, `for`, `switch`, `try` / `pending` / `catch`, or early returns.
+  - Read `Preact Behavior and Common Patterns` before relying on Preact hook behavior or common escape-hatch patterns.
+- Preserve the existing Preact semantics before abstracting anything.
 
 ## Workflow
 
-1. Identify the current React authoring pattern and its constraints.
-   - Check how components express guards, loops, nested scopes, and refs.
-   - Check whether components rely on top-level component-body `await`.
-   - Check how local style blocks and passed-through `#style` classes are used.
+1. Identify the current Preact authoring pattern and its constraints.
+   - Check how components express guards, loops, nested scopes, and computed children.
+   - Check how hooks, event handlers, and local declarations are placed.
 2. Apply TSRX syntax instead of JSX habits.
-   - Declare UI building blocks with `component` or `export component`.
+   - Define UI building blocks with `component`, `export component`, or component arrow functions.
    - Place JSX elements directly in the component body as statements.
-   - Wrap text and inline values in `{...}`. Bare text is invalid.
-   - Use `<tsx>...</tsx>` only when JSX must appear in expression position, and keep its contents to standard TSX or JSX rather than TSRX-only template syntax.
+   - Write static JSX text as double-quoted text nodes, not bare text.
+   - Use `{...}` for JavaScript expressions, dynamic values, and prop values.
+   - Use `<tsrx>...</tsrx>` when TSRX markup must appear in expression position.
    - Use a bare `return;` only to stop later template output after rendering a guard branch.
-3. Use TSRX-specific features deliberately.
-   - Use `&{ ... }` or `&[ ... ]` lazy destructuring when deferred property or index access is clearer than repeated lookups.
-   - Use `{ref variable}` or `{ref callback}` instead of inventing custom React ref plumbing.
-   - Keep local declarations next to the JSX they feed; nested element bodies create lexical scopes.
-   - Use `children={expr}` when children is computed rather than nested JSX.
-4. Preserve React behavior and safety.
-   - Do not `return <JSX />`, `return someValue`, or assign bare JSX to variables outside `<tsx>`.
+3. Preserve Preact behavior and safety.
+   - Do not `return <JSX />`, `return someValue`, or assign bare JSX to variables outside `<tsrx>`.
    - Do not mark components `async`.
-   - Use top-level component-body `await` only when the surrounding React app expects it.
-   - Do not use `for await...of` inside React component templates.
-   - Do not pass scoped classes across component boundaries except through `#style.className`.
-5. Validate the generated behavior after editing.
-   - Check that keyed loops, refs, and lazy destructuring still behave correctly in the generated React code.
-   - Check that scoped styles stay local and that any `:global(...)` selector is intentional.
-   - Check that guard clauses and async boundaries still lower to the intended React behavior.
+   - Do not use top-level component-body `await`; Preact components are synchronous render functions.
+   - Do not use `for await...of` inside Preact component templates.
+4. Validate the generated behavior after editing.
+   - Check that keyed loops and computed children still behave correctly in the generated Preact code.
+   - Check that guard clauses and async boundaries still lower to the intended Preact behavior.
+   - Check hook placement and stateful behavior in the compiled component when you changed control flow around hooks.
 
 ## Components and Expression Rules
 
 ### Components
 
-Declare components with `component`, not `function`. Keep the template directly in the component body and do not return JSX.
+Define components with `component`, not `function`. Keep the template directly in the component body and do not return JSX.
 
 ```tsrx
 export component Button({ label, onClick }: {
@@ -77,21 +70,37 @@ export component Button({ label, onClick }: {
 }
 ```
 
+Component arrow functions are also valid when assigning a component to a variable or class field.
+
+```tsrx
+const myComponent = component () => {
+  <div />
+}
+
+class Dialog {
+  static Root = component () => {
+    <div />
+  }
+}
+```
+
 Prefer these rules:
 
-- Use `component Name(props: Props) { ... }` or `export component Name(...) { ... }`.
-- Keep JSX statements, handlers, and `<style>` in the component body.
-- Do not mix `function Component()` and `component Component()` styles in the same TSRX code.
+- Use `component Name(props: Props) { ... }`, `export component Name(...) { ... }`, or `const Name = component (...) => { ... }`.
+- Keep JSX statements, handlers, and local declarations in the component body.
+- Do not mix plain `function Component()` and TSRX `component` styles in the same TSRX code.
 - Do not `return <JSX />` from a component body.
 
 ### Statement-Based JSX
 
-Treat JSX as statements, not expressions. Put text inside expression containers.
+Treat JSX as statements, not expressions. Static text still needs double quotes, but it no longer needs an expression container.
 
 ```tsrx
 component Greeting() {
-  <h1>{'Hello World'}</h1>
-  <p>{`Count: ${count}`}</p>
+  const count = 3;
+
+  <h1>"Hello World"</h1>
+  <p>"Count: "{count}</p>
 }
 ```
 
@@ -101,41 +110,55 @@ Do not write bare text:
 <div>Hello World</div>
 ```
 
+Do not keep old JSX expression containers for static text:
+
+```tsrx
+<span>{"Foo"}</span>
+```
+
 Write this instead:
 
 ```tsrx
-<div>{'Hello World'}</div>
+<span>"Foo"</span>
 ```
 
-### `<tsx>` for Expression Position
+### Expression-Position TSRX
 
-Wrap JSX in `<tsx>...</tsx>` when JSX must live in expression position, such as assignment, helper returns, or prop values.
+Use `<tsrx>...</tsrx>` when markup must live in expression position, such as assignment, helper returns, or prop values.
 
 ```tsrx
 component App() {
-  const title = <tsx><span class="title">{'Settings'}</span></tsx>;
+  const title = <tsrx><span class="title">"Settings"</span></tsrx>;
   <Card {title} />
 }
 ```
 
-Use `<tsx>` when:
+Use `<tsrx>` when:
 
-- Assigning JSX to a variable
-- Returning JSX from a plain helper function
-- Passing JSX through a prop value
+- Assigning TSRX markup to a variable
+- Returning markup from a plain helper function
+- Passing markup through a prop value
+- Using render props or function-as-children callbacks that return markup
 
-Inside `<tsx>`, write ordinary TSX or JSX only. `<tsx>` is an expression-position escape hatch, not a nested TSRX template, so TSRX-only syntax such as template `if` blocks, `for ... of` loops with `index` or `key`, `switch`, `try` / `pending` / `catch`, lazy destructuring, or statement-position declarations does not apply there.
+Because `<tsrx>` uses TSRX syntax, keep its contents consistent with the rest of the file: statement-style markup, double-quoted static text, and TSRX template control flow where needed.
 
-If you need TSRX-specific control flow or local declarations, keep them in the surrounding component body and use `<tsx>` only for the final JSX expression.
+`<tsrx>` is mandatory for render-prop patterns because the callback returns markup in expression position.
 
-Do not assign or return bare JSX outside `<tsx>`, and do not expect `<tsx>` to accept TSRX-specific syntax.
+```tsrx
+<List
+  {items}
+  renderItem={(item) => <tsrx><li key={item.id}>{item.label}</li></tsrx>}
+/>
+```
+
+Do not assign or return bare JSX outside `<tsrx>`.
 
 ### Text Containers
 
-Use a single JS or TS expression inside each container. Adjacent containers concatenate.
+Use double-quoted text nodes for static text. Use expression containers for JavaScript expressions, including variables, conditionals, and template strings. In TSRX blocks, quoted text nodes can sit directly next to expression containers, so `"string"{value}` is valid JSX text.
 
 ```tsrx
-<p>{'Hello, '}{name}{'!'}</p>
+<p>"Hello, "{name}"!"</p>
 <p>{count > 0 ? 'Unread' : 'All caught up'}</p>
 ```
 
@@ -143,59 +166,13 @@ Special forms:
 
 - `{text expr}`: force escaped text output
 
-### Lazy Destructuring
-
-Use `&{ ... }` and `&[ ... ]` when bindings should stay linked to the source lookup instead of eagerly snapshotting values.
-
-```tsrx
-component UserCard(&{ name, age }: { name: string; age: number }) {
-  <div>
-    <h2>{name}</h2>
-    <p>{`Age: ${age}`}</p>
-  </div>
-}
-```
-
-```tsrx
-let &[count, setCount] = createSignal(0);
-```
-
-Use lazy destructuring for:
-
-- Component props that are clearer as deferred source-property reads
-- Signal-like tuple returns where deferred index access matters
-
-Support the same TS destructuring features the source calls out, including defaults and rest patterns.
-
 ### Prop Shorthand
 
 Use prop shorthand when the prop name matches the variable name.
 
 ```tsrx
-<Input {value} {onChange} />
+<Input {value} {onInput} />
 ```
-
-### Refs
-
-Use `let`-bound refs for local current-value bindings and `{ref callback}` for callback refs.
-
-```tsrx
-component AutoFocus() {
-  let input: HTMLInputElement | null = null;
-
-  <input {ref input} type="text" />
-  <button onClick={() => input?.focus()}>{'Focus'}</button>
-  <input {ref (node) => node?.focus()} />
-}
-```
-
-Passing an identifier to the JSX `ref` prop is just the binding site. That still counts as a local `let` ref case.
-
-Keep `useRef(...)` when another API needs the ref container itself rather than just the current node or handle value. Preserve `RefObject` usage when you pass the ref through props, return it from a hook, store it in another coordination object, expect another consumer to read `.current`, or need stable ref identity beyond a local binding.
-
-Use `let node: T | null = null` with `{ref node}` when the ref stays local and you only read `node` directly in the same component or hook body, effects, or callbacks.
-
-Refs also work through composite components when the child forwards the ref to DOM.
 
 ### Lexical Template Scoping
 
@@ -220,8 +197,8 @@ Nest JSX for standard composition:
 
 ```tsrx
 <Card>
-  <h2>{'Title'}</h2>
-  <p>{'Content goes here.'}</p>
+  <h2>"Title"</h2>
+  <p>"Content goes here."</p>
 </Card>
 ```
 
@@ -231,7 +208,7 @@ Pass `children={expr}` when the value is computed:
 <List children={items.map(renderItem)} />
 ```
 
-## Control Flow and Styles
+## Control Flow
 
 ### `if` / `else if` / `else`
 
@@ -241,11 +218,11 @@ Use normal JavaScript conditionals inside templates.
 component StatusBadge({ status }: { status: string }) {
   <div>
     if (status === 'active') {
-      <span class="badge active">{'Online'}</span>
+      <span class="badge active">"Online"</span>
     } else if (status === 'idle') {
-      <span class="badge idle">{'Away'}</span>
+      <span class="badge idle">"Away"</span>
     } else {
-      <span class="badge">{'Offline'}</span>
+      <span class="badge">"Offline"</span>
     }
   </div>
 }
@@ -274,19 +251,19 @@ Use standard `switch` statements for multi-branch rendering. `break` terminates 
 ```tsrx
 switch (status) {
   case 'loading':
-    <p>{'Loading...'}</p>
+    <p>"Loading..."</p>
     break;
   case 'success':
-    <p class="success">{'Done!'}</p>
+    <p class="success">"Done!"</p>
     break;
   default:
-    <p>{'Unknown status.'}</p>
+    <p>"Unknown status."</p>
 }
 ```
 
 ### `try` / `pending` / `catch`
 
-Use `try { ... } catch (e) { ... }` for error fallback UI. Add `pending { ... }` to model async loading boundaries.
+Use `try { ... } catch (e) { ... }` for error fallback UI. Add `pending { ... }` to model async loading boundaries around child components or resources.
 
 ```tsrx
 const UserProfile = lazy(() => import('./UserProfile.tsrx'));
@@ -295,9 +272,9 @@ export component App() {
   try {
     <UserProfile id={1} />
   } pending {
-    <p>{'Loading...'}</p>
+    <p>"Loading..."</p>
   } catch (e) {
-    <p>{'Something went wrong.'}</p>
+    <p>"Something went wrong."</p>
   }
 }
 ```
@@ -311,92 +288,33 @@ Use a bare `return;` for guard clauses after rendering fallback content. Do not 
 ```tsrx
 component Dashboard({ user }: { user: User | null }) {
   if (!user) {
-    <p>{'Please sign in.'}</p>
+    <p>"Please sign in."</p>
     return;
   }
 
-  <h1>{`Welcome, ${user.name}`}</h1>
+  <h1>"Welcome, "{user.name}</h1>
 }
 ```
 
-Do not translate React-style `return (...)` directly into TSRX.
+Do not translate JSX-style `return (...)` directly into TSRX.
 
-### Scoped Styles
+## Preact Behavior and Common Patterns
 
-Use a component-local `<style>` block to scope selectors to the component with a unique hash.
+### Preact Behavior
 
-```tsrx
-component Card() {
-  <div class="card">
-    <h2>{'Scoped title'}</h2>
-  </div>
+`@tsrx/preact` emits Preact-compatible JSX while keeping TSRX's statement-based component syntax.
 
-  <style>
-    .card {
-      padding: 1.5rem;
-      border: 1px solid #ddd;
-    }
+Treat TSRX syntax as a compile-time authoring layer over ordinary Preact component behavior:
 
-    h2 {
-      color: #333;
-    }
-  </style>
-}
-```
-
-Treat scoped styles as the default. Parent styles do not automatically leak into child components.
-
-### `:global(...)`
-
-Use `:global(...)` to opt out of scoping for resets or selectors that must escape the component boundary.
-
-Examples called out by the source:
-
-- `:global(.class-name)`
-- `:global(.foo, .bar)`
-- `.scoped :global(.unscoped) .also-scoped`
-
-Keep `:global(...)` intentional and narrow.
-
-### `#style`
-
-Use `#style.className` to pass a scoped class name to a child component.
-
-```tsrx
-component Badge({ className }: { className?: string }) {
-  <span class={`badge ${className ?? ''}`}>{'New'}</span>
-  <style>
-    .badge { padding: 0.25rem 0.5rem; }
-  </style>
-}
-
-component App() {
-  <Badge className={#style.highlight} />
-  <style>
-    .highlight { background: #e8f5e9; color: #2e7d32; }
-  </style>
-}
-```
-
-The referenced class must appear as a standalone selector in the surrounding component's `<style>`.
-
-## React Behavior and Common Patterns
-
-### React Behavior
-
-`@tsrx/react` adds behavior that differs from ordinary JSX authoring:
-
-- Lift hook calls to the top of the generated component function, even when the TSRX source places them after a guard or inside a loop.
-- Allow top-level component-body `await`.
-- Emit React-compatible TSX for the rest of the build pipeline.
-
-Treat these as compile-time conveniences, not as a reason to write opaque code. Keep component flow readable even when the compiler can legalize it.
+- Components must remain synchronous; do not use `async component` or top-level component-body `await`.
+- Use Preact event names and conventions such as `onInput` for text inputs.
+- Keep Preact hooks readable and predictable when editing control flow around stateful logic.
 
 Do not:
 
 - Mark components `async`
 - Use `for await...of` inside component templates
-- Translate React early returns into `return <JSX />`
+- Translate JSX early returns into `return <JSX />`
 
 ### Common Escape Hatches
 
@@ -415,7 +333,7 @@ export component Counter() {
   };
 
   <button onClick={increment}>
-    {`Count: ${count}`}
+    "Count: "{count}
   </button>
 }
 ```
@@ -426,20 +344,14 @@ Keep scoped locals close to the JSX they serve instead of hoisting every interme
 
 ### TypeScript
 
-Treat `.tsrx` as a superset of TypeScript. Props, generics, utility types, and standard imports should work as ordinary TypeScript constructs while the compiler emits React-compatible TSX.
+Treat `.tsrx` as a superset of TypeScript. Props, generics, utility types, and standard imports should work as ordinary TypeScript constructs while the compiler emits Preact-compatible JSX.
 
 ### Pitfall Checklist
 
-- Use `component`, not `function`, for TSRX components.
-- Keep text inside `{...}`.
-- Use `<tsx>` for JSX in expression position, and keep its contents to standard TSX or JSX.
-- Treat `let` refs as local current-value bindings, not as general `RefObject` replacements.
+- Use `component` declarations or component arrow functions, not plain `function`, for TSRX components.
+- Write static text as double-quoted text nodes, such as `<span>"Foo"</span>`.
+- Use `{...}` for JavaScript expressions and dynamic values.
+- Use `<tsrx>` for TSRX markup in expression position, including render-prop callbacks.
 - Use bare `return;` only as a guard.
-- Use top-level `await` only when the surrounding React app expects async component behavior.
-- Validate the rendered React behavior before assuming the edit is correct.
-
-## Search Shortcuts
-
-- Search this file for component and expression rules with `rg -n "component|<tsx>|\\{text|&\\{|&\\[|ref|children" packages/tsrx-react/SKILL.md`.
-- Search this file for control flow and styling rules with `rg -n "if|for|index|key|switch|pending|catch|return;|<style>|:global|#style" packages/tsrx-react/SKILL.md`.
-- Search this file for React behavior and escape hatches with `rg -n "hook|await|for await|async|TypeScript|inline function" packages/tsrx-react/SKILL.md`.
+- Do not use top-level `await` in component bodies; Preact does not support async components.
+- Validate the rendered Preact behavior before assuming the edit is correct.
