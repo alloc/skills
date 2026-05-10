@@ -1,6 +1,6 @@
 ---
 name: lexical
-description: Build, extend, debug, migrate, and serialize Lexical editors in vanilla JavaScript or React. Use when Codex needs to work with `lexical`, `@lexical/react`, custom nodes, commands, transforms, listeners, selections, JSON or HTML import/export, NodeState, or the Lexical Extensions API.
+description: Work on Lexical editors in JavaScript or React, including `lexical`, `@lexical/react`, custom nodes, commands, transforms, listeners, selections, serialization, NodeState, and extensions.
 ---
 
 # Lexical

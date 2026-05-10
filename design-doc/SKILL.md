@@ -1,6 +1,6 @@
 ---
 name: design-doc
-description: Draft, review, and iteratively refine technical design documents for new or changing programming libraries, SDKs, or internal subsystems. Use when Codex needs to turn requirements into an implementation-ready design doc, tighten an existing proposal, define public API and runtime semantics, justify tradeoffs, surface failure modes, or maintain an explicit Ambiguities and Blockers section before implementation begins.
+description: Draft or refine technical design docs for libraries, SDKs, and subsystems, covering requirements, public APIs, runtime semantics, tradeoffs, failure modes, and blockers.
 ---
 
 # design-doc

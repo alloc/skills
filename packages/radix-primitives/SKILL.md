@@ -1,6 +1,6 @@
 ---
 name: radix-primitives
-description: Build, refactor, debug, and review React UI code that uses Radix Primitives via `radix-ui` or equivalent per-primitive packages. Use when Codex must choose the right Radix primitive, preserve required part structure and accessibility contracts, compose custom triggers or controls with `asChild`, wire controlled or uncontrolled state, manage portals, layering, focus, validation, typeahead, or keyboard behavior, style via `className`, `data-*` attributes, and CSS variables, or handle RTL, SSR, animation, and form integration across dialogs, popovers, menus, selects, tabs, accordions, toasts, and related utilities.
+description: Work on React UI using Radix Primitives, including primitive choice, part structure, accessibility, `asChild`, state, portals, focus, keyboard behavior, styling, SSR, RTL, and overlays.
 ---
 
 # radix-primitives

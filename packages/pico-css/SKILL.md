@@ -1,6 +1,6 @@
 ---
 name: pico-css
-description: Build, refactor, debug, and theme semantic HTML UIs with Pico CSS. Use when Codex needs to install `@picocss/pico`, choose between the default, classless, conditional, or Sass-compiled variants, customize Pico with CSS variables or Sass modules, or implement Pico-styled forms, layout primitives, and components such as dropdowns, dialogs, navs, and tooltips.
+description: Build, theme, or debug semantic HTML UIs with Pico CSS, including `@picocss/pico`, build variants, Sass, CSS variables, forms, layouts, dropdowns, dialogs, navs, and tooltips.
 ---
 
 # Pico CSS

@@ -1,6 +1,6 @@
 ---
 name: terminal-screencast-svg
-description: Create polished terminal screencast SVGs from command-line demos using asciinema recordings and svg-term-cli rendering. Use when Codex needs to record a terminal session, convert a local or uploaded asciinema cast to an embeddable SVG for README/docs/GitHub, tune idle timing/window framing, or provide Markdown/HTML embed snippets for terminal demos.
+description: Create terminal screencast SVGs from command-line demos using asciinema and svg-term-cli, including recording, rendering, timing, framing, and README/docs embeds.
 ---
 
 # Terminal Screencast SVG

@@ -1,6 +1,6 @@
 ---
 name: github-upstream-pr
-description: Create a branch from upstream/main when available, otherwise origin/main, commit local changes, push the branch to origin, and open a pull request with the gh CLI. Use when the user wants a PR created from local work and cares about branch naming, concise PR copy, or avoiding GitHub app skills/connectors.
+description: Create a GitHub PR from local changes using git and `gh`, branching from upstream/main or origin/main, committing, pushing, and opening a concise pull request.
 ---
 
 # github-upstream-pr

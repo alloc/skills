@@ -1,6 +1,6 @@
 ---
 name: pretext
-description: Build, refactor, debug, and review browser UI code that uses Pretext for DOM-free multiline text measurement and manual text layout via `prepare`, `layout`, `prepareWithSegments`, `layoutWithLines`, `walkLineRanges`, `layoutNextLine`, `clearCache`, or `setLocale`. Use when Codex must predict text height without DOM reads, preserve line count while shrinkwrapping, route text around shapes or varying-width slots, hand text across columns, or compose measured inline fragments in JS/TS.
+description: Work on Pretext text measurement and manual layout, including DOM-free line metrics, text height prediction, shrinkwrapping, shaped text flow, columns, and inline fragment composition.
 ---
 
 # pretext

@@ -1,6 +1,6 @@
 ---
 name: library-docs
-description: Design, audit, and update low-maintenance downstream-user documentation systems for TypeScript libraries where factual public API behavior lives in source TSDoc, usage lives in runnable `examples/*.ts`, concepts live in `docs/context.md`, and exact exported signatures live in emitted declaration files such as `dist/**/*.d.ts` or `dist/**/*.d.mts`. Use when Codex needs to create or revise consumer-facing library documentation structure, tighten ownership boundaries between `README.md`, source comments, examples, and docs, or reduce documentation drift in a library repository.
+description: Design or update downstream-user docs for TypeScript libraries, aligning README, TSDoc, runnable examples, `docs/context.md`, emitted declarations, and public API ownership.
 ---
 
 # Library Docs
