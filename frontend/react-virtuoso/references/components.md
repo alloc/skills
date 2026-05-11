@@ -1,6 +1,6 @@
 # Components
 
-Use this reference when choosing which Virtuoso component to introduce or refactor.
+Use this reference when choosing which open-source React Virtuoso component to introduce or refactor.
 
 ## Baseline Rules
 
@@ -15,8 +15,8 @@ Use this reference when choosing which Virtuoso component to introduce or refact
 - Use `VirtuosoGrid` for equally sized items in a responsive multi-column layout. Keep `List` and `Item` wrappers stable and defined outside render.
 - Use `TableVirtuoso` for semantic tables with virtualized rows. It supports unknown row sizes, sticky headers, fixed columns via styling, and `useWindowScroll`.
 - Use `GroupedTableVirtuoso` when grouped table rows are required.
-- Use `VirtuosoMasonry` from `@virtuoso.dev/masonry` for masonry layouts with varying item heights and column-based distribution.
-- Use `VirtuosoMessageList` from `@virtuoso.dev/message-list` only for real chat or conversation UIs. Read [message-list.md](./message-list.md) before editing it.
+- For masonry layouts with varying item heights, do not introduce commercially licensed Virtuoso add-ons. Use a project-approved library with suitable licensing, CSS-based layout when scale allows, or a product-specific design that fits the open-source components.
+- For chat or conversation UIs, start with `Virtuoso` and explicit scroll behavior. Preserve existing licensed dependencies when required by the task, but do not expand or recommend them.
 
 ## Component-Specific Notes
 

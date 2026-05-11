@@ -21,4 +21,3 @@ Use this reference when replacing wrappers, integrating a UI kit, or writing tes
 
 - Expect plain JSDOM tests to render poorly or not at all without measurement data.
 - Use `VirtuosoMockContext` to provide fixed measurement values such as viewport height and item height in tests.
-- When testing `VirtuosoMessageList`, use the message-list-specific testing context noted in [message-list.md](./message-list.md) if the component depends on measured layout.
