@@ -1,4 +1,4 @@
 interface:
   display_name: "Library Docs"
-  short_description: "Maintains downstream-facing library docs"
-  default_prompt: "Use $library-docs to create or tighten downstream-user documentation for this TypeScript library."
+  short_description: "Repairs TypeScript library docs drift"
+  default_prompt: "Use $library-docs to tighten this TypeScript library documentation system."

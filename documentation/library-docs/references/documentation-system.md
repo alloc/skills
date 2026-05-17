@@ -1,216 +1,94 @@
 # Documentation System
 
-## Contents
+Use this reference when designing or migrating a downstream-user documentation system for a TypeScript library.
 
-- [Objective](#objective)
-- [File Layout](#file-layout)
-- [Source-of-Truth Model](#source-of-truth-model)
-- [Scope Boundary](#scope-boundary)
-- [Document Responsibilities](#document-responsibilities)
-- [Fixed Section Schemas](#fixed-section-schemas)
-- [Public API Coverage Rules](#public-api-coverage-rules)
-- [Example Design Rules](#example-design-rules)
-- [Drift-Control Policy](#drift-control-policy)
-- [Maintenance Workflow](#maintenance-workflow)
-- [Retrieval Model for AI Consumers](#retrieval-model-for-ai-consumers)
-- [Non-Goals](#non-goals)
-- [Optional Extensions](#optional-extensions)
-- [Recommended Default System](#recommended-default-system)
+## Goal
 
-## Objective
+Create a compact documentation set that:
 
-Design a minimal documentation system for TypeScript libraries that:
+- helps consumers discover, evaluate, and use the published API
+- keeps canonical facts near source
+- favors executable examples over prose tutorials
+- reduces hand-maintained duplicate reference material
+- gives humans and AI agents a predictable retrieval path
+- keeps contributor and maintainer material separate from consumer docs
 
-- helps downstream users discover, evaluate, and use the public API
-- keeps canonical facts adjacent to source code
-- minimizes hand-maintained prose
-- reduces documentation drift
-- optimizes retrieval and interpretation by AI systems
-- keeps maintenance cost low for low-traffic libraries
-
-## File Layout
+## Recommended Layout
 
 ```text
 README.md
-CHANGELOG.md            # optional release notes; not a canonical API surface
+CHANGELOG.md            # optional release notes, not API reference
 docs/
-  context.md
-dist/
-  **/*.d.ts             # generated declaration surface; never edited by hand
-  **/*.d.mts            # generated declaration surface for ESM entrypoints
+  context.md            # optional for tiny packages; required when concepts are non-local
 examples/
-  *.ts
+  *.ts                  # runnable usage patterns
 src/
-  **/*.ts               # canonical TSDoc source
+  **/*.ts               # public TSDoc lives here
+dist/
+  **/*.d.ts             # generated exact signature surface
+  **/*.d.mts            # generated ESM declaration surface when applicable
 ```
 
-## Source-of-Truth Model
+## Ownership Model
 
-### Canonical sources
+| Surface | Owns | Does not own |
+| --- | --- | --- |
+| Public TSDoc | Symbol behavior, parameters, returns, errors, invariants, side effects, deprecations, related APIs | Broad conceptual essays, tutorials, internal notes |
+| `examples/*.ts` | Executable usage, composition, common workflows, preferred defaults | Pseudocode, duplicate mini-guides, exhaustive API coverage |
+| `docs/context.md` | Mental model, lifecycle, terminology, invariants, task-to-API selection, stable patterns and anti-patterns | API reference, contributor setup, release process |
+| `README.md` | Purpose, install, minimal example, documentation map | Exhaustive reference, long guides, internal workflow |
+| `dist/**/*.d.ts` / `*.d.mts` | Exact exported signatures and module shape | Manually authored behavior docs |
+| `CHANGELOG.md` | Shipped consumer-visible change summaries | Canonical API semantics, unreleased planning notes by default |
 
-1. `src/**/*.ts` TSDoc
-   Canonical source for factual API behavior.
-2. `examples/*.ts`
-   Canonical source for usage patterns and API composition.
-3. `docs/context.md`
-   Canonical source for concepts not cleanly expressible in code.
+Practical rule: if a statement can be derived from source, generated declarations, or an executable example, do not hand-maintain the same fact in prose.
 
-### Derived surfaces
+## Public API Coverage
 
-4. `dist/**/*.d.ts` or `dist/**/*.d.mts`
-   Generated declaration files used for exact signature and module-shape lookup.
-5. `README.md`
-   Thin entry document; may be partially generated or manually maintained, but should not duplicate exact API detail.
-6. `CHANGELOG.md` (optional)
-   Summary of shipped user-visible changes; should not become the owner of detailed API behavior.
+Treat the published surface as public:
 
-## Scope Boundary
+- package export-map entrypoints
+- source entry files intended for consumers
+- symbols reachable from generated declaration files
+- documented re-exports intended as API
 
-This system is for downstream users of the published library surface.
+Every public export should have at least a useful TSDoc summary. Add detailed tags when they clarify real behavior:
 
-In scope:
+- `@param`
+- `@returns`
+- `@throws`
+- `@example`
+- `@remarks`
+- `@deprecated`
+- `@see`
 
-- docs that help consumers choose, understand, and use public exports
-- conceptual guidance that affects how downstream users compose the library
-- examples and release notes that clarify user-visible behavior
+Do not document internal helpers as public API unless they are intentionally exported. If declarations expose internal-only symbols, prefer fixing the package boundary over documenting the leak as official API.
 
-Out of scope unless explicitly requested:
+## Section Schemas
 
-- contributor onboarding
-- repo workflow docs
-- release checklists
-- internal-only architecture notes
-- test, fixture, or local development maintenance playbooks
+Use schemas as defaults, not bureaucracy. Preserve a repo's established structure when it already expresses the same ownership model cleanly.
 
-If maintainer-facing docs are needed, keep them in separate surfaces such as `CONTRIBUTING.md`, `docs/maintainers.md`, or internal docs instead of folding them into `README.md` or `docs/context.md`.
+### README
 
-## Document Responsibilities
+```md
+# <Library Name>
 
-### `README.md`
+## Purpose
 
-Purpose: entry point and router.
+## Installation
 
-Should contain:
+## Quick Example
 
-- library purpose
-- install
-- one minimal happy-path example
-- links to `docs/context.md`, relevant declaration files in `dist/`, and `examples/`
+## Documentation
+```
 
-Should not contain:
+README guidance:
 
-- exhaustive API reference
-- duplicated conceptual explanations
-- contributor setup or repo workflows
-- task-specific guides
-- version-sensitive details better owned by source comments or examples
+- Keep the quick example minimal and current.
+- Link to `docs/context.md`, examples, and generated declarations when present.
+- Do not duplicate full option lists or per-symbol reference prose.
+- Do not include contributor setup unless the repo has no other place and the user explicitly asks.
 
-### `CHANGELOG.md`
-
-Purpose: optional release notes for consumers.
-
-Should contain:
-
-- concise summaries of shipped user-visible changes
-- upgrade-significant notes when they help consumers evaluate impact
-- links to migration docs, PRs, or release artifacts when useful
-
-Should not contain:
-
-- canonical API semantics
-- exhaustive per-symbol change logs
-- duplicated examples or conceptual explanations
-- unreleased planning notes unless the repo intentionally uses an unreleased-changes workflow
-
-### `src/**/*.ts` TSDoc
-
-Purpose: factual reference for public API.
-
-Should contain:
-
-- summary of exported symbol behavior
-- parameter and return semantics
-- constraints and invariants
-- side effects
-- error behavior
-- deprecation status
-- related APIs
-- short focused examples where useful
-
-Should not contain:
-
-- broad conceptual essays
-- duplicate tutorial material
-- unstable implementation notes unless externally relevant
-
-### `examples/*.ts`
-
-Purpose: executable documentation for canonical use.
-
-Should contain:
-
-- realistic end-to-end usage
-- correct import paths
-- valid option shapes
-- common composition patterns
-- minimal setup required to run
-
-Should be:
-
-- runnable
-- small and focused
-- named by task or workflow
-
-### `docs/context.md`
-
-Purpose: single conceptual document for non-local knowledge.
-
-Should contain:
-
-- mental model
-- core abstractions
-- lifecycle / data flow
-- invariants
-- stable best practices and recommended patterns
-- tradeoffs
-- terminology
-- non-goals
-- task-to-API mapping
-
-Should remain:
-
-- short
-- stable
-- library-specific
-- prescriptive only where guidance is expected to hold across examples and releases
-- intentionally non-redundant with TSDoc
-
-Should not contain:
-
-- contributor onboarding
-- release procedures
-- repo maintenance checklists
-- internal-only architecture notes that do not change public behavior
-
-### `dist/**/*.d.ts` and `dist/**/*.d.mts`
-
-Purpose: exact exported signatures and module layout for readers who need the built public surface.
-
-Should be:
-
-- generated from source
-- emitted from public entrypoints
-- treated as disposable build output
-- excluded from manual editorial ownership
-
-Should not:
-
-- become the primary authoring surface for API behavior
-- expose internal-only symbols unintentionally
-
-## Fixed Section Schemas
-
-### `docs/context.md` schema
+### docs/context.md
 
 ```md
 # Overview
@@ -221,9 +99,9 @@ Should not:
 
 # Core Abstractions
 
-# Data Flow / Lifecycle
+# Lifecycle
 
-# Common Tasks -> Recommended APIs
+# Common Tasks
 
 # Recommended Patterns
 
@@ -238,65 +116,21 @@ Should not:
 # Non-Goals
 ```
 
-Reuse this schema across libraries for consistent AI retrieval.
+Omit sections that do not apply. Keep this file short, stable, and library-specific. It should explain concepts that are hard to discover by reading one symbol's TSDoc.
 
-### `README.md` schema
+## Examples
 
-```md
-# <Library Name>
+Add or update an example only when it covers a materially different consumer task or composition pattern.
 
-## Purpose
+Good examples are:
 
-## Installation
+- runnable with existing project tooling
+- small enough to inspect quickly
+- named by task, not by API symbol
+- based on real imports and valid option shapes
+- clear about preferred defaults and edge-safe usage
 
-## Quick Example
-
-## Documentation Map
-```
-
-### TSDoc minimum schema for exported symbols
-
-For each public export, include as applicable:
-
-- summary line
-- `@param`
-- `@returns`
-- `@throws`
-- `@example`
-- `@remarks`
-- `@deprecated`
-- `@see`
-
-Not every tag is mandatory for every symbol, but every exported symbol should have at least a useful summary.
-
-## Public API Coverage Rules
-
-Treat **public exports** as the documentation surface.
-
-Coverage rules:
-
-- every public export must have TSDoc
-- internal symbols should not be documented unless intentionally exposed
-- declaration emit should only include symbols reachable from public entrypoints
-
-Recommended interpretation of "public":
-
-- anything exported from package entrypoints
-- anything included in generated type declarations intended for consumers
-
-## Example Design Rules
-
-Use examples to replace most narrative guides.
-
-Requirements:
-
-- add an example only when it covers a materially different task or usage pattern than the existing examples
-- executable in CI
-- no pseudo-code
-- minimal fixture setup
-- stable output or assertions where practical
-
-Suggested naming:
+Suggested names:
 
 ```text
 examples/basic-usage.ts
@@ -305,139 +139,90 @@ examples/error-handling.ts
 examples/framework-integration.ts
 ```
 
-Examples should demonstrate:
+Avoid examples that are just API reference in code form, require heavy fixtures without payoff, or duplicate the README quick example.
 
-- canonical call order
-- preferred defaults
-- edge-safe usage
-- realistic object shapes
+## Change Rules
 
-## Drift-Control Policy
-
-The system reduces drift by enforcing these rules:
-
-- facts belong in TSDoc, not prose
-- usage belongs in runnable examples, not guides
-- concepts and stable prescriptive guidance belong in exactly one prose file
-- exact signatures belong in emitted declaration files, not hand-maintained reference pages
-- README is routing-only
-- changelog entries summarize releases, not API ownership
-- maintainer docs stay separate from consumer docs
-- no parallel explanations of the same API behavior
-
-Practical rule:
-
-> If a statement can be derived from source, declaration output, or examples, it should not be hand-maintained elsewhere.
-
-## Maintenance Workflow
-
-### When adding a new API
+### Adding a public API
 
 Update:
 
 - source TSDoc
-- one or more examples only if the new API introduces a materially different user-facing pattern
-- declaration output
+- declaration output or declaration emit config
+- examples only if the API introduces a new usage pattern
 
-Do not update:
+Usually leave unchanged:
 
-- `docs/context.md` unless the conceptual model changed
-- `README.md` unless the primary entry path changed
-- `CHANGELOG.md` unless the repo already maintains release notes for unreleased or newly shipped consumer-facing changes
+- `README.md`, unless the entry path or quick-start story changed
+- `docs/context.md`, unless the conceptual model or API-selection guidance changed
+- `CHANGELOG.md`, unless the repo maintains manual release notes
 
-### When changing API behavior
+### Changing API behavior
 
 Update:
 
-- TSDoc
+- TSDoc for affected symbols
 - affected examples
-- declaration output
+- declaration output when signatures change
+- `docs/context.md` if lifecycle, invariants, terminology, or recommended patterns changed
+- `CHANGELOG.md` only for consumer-visible release-note work
 
-Also update `docs/context.md` only if:
+### Breaking changes
 
-- abstractions changed
-- invariants changed
-- lifecycle changed
-- recommended API selection changed
-- stable recommended patterns or anti-pattern guidance changed
+Update the same surfaces as behavior changes. Add migration material only when the change is externally disruptive enough that examples and TSDoc are not sufficient.
 
-Update `CHANGELOG.md` only if:
+## Declaration Policy
 
-- the behavior change is consumer-visible
-- the repo expects manual changelog maintenance
-- the entry can stay summary-level instead of becoming reference prose
+Generated declarations are the exact signature lookup surface. They should be emitted from public entrypoints and treated as disposable build output.
 
-### When making breaking changes
+For full documentation-system migrations:
 
-Update:
+- ensure declaration emit exists
+- ensure declarations reflect public entrypoints
+- avoid manual `reference.md` files that duplicate declarations
 
-- TSDoc
-- examples
-- declaration output
-- `docs/context.md` if conceptual behavior changed
+For narrow documentation edits:
 
-Usually update `CHANGELOG.md` when the repo maintains one and the change is intended for a consumer-visible release.
+- do not introduce build-system changes unless required by the user request
+- report missing or stale declarations as a follow-up gap
 
-Add migration material only if the change is significant enough to justify it.
+## Changelog Policy
 
-## Retrieval Model for AI Consumers
+Use `CHANGELOG.md` only when the repo already maintains one, the user explicitly asks, or release-note work is part of the task.
 
-Support this predictable retrieval path:
+Good entries:
 
-1. `README.md` for top-level routing
-2. `docs/context.md` for concepts and task selection
-3. `dist/**/*.d.ts` or `dist/**/*.d.mts` for exact signatures and module layout
-4. source TSDoc for factual behavior lookup
-5. `examples/*.ts` for concrete usage and composition
+- summarize shipped consumer-visible changes
+- call out upgrade impact
+- link to migration docs or releases when useful
 
-This structure is optimized for AI because:
+Bad entries:
 
-- exact exports live in emitted declaration files
-- facts are local to source
-- concepts and stable recommendations are centralized
-- examples are executable
+- canonical API semantics
+- exhaustive per-symbol reference changes
+- examples duplicated from docs
+- planning notes unless the repo intentionally tracks unreleased work there
 
-## Non-Goals
+## Maintainer Material
 
-Do not optimize the system for:
+Keep contributor onboarding, release checklists, internal architecture, test fixture notes, and local development playbooks out of consumer docs.
 
-- a large tutorial tree
-- a course-based learning path
-- contributor onboarding or maintainer playbooks
-- release-process documentation
-- repo-internal architecture notes that do not affect consumers
-- manually maintained guides for every use case
-- duplicate reference content in prose form
-- human-first editorial polish across many pages
+If the user asks for maintainer docs, put them in a separate surface such as:
 
-Exclude these on purpose to keep the documentation set small, stable, and low-maintenance.
+- `CONTRIBUTING.md`
+- `docs/maintainers.md`
+- internal architecture docs
 
-## Optional Extensions
+Do not repurpose README, examples, or `docs/context.md` for maintainer workflow.
 
-### `docs/decisions.md`
+## Retrieval Path
 
-Use only if architectural decisions or policy constraints recur often enough to warrant preservation.
+Optimize for this lookup order:
 
-### `docs/migrations/*.md`
+1. `README.md` for orientation and routing
+2. `docs/context.md` for concepts and API selection
+3. generated declarations for exact signatures and module layout
+4. source TSDoc for factual behavior
+5. examples for executable usage patterns
 
-Use only for major or externally disruptive upgrades.
-
-### `CONTRIBUTING.md` or `docs/maintainers.md`
-
-Use only when the user explicitly asks for maintainer-facing docs.
-
-Keep contributor setup, release procedures, and repo-internal guidance separate from `README.md`, `docs/context.md`, examples, and public TSDoc.
-
-Do not create any of these by default.
-
-## Recommended Default System
-
-For most libraries, the default implementation is:
-
-- `README.md`
-- `docs/context.md`
-- `src/**/*.ts` with strong TSDoc coverage
-- `examples/*.ts`
-- emitted `dist/**/*.d.ts` or `dist/**/*.d.mts`
-
-Add `CHANGELOG.md` only when the repo expects human-maintained release notes.
+This path works because each surface has one job and duplicate prose is aggressively removed.
