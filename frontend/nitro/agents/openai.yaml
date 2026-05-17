@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nitro"
+  short_description: "Build and maintain Nitro servers"
+  default_prompt: "Use $nitro to add API routes, rendering, storage, caching, or deployment behavior to a Nitro server."
