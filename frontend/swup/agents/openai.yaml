@@ -1,0 +1,4 @@
+interface:
+  display_name: "Swup"
+  short_description: "Build swup page transitions"
+  default_prompt: "Use $swup to add smooth page transitions to my server-rendered website."
