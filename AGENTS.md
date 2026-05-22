@@ -20,7 +20,9 @@ rg --files -g 'SKILL.md' | awk -F/ '{ if (NF != 3 || $1 == "packages") { print "
 
 Skill update prompts are maintained in `updates.yaml` at the repository root. The top-level keys are skill categories, and each category contains skill-name keys whose values are multiline update prompts.
 
-When asked to update a specific skill:
+These update prompts are required only for skills that track third-party packages, libraries, tools, services, frameworks, or protocols where the update process depends on external documentation. For general-purpose workflow, writing, coding, repository-maintenance, or meta-skills, update the skill directly from the user's request after reading the skill and its relevant bundled resources; do not require `updates.yaml`.
+
+When asked to update a specific skill that requires an update prompt:
 
 1. Locate the skill at `CATEGORY/SKILL_NAME/SKILL.md`.
 2. Read its update prompt with:

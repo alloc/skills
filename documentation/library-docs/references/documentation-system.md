@@ -6,6 +6,7 @@ Use this reference when designing or migrating a downstream-user documentation s
 
 Create a compact documentation set that:
 
+- helps consumers quickly decide whether the library fits their needs
 - helps consumers discover, evaluate, and use the published API
 - keeps canonical facts near source
 - favors executable examples over prose tutorials
@@ -36,7 +37,7 @@ dist/
 | Public TSDoc | Symbol behavior, parameters, returns, errors, invariants, side effects, deprecations, related APIs | Broad conceptual essays, tutorials, internal notes |
 | `examples/*.ts` | Executable usage, composition, common workflows, preferred defaults | Pseudocode, duplicate mini-guides, exhaustive API coverage |
 | `docs/context.md` | Mental model, lifecycle, terminology, invariants, task-to-API selection, stable patterns and anti-patterns | API reference, contributor setup, release process |
-| `README.md` | Purpose, install, minimal example, documentation map | Exhaustive reference, long guides, internal workflow |
+| `README.md` | Fast human evaluation, fit/non-fit, hard requirements, primary tradeoff, install, one proof-oriented example, documentation map | Exhaustive reference, long guides, internal workflow |
 | `dist/**/*.d.ts` / `*.d.mts` | Exact exported signatures and module shape | Manually authored behavior docs |
 | `CHANGELOG.md` | Shipped consumer-visible change summaries | Canonical API semantics, unreleased planning notes by default |
 
@@ -72,9 +73,19 @@ Use schemas as defaults, not bureaucracy. Preserve a repo's established structur
 ```md
 # <Library Name>
 
-## Purpose
+## What it does
 
-## Installation
+## Is this for you?
+
+Use this if:
+
+- ...
+
+Consider something else if:
+
+- ...
+
+## Requirements
 
 ## Quick Example
 
@@ -83,7 +94,10 @@ Use schemas as defaults, not bureaucracy. Preserve a repo's established structur
 
 README guidance:
 
-- Keep the quick example minimal and current.
+- Help a busy evaluator answer "should I keep reading?" within 30-60 seconds.
+- Put hard requirements and disqualifying constraints before detailed API usage.
+- State the main tradeoff: what the library optimizes for and what it does not try to do.
+- Keep the quick example minimal, current, and proof-oriented; it should demonstrate the core value proposition, not merely syntax.
 - Link to `docs/context.md`, examples, and generated declarations when present.
 - Do not duplicate full option lists or per-symbol reference prose.
 - Do not include contributor setup unless the repo has no other place and the user explicitly asks.
@@ -219,7 +233,7 @@ Do not repurpose README, examples, or `docs/context.md` for maintainer workflow.
 
 Optimize for this lookup order:
 
-1. `README.md` for orientation and routing
+1. `README.md` for fast human evaluation, orientation, and routing
 2. `docs/context.md` for concepts and API selection
 3. generated declarations for exact signatures and module layout
 4. source TSDoc for factual behavior
