@@ -1,3 +1,11 @@
+frontend:
+  react-virtual: |-
+    Run `sitefetch https://tanstack.com/virtual/latest/docs/introduction -m '/virtual/latest/docs/**' -e '**/examples/**'` to fetch the full package docs for source material only; do not include raw sitefetch output in the skill.
+
+    Run `pnpx degit TanStack/virtual/examples/react frontend/react-virtual/examples` to refresh the bundled React examples.
+
+    Rework the fetched documentation into concise, task-oriented reference files and update `frontend/react-virtual/SKILL.md` with the most useful operational knowledge. Keep setup guidance in `references/setup.md`, keep the skill description sharp and concise, and use `SKILL.md` for common use cases and routing to reference files and examples.
+
 protocols:
   agent-client-protocol: |-
     Run `sitefetch https://agentclientprotocol.com/protocol/overview -m '/protocol/**'` to fetch the full protocol docs, then update `protocols/agent-client-protocol/SKILL.md` and its bundled references from the fetched documentation.
