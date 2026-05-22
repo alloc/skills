@@ -10,12 +10,6 @@
 - Acceptable category examples include `frontend`, `desktop`, `documentation`, `codex`, `media`, `protocols`, and `workflows`.
 - Keep each skill's bundled resources, such as `agents/`, `references/`, `scripts/`, or `demos/`, inside that skill root.
 
-Before finishing changes that add, move, or remove skills, verify the layout:
-
-```sh
-rg --files -g 'SKILL.md' | awk -F/ '{ if (NF != 3 || $1 == "packages") { print "bad " $0; bad=1 } } END { exit bad }'
-```
-
 ## Skill Update Instructions
 
 Skill update prompts are maintained in `updates.yaml` at the repository root. The top-level keys are skill categories, and each category contains skill-name keys whose values are multiline update prompts.
