@@ -1,0 +1,5 @@
+protocols:
+  agent-client-protocol: |-
+    Run `sitefetch https://agentclientprotocol.com/protocol/overview -m '/protocol/**'` to fetch the full protocol docs, then update `protocols/agent-client-protocol/SKILL.md` and its bundled references from the fetched documentation.
+
+    Prominently include this instruction: for projects using `@agentclientprotocol/sdk` from npm, check the TypeScript SDK changelog at https://raw.githubusercontent.com/agentclientprotocol/typescript-sdk/refs/heads/main/CHANGELOG.md when updating or validating SDK-specific guidance.
