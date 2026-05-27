@@ -1,6 +1,6 @@
 ---
 name: tsrx-preact
-description: Author or maintain Preact components in `.tsrx` files, including TSRX component declarations, statement-position markup, scoped templates, render props, and template control flow.
+description: Author or maintain Preact components in `.tsrx` files, or set up TSRX in a Preact project when the user says "install TSRX" or "use TSRX". Includes TSRX component declarations, statement-position markup, scoped templates, render props, template control flow, and package setup guidance.
 ---
 
 ## Overview
@@ -24,6 +24,7 @@ Key traits:
 
 ## Start Here
 
+- If the user says "install TSRX", "use TSRX", "set up TSRX", or asks which TSRX packages a Preact project needs, first read `references/setup-tsrx-preact.md`.
 - Inspect the current `.tsrx` authoring patterns first: component shape, control flow, hook placement, and local scopes.
 - Use the in-file sections below as needed:
   - Read `Components and Expression Rules` before editing component declarations, text, props, children, or expression-position TSRX.
