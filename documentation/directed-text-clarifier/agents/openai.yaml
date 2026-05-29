@@ -1,0 +1,4 @@
+interface:
+  display_name: "Directed Text Clarifier"
+  short_description: "Clarify and strengthen selected text"
+  default_prompt: "Use $directed-text-clarifier to clarify and strengthen this selected text."
