@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prompt Requirement Mapper"
+  short_description: "Map prompt details, assumptions, and open questions"
+  default_prompt: "Use $prompt-requirement-mapper to unpack and clarify this prompt."

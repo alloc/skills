@@ -1,4 +1,0 @@
-interface:
-  display_name: "Human-Directed Text Clarifier and Editor"
-  short_description: "Clarify and strengthen selected text"
-  default_prompt: "Use $human-directed-text-clarifier-editor to clarify and strengthen this selected text."
