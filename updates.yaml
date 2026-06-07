@@ -1,4 +1,9 @@
 frontend:
+  pragmatic-drag-and-drop: |-
+    Run `sitefetch https://atlassian.design/components/pragmatic-drag-and-drop/core-package -m '**/core-package/**' -o /tmp/pragmatic-dnd-core.txt` against the core-package docs for source material. If Atlassian's readable extraction is sparse for some pages or the crawl becomes too broad, fetch the same core-package pages explicitly with `--limit 0` and document which source file was used.
+
+    Rework the fetched documentation into concise, task-oriented guidance. Keep `frontend/pragmatic-drag-and-drop/SKILL.md` focused on operational decisions and common implementation/debugging patterns, and keep API details in `frontend/pragmatic-drag-and-drop/references/core-api.md`.
+
   react-virtual: |-
     Run `sitefetch https://tanstack.com/virtual/latest/docs/introduction -m '/virtual/latest/docs/**' -e '**/examples/**'` to fetch the full package docs for source material only; do not include raw sitefetch output in the skill.
 

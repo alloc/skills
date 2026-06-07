@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pragmatic Drag And Drop"
+  short_description: "Guidance for Atlassian Pragmatic drag and drop"
+  default_prompt: "Use $pragmatic-drag-and-drop to implement or debug @atlaskit/pragmatic-drag-and-drop adapters, draggables, drop targets, monitors, events, and cleanup."
