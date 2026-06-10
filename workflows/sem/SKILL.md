@@ -1,25 +1,11 @@
 ---
 name: sem
-description: Use sem for semantic, entity-level code diffs, impact analysis, blame, history tracing, and compact AI context generation; prefer JSON output for automation and agent workflows.
+description: Use sem for semantic, entity-level code diffs, impact analysis, blame, history tracing, and compact AI context generation.
 ---
 
 # sem
 
 Use `sem` when line diffs are too noisy and you need entity-level information about code changes, dependencies, affected tests, blame, or concise context for an AI agent.
-
-## Prefer JSON
-
-Prefer machine-readable output whenever the result will be parsed, piped, attached to a bug report, used in CI, or consumed by another agent:
-
-```bash
-sem diff --format json | jq
-sem impact MyEntity --json | jq
-sem blame path/to/file.ts --json | jq
-sem trace MyEntity --json | jq
-sem context MyEntity --json | jq
-```
-
-Use terminal/plain/markdown output only when a human will read the result directly.
 
 ## Semantic diffs
 
@@ -27,37 +13,37 @@ Use terminal/plain/markdown output only when a human will read the result direct
 
 ```bash
 # Working tree changes.
-sem diff --format json
+sem diff
 
 # Staged changes only.
-sem diff --staged --format json
+sem diff --staged
 
 # One commit.
-sem diff --commit <sha> --format json
+sem diff --commit <sha>
 
 # Commit range.
-sem diff --from <ref> --to <ref> --format json
+sem diff --from <ref> --to <ref>
 
 # Restrict by extension.
-sem diff --file-exts .ts .tsx --format json
+sem diff --file-exts .ts .tsx
 
 # Include inline before/after content when useful.
-sem diff --staged --verbose --format json
+sem diff --staged --verbose
 ```
 
-`sem diff --stdin --format json` can analyze supplied file-change input without requiring a git repository.
+`sem diff --stdin` can analyze supplied file-change input without requiring a git repository.
 
 ## Impact analysis
 
 Use impact analysis before changing or reviewing an entity to find directly related code.
 
 ```bash
-sem impact <entity> --json
-sem impact <entity> --file path/to/file.ts --json
-sem impact <entity> --deps --json
-sem impact <entity> --dependents --json
-sem impact <entity> --tests --json
-sem impact <entity> --file-exts .ts .tsx --json
+sem impact <entity>
+sem impact <entity> --file path/to/file.ts
+sem impact <entity> --deps
+sem impact <entity> --dependents
+sem impact <entity> --tests
+sem impact <entity> --file-exts .ts .tsx
 ```
 
 Use `--file` when multiple entities share the same name.
@@ -67,10 +53,10 @@ Use `--file` when multiple entities share the same name.
 Use blame for file-level authorship/change information, and trace for entity history across recent commits.
 
 ```bash
-sem blame path/to/file.ts --json
-sem trace <entity> --json
-sem trace <entity> --file path/to/file.ts --limit 100 --json
-sem trace <entity> --file path/to/file.ts --verbose --json
+sem blame path/to/file.ts
+sem trace <entity>
+sem trace <entity> --file path/to/file.ts --limit 100
+sem trace <entity> --file path/to/file.ts --verbose
 ```
 
 ## AI context
@@ -78,9 +64,9 @@ sem trace <entity> --file path/to/file.ts --verbose --json
 Use context generation to gather a bounded, entity-centered context bundle before asking an AI agent to implement or review a change.
 
 ```bash
-sem context <entity> --json
-sem context <entity> --file path/to/file.ts --budget 12000 --json
-sem context <entity> --file-exts .ts .tsx --json
+sem context <entity>
+sem context <entity> --file path/to/file.ts --budget 12000
+sem context <entity> --file-exts .ts .tsx
 ```
 
 ## Supported content
