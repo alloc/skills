@@ -21,4 +21,4 @@ workflows:
   sem: |-
     Run `sitefetch https://ataraxy-labs.github.io/sem/details.html --limit 0` to fetch the sem commands and details page for source material.
 
-    Update `workflows/sem/SKILL.md` with concise, task-oriented guidance for semantic diffs, impact analysis, blame, history tracing, and AI context generation. Do not include setup/unsetup commands, benchmark information, or JSON-output guidance such as `--json` or `--format json`.
+    Update `workflows/sem/SKILL.md` with concise, task-oriented guidance for all documented user-facing commands except setup/unsetup, including semantic diffs, impact analysis, blame, entity history logs, entity listing, and AI context generation. Do not include setup/unsetup commands, benchmark information, or machine-readable output guidance.

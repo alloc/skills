@@ -1,11 +1,11 @@
 ---
 name: sem
-description: Use sem for semantic, entity-level code diffs, impact analysis, blame, history tracing, and compact AI context generation.
+description: Use sem for semantic, entity-level code diffs, impact analysis, blame, entity listing, history logs, and compact AI context generation.
 ---
 
 # sem
 
-Use `sem` when line diffs are too noisy and you need entity-level information about code changes, dependencies, affected tests, blame, or concise context for an AI agent.
+Use `sem` when line diffs are too noisy and you need entity-level information about code changes, dependencies, affected tests, blame, history, or concise context for an AI agent.
 
 ## Semantic diffs
 
@@ -48,15 +48,25 @@ sem impact <entity> --file-exts .ts .tsx
 
 Use `--file` when multiple entities share the same name.
 
-## Blame and trace
+## Blame and history
 
-Use blame for file-level authorship/change information, and trace for entity history across recent commits.
+Use blame for file-level authorship/change information, and log for entity history across recent commits.
 
 ```bash
 sem blame path/to/file.ts
-sem trace <entity>
-sem trace <entity> --file path/to/file.ts --limit 100
-sem trace <entity> --file path/to/file.ts --verbose
+sem log <entity>
+sem log <entity> --file path/to/file.ts --limit 100
+sem log <entity> --file path/to/file.ts --verbose
+```
+
+## Entity listing
+
+Use `sem entities` to list entities under a file or directory path.
+
+```bash
+sem entities
+sem entities path/to/file.ts
+sem entities path/to/directory
 ```
 
 ## AI context
