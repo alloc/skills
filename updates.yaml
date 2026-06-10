@@ -16,3 +16,9 @@ protocols:
     Run `sitefetch https://agentclientprotocol.com/protocol/overview -m '/protocol/**'` to fetch the full protocol docs, then update `protocols/agent-client-protocol/SKILL.md` and its bundled references from the fetched documentation.
 
     Prominently include this instruction: for projects using `@agentclientprotocol/sdk` from npm, check the TypeScript SDK changelog at https://raw.githubusercontent.com/agentclientprotocol/typescript-sdk/refs/heads/main/CHANGELOG.md when updating or validating SDK-specific guidance.
+
+workflows:
+  sem: |-
+    Run `sitefetch https://ataraxy-labs.github.io/sem/details.html --limit 0` to fetch the sem commands and details page for source material.
+
+    Update `workflows/sem/SKILL.md` with concise, task-oriented guidance for semantic diffs, impact analysis, blame, history tracing, and AI context generation. Do not include setup/unsetup commands, benchmark information, or JSON-output guidance such as `--json` or `--format json`.
