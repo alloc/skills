@@ -10,6 +10,22 @@ from pathlib import Path
 import yaml
 
 MAX_SKILL_NAME_LENGTH = 64
+REDUNDANT_OPENING_PATTERNS = [
+    re.compile(r"^use\s+this\s+skill\b", re.IGNORECASE),
+    re.compile(r"^use\s+.+\s+when\b", re.IGNORECASE),
+    re.compile(r"^this\s+skill\s+(?:is\s+)?(?:for|provides|helps)\b", re.IGNORECASE),
+]
+REDUNDANT_WHEN_TO_USE_HEADING = re.compile(r"^#{1,6}\s+when\s+to\s+use(?:\s+this\s+skill)?\s*$", re.IGNORECASE)
+
+
+def first_body_instruction(content, frontmatter_end):
+    """Return the first non-empty, non-heading line after frontmatter."""
+    body = content[frontmatter_end:].lstrip("\n")
+    for line in body.splitlines():
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#"):
+            return stripped
+    return ""
 
 
 def validate_skill(skill_path):
@@ -86,6 +102,23 @@ def validate_skill(skill_path):
             return (
                 False,
                 f"Description is too long ({len(description)} characters). Maximum is 1024 characters.",
+            )
+
+    frontmatter_end = match.end()
+    opening = first_body_instruction(content, frontmatter_end)
+    if opening and any(pattern.search(opening) for pattern in REDUNDANT_OPENING_PATTERNS):
+        return (
+            False,
+            "SKILL.md body starts with redundant trigger guidance. "
+            "Move when-to-use advice into the description and start the body with role, mental model, defaults, workflow, or resource guidance.",
+        )
+
+    for line in content[frontmatter_end:].splitlines():
+        if REDUNDANT_WHEN_TO_USE_HEADING.match(line.strip()):
+            return (
+                False,
+                "SKILL.md body contains a redundant 'When to Use' section. "
+                "Put trigger guidance in the description instead.",
             )
 
     return True, "Skill is valid!"

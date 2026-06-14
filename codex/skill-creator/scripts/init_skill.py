@@ -32,7 +32,7 @@ description: [TODO: Complete and informative explanation of what the skill does 
 
 ## Overview
 
-[TODO: 1-2 sentences explaining what this skill enables]
+[TODO: 1-2 sentences with the skill's core mental model or operating stance. Do not restate when to use the skill; trigger guidance belongs only in the description.]
 
 ## Structuring This Skill
 

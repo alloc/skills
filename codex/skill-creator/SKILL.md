@@ -342,7 +342,12 @@ Do not include any other fields in YAML frontmatter.
 
 ##### Body
 
-Write instructions for using the skill and its bundled resources. Do not start by restating when to use the skill; that guidance belongs in the description. Begin with role, mental model, defaults, workflow, or resource guidance that helps after the skill has already triggered.
+Write instructions for using the skill and its bundled resources.
+
+- Do not start by restating when to use the skill; that guidance belongs in the description.
+- Do not add a `When to Use This Skill` section to the body.
+- Begin with role, mental model, defaults, workflow, or resource guidance that helps after the skill has already triggered.
+- `scripts/quick_validate.py` rejects common redundant openings so new skills do not drift back to trigger restatements.
 
 ### Step 5: Validate the Skill
 
