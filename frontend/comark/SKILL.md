@@ -5,7 +5,7 @@ description: Work on Comark Markdown parsing, component syntax, AST transforms, 
 
 # comark
 
-Use Comark when the task touches its parser, AST, component syntax, plugin system, or framework renderers. Keep parsing concerns and rendering concerns separate, and only load the reference file that matches the layer you are editing.
+Keep parsing concerns and rendering concerns separate, and only load the reference file that matches the layer you are editing.
 
 ## Start Here
 

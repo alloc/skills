@@ -5,7 +5,7 @@ description: Work on Panda CSS styling, setup, and extraction, including `css`, 
 
 # panda-css
 
-Use Panda as a build-time styling system. Preserve static analyzability, treat `styled-system` output as generated unless the repo clearly versions it, and fix setup or extraction issues before rewriting component styles.
+Panda is a build-time styling system. Preserve static analyzability, treat `styled-system` output as generated unless the repo clearly versions it, and fix setup or extraction issues before rewriting component styles.
 
 ## Start Here
 

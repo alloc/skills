@@ -5,7 +5,7 @@ description: Compose compact product UI in apps already using Panda CSS and Ark 
 
 # pandark-ui
 
-Use this skill for product UI work in apps that use Panda CSS and Ark UI. Prefer under-designed over over-designed. Produce correct, accessible, compact UI that fits the existing system and is easy for humans to reshape.
+Prefer under-designed over over-designed. Produce correct, accessible, compact UI that fits the existing system and is easy for humans to reshape.
 
 Your job is not to make the UI look finished. Your job is to make it structurally correct, visually restrained, and easy to edit later. When unsure, delete styling instead of adding more.
 

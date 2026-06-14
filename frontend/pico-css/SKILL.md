@@ -5,8 +5,6 @@ description: Build, theme, or debug semantic HTML UIs with Pico CSS, including `
 
 # Pico CSS
 
-Use this skill to work with Pico without re-deriving which build variant, selector contract, or token layer fits the request.
-
 ## Default Stance
 
 - Prefer semantic HTML first. Reach for Pico's small class surface only when the docs require it.

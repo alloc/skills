@@ -5,8 +5,6 @@ description: Work on React Virtuoso virtualization for lists, groups, grids, tab
 
 # react-virtuoso
 
-Use this skill when working in codebases that render large collections with the open-source `react-virtuoso` package.
-
 ## Start Here
 
 - Inspect the current usage before editing. Determine which component is in play, how scrolling is owned, and whether the code uses `data`, `totalCount`, or custom chat timeline state.

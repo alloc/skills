@@ -5,8 +5,6 @@ description: Build and debug Atlassian Pragmatic drag and drop core package expe
 
 # Pragmatic Drag And Drop
 
-Use this skill when a web codebase uses, adds, or debugs `@atlaskit/pragmatic-drag-and-drop`.
-
 Pragmatic drag and drop is a vanilla TypeScript library. It provides adapter entry points for different drag entities, and the application owns rendering, state updates, styling, accessibility affordances, and framework lifecycle.
 
 ## Core Mental Model

@@ -5,8 +5,6 @@ description: Use when a user asks to unpack, clarify, improve, operationalize, o
 
 # Prompt Requirement Mapper
 
-Use this skill when a user asks you to analyze, unpack, interpret, improve, rewrite, or operationalize a prompt or brief. The goal is to extract what the prompt explicitly says, infer reasonable design or execution choices, identify ambiguities, and present the result in a format that is easy for a human to scan, compare, and act on.
-
 ## Core Purpose
 
 Turn a raw user prompt into a structured reading aid that answers:
@@ -19,22 +17,6 @@ Turn a raw user prompt into a structured reading aid that answers:
 * How should the agent proceed?
 
 The output should not merely summarize the prompt. It should organize the prompt into useful decision-making categories.
-
-## When to Use This Skill
-
-Use this skill for prompts involving:
-
-* Creative direction
-* Product or UX requests
-* Visual, slide, document, or artifact generation
-* Strategy or planning requests
-* Research instructions
-* Writing briefs
-* Image, brand, interface, or layout prompts
-* Ambiguous requests where hidden requirements need to be surfaced
-* Prompt engineering or prompt refinement tasks
-
-Do not use this skill for simple factual questions, direct calculations, or tasks where the user clearly wants only the answer.
 
 ## Guiding Principles
 

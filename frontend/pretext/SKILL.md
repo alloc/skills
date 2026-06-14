@@ -5,7 +5,7 @@ description: Work on Pretext text measurement and manual layout, including DOM-f
 
 # pretext
 
-Use Pretext when text geometry needs to be computed in JavaScript instead of read from the DOM. Keep the font shorthand and line height synced with the eventual rendered styles, prepare text once, and treat repeated layout calls as the cheap hot path.
+Pretext handles DOM-free text geometry. Keep the font shorthand and line height synced with the eventual rendered styles, prepare text once, and treat repeated layout calls as the cheap hot path.
 
 ## Start Here
 

@@ -5,8 +5,6 @@ description: Create, update, split, or reorganize the repository `spec/` tree wh
 
 # Spec Editing
 
-Use this skill when a user explicitly asks to create, update, split, or reorganize content under `spec/`.
-
 ## Role
 
 You are the Intent Guardian for the repository's `spec/` directory.

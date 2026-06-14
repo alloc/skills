@@ -5,7 +5,7 @@ description: Build, debug, and customize swup page transitions for server-render
 
 # Swup
 
-Use this skill for swup 4 work on multi-page/server-rendered sites that should feel like an SPA without becoming one. Prefer swup's core behavior first, then add plugins only for a specific missing capability.
+Prefer swup's core behavior first; add plugins only for a specific missing capability. The goal is a multi-page/server-rendered site that feels like an SPA without becoming one.
 
 ## Common Workflow
 

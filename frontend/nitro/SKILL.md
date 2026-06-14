@@ -5,7 +5,7 @@ description: Build, modify, and review Nitro v3 servers and Vite-integrated Nitr
 
 # nitro
 
-Use this skill for Nitro v3 server work. Prefer Nitro's web-standard APIs and local project conventions before adding framework-specific abstractions.
+Prefer Nitro's web-standard APIs and local project conventions before adding framework-specific abstractions.
 
 ## Start Here
 

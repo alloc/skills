@@ -5,8 +5,6 @@ description: Create terminal screencast SVGs from command-line demos using ascii
 
 # Terminal Screencast SVG
 
-Use this skill to produce lightweight, embeddable SVG terminal demos instead of GIFs or video captures.
-
 ## Default Stance
 
 - Prefer the 60devs pattern: record with `asciinema`, render with `svg-term-cli`, then embed the resulting SVG.

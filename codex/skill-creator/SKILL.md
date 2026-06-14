@@ -7,8 +7,6 @@ metadata:
 
 # Skill Creator
 
-This skill provides guidance for creating effective skills.
-
 ## About Skills
 
 Skills are modular, self-contained folders that extend Codex's capabilities by providing
@@ -344,7 +342,7 @@ Do not include any other fields in YAML frontmatter.
 
 ##### Body
 
-Write instructions for using the skill and its bundled resources.
+Write instructions for using the skill and its bundled resources. Do not start by restating when to use the skill; that guidance belongs in the description. Begin with role, mental model, defaults, workflow, or resource guidance that helps after the skill has already triggered.
 
 ### Step 5: Validate the Skill
 

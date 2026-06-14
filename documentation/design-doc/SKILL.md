@@ -5,8 +5,6 @@ description: Draft or refine technical design docs for libraries, SDKs, and subs
 
 # design-doc
 
-Use this skill to write or revise technical design documents for real libraries and similar programmable systems.
-
 ## Default Stance
 
 - Prefer a simpler design with precise semantics over an ambitious design with ambiguous behavior.

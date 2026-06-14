@@ -5,8 +5,6 @@ description: Create, audit, rewrite, or repair downstream-user documentation for
 
 # Library Docs
 
-Use this skill when a user asks to document a TypeScript package, rewrite a library README, document public exports, add or fix examples, sync docs after an API change, reduce docs drift, or design a compact downstream-user documentation system.
-
 ## Mission
 
 Build documentation that helps downstream users quickly decide whether the library fits their needs, then correctly use the published API while keeping maintenance cost low.

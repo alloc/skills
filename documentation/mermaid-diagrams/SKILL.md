@@ -5,8 +5,6 @@ description: Read this guide when writing or editing documentation and deciding 
 
 # Mermaid Diagrams in Documentation
 
-Use this skill when writing or editing documentation and deciding whether to add, omit, or revise a Mermaid diagram.
-
 ## Core Principle
 
 Add a Mermaid diagram only when the **visual structure communicates something that prose alone would make the reader mentally reconstruct**.

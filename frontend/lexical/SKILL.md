@@ -5,8 +5,6 @@ description: Work on Lexical editors in JavaScript or React, including `lexical`
 
 # Lexical
 
-Use this skill to make Lexical changes without re-deriving its editor-state model, plugin lifecycle, or node rules.
-
 ## Default Stance
 
 - Treat `EditorState` as the source of truth, not the DOM.

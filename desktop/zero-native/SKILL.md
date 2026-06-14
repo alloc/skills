@@ -5,8 +5,6 @@ description: Build, debug, test, and package zero-native Zig desktop apps using 
 
 # zero-native
 
-Use this skill to make zero-native changes without re-deriving its common Zig APIs, manifest policy, frontend source switching, bridge limits, or runtime wiring.
-
 ## Default Stance
 
 - Keep the native layer small and explicit: app state, runtime wiring, bridge handlers, platform services, and policies belong in Zig.

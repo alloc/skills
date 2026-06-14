@@ -5,8 +5,6 @@ description: Build and debug React virtualization with @tanstack/react-virtual l
 
 # react-virtual
 
-Use this skill when a React codebase uses, adds, or debugs `@tanstack/react-virtual` / TanStack Virtual.
-
 TanStack Virtual is headless: it never renders markup or styles for you. The virtualizer supplies item indexes, sizes, offsets, scroll state, and imperative methods; the app owns the scroll container, spacer element, row markup, transforms, and CSS.
 
 ## Core mental model

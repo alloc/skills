@@ -5,7 +5,7 @@ description: Use sem for semantic, entity-level code diffs, impact analysis, bla
 
 # sem
 
-Use `sem` when line diffs are too noisy and you need entity-level information about code changes, dependencies, affected tests, blame, history, or concise context for an AI agent.
+`sem` reports changes, dependencies, affected tests, blame, history, and AI-ready context at semantic entity granularity.
 
 ## Semantic diffs
 

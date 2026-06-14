@@ -5,7 +5,7 @@ description: Work on React UI using Ark UI, including component choice, part ana
 
 # ark-ui
 
-Use this skill for React Ark UI work only. Let Ark own interaction logic, ARIA wiring, focus rules, and structural data attributes, and add app-specific styling or state only where the surrounding code requires it.
+Let Ark own interaction logic, ARIA wiring, focus rules, and structural data attributes; add app-specific styling or state only where the surrounding code requires it.
 
 ## Start Here
 
