@@ -11,6 +11,14 @@ frontend:
 
     Rework the fetched documentation into concise, task-oriented reference files and update `frontend/react-virtual/SKILL.md` with the most useful operational knowledge. Keep setup guidance in `references/setup.md`, keep the skill description sharp and concise, and use `SKILL.md` for common use cases and routing to reference files and examples.
 
+typescript:
+  cmd-ts: |-
+    Run `sitefetch https://cmd-ts.vercel.app/ -o /tmp/cmd-ts-docs.json` to fetch the full cmd-ts docs for source material only; do not include raw sitefetch output in the skill.
+
+    Cross-check API names and options against the published `cmd-ts` TypeScript declarations with `npm view cmd-ts version` and `npm pack cmd-ts`, because the docs pages may omit some heading text or newer exported helpers.
+
+    Rework the fetched documentation into concise, task-oriented guidance for building typed TypeScript CLIs with cmd-ts. Keep `typescript/cmd-ts/SKILL.md` focused on workflow, design decisions, and common implementation patterns, and keep parser/type/runtime API details in `typescript/cmd-ts/references/api.md`.
+
 protocols:
   agent-client-protocol: |-
     Run `sitefetch https://agentclientprotocol.com/protocol/overview -m '/protocol/**'` to fetch the full protocol docs, then update `protocols/agent-client-protocol/SKILL.md` and its bundled references from the fetched documentation.
