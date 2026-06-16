@@ -35,6 +35,9 @@ They are not proposals, implementation plans, status reports, issue trackers, AP
 - Choose headings that fit the content; do not impose default sections.
 - Add rationale or history only when it prevents a likely future mistake.
 - Keep the smallest wording that preserves the intended product behavior.
+- Speak plainly when possible.
+- Keep each bullet focused on one capability, constraint, or boundary.
+- Use nested lists only when they remove repeated setup text without hiding separate requirements.
 - Trust local context. Use filenames, parent specs, and nearby headings to avoid repeating fully qualified project terms when a shorter term is clear.
 
 ## Keep Out
