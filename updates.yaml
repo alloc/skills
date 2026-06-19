@@ -1,4 +1,9 @@
 frontend:
+  lingui: |-
+    Run `sitefetch https://lingui.dev/tutorials/javascript -m '/ref/macro' -m '/ref/vite-plugin' -m '/ref/conf' -m '/guides/dynamic-loading-catalogs'` to fetch the source docs for the vanilla JavaScript tutorial, core macro reference, Vite plugin reference, Lingui configuration reference, and dynamic catalog loading guide.
+
+    Rework the fetched material into concise, task-oriented guidance for using Lingui with `@lingui/core` and the Core Macro API. Do not include renderer-specific APIs or guidance for JSX frameworks such as React or Solid unless the user specifically asks for them.
+
   pragmatic-drag-and-drop: |-
     Run `sitefetch https://atlassian.design/components/pragmatic-drag-and-drop/core-package -m '**/core-package/**' -o /tmp/pragmatic-dnd-core.txt` against the core-package docs for source material. If Atlassian's readable extraction is sparse for some pages or the crawl becomes too broad, fetch the same core-package pages explicitly with `--limit 0` and document which source file was used.
 
