@@ -1,0 +1,4 @@
+interface:
+  display_name: "Task Plan"
+  short_description: "Plan commits with ignored TASK.md"
+  default_prompt: "Use $task-plan to draft a behavior specification, commit plan, and verification checklist in TASK.md before making a non-trivial code change."
