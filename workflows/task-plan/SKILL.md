@@ -49,12 +49,32 @@ Surface ambiguity in conversation:
 
 - Ask only 1–3 high-risk questions at a time.
 - Give each high-risk question 2–3 plausible answers, ordered by likely correctness.
+- Prefix each suggested answer with a distinct capital letter within the same response, such as `A.`, `B.`, or `C.`. Reusing letters in a later pass of questions is fine.
 - Disclose low-risk assumptions the agent intends to apply.
 - Ask for explicit permission to proceed.
 
 Only after high-risk ambiguity is resolved and the supervisor approves proceeding should `TASK.md` become the locked task contract.
 
-Do not record ambiguity, assumptions, or open questions in `TASK.md`.
+Use the approval handoff to make the supervisor’s required attention explicit.
+
+## Approval Handoff
+
+After creating or updating `TASK.md`, respond in conversation with an approval handoff.
+
+The handoff is not a replacement for `TASK.md`. Its purpose is to route the supervisor’s attention.
+
+State:
+
+- Whether high-risk ambiguity remains
+- Any low-risk assumptions the agent intends to apply
+- Whether the supervisor should answer questions, review the contract, or can approve from the summary
+- A brief contract summary only when it helps the approval decision
+
+If high-risk ambiguity remains, do not ask for implementation approval. Ask 1–3 questions. Each question must include 2–3 plausible answers ordered by likely correctness. Prefix each suggested answer with a distinct capital letter within the same response.
+
+If no high-risk ambiguity remains but the task is broad, architectural, risky, or expensive to unwind, recommend reviewing `TASK.md` before approval and identify the parts most worth checking.
+
+If no high-risk ambiguity remains and the task is narrow, summarize the contract briefly and ask for approval to proceed.
 
 ## Commit Plan Standard
 
