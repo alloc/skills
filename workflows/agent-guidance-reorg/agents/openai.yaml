@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Guidance Reorg"
+  short_description: "Restructure repo rules and task skills"
+  default_prompt: "Use $agent-guidance-reorg to reorganize this repository's agent instructions into AGENTS.md, .agents/rules, and .agents/skills."
