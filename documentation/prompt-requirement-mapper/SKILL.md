@@ -1,6 +1,7 @@
 ---
 name: prompt-requirement-mapper
 description: Use when a user asks to unpack, clarify, improve, operationalize, or rewrite a prompt or brief by extracting explicit details, implied requirements, design or execution choices, ambiguities, safe defaults, and next steps; especially for creative, product, UX, writing, research, planning, or artifact-generation prompts.
+disable-model-invocation: true
 ---
 
 # Prompt Requirement Mapper

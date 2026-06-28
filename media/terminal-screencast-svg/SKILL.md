@@ -1,6 +1,7 @@
 ---
 name: terminal-screencast-svg
 description: Create terminal screencast SVGs from command-line demos using asciinema and svg-term-cli, including recording, rendering, timing, framing, and README/docs embeds.
+disable-model-invocation: true
 ---
 
 # Terminal Screencast SVG

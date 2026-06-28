@@ -1,6 +1,7 @@
 ---
 name: design-doc
 description: Draft or refine technical design docs for libraries, SDKs, and subsystems, covering requirements, public APIs, runtime semantics, tradeoffs, failure modes, and blockers.
+disable-model-invocation: true
 ---
 
 # design-doc

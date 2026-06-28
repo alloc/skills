@@ -1,6 +1,7 @@
 ---
 name: skill-creator
 description: Create or update Codex skills, including SKILL.md structure, metadata, progressive disclosure, bundled resources, and agent-facing instructions.
+disable-model-invocation: true
 metadata:
   short-description: Create or update a skill
 ---

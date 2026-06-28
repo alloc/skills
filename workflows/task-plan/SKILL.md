@@ -1,6 +1,7 @@
 ---
 name: task-plan
 description: Use TASK.md as an ignored short-term planning file for coding work. Trigger before non-trivial implementation when an agent needs to clarify intended behavior, surface ambiguity, plan reviewable commits, or create a human-readable task contract.
+disable-model-invocation: true
 ---
 
 # TASK.md Planning

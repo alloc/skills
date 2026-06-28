@@ -1,6 +1,7 @@
 ---
 name: agent-guidance-reorg
 description: Reorganize a repository's agent guidance so AGENTS.md contains only critical rules and routing, `.agents/rules/` contains scoped rulesets, and `.agents/skills/` contains task-oriented workflow skills.
+disable-model-invocation: true
 ---
 
 # Agent Guidance Reorganization

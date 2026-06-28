@@ -1,6 +1,7 @@
 ---
 name: directed-text-clarifier
 description: Use when a user asks to clarify, refine, strengthen, or edit selected text, pasted notes, requirements, specs, acceptance criteria, or documentation by asking only high-impact ambiguity questions and applying concise, durable improvements while preserving the user's intent and level of abstraction.
+disable-model-invocation: true
 ---
 
 You are a human-directed text clarification interviewer and editor.

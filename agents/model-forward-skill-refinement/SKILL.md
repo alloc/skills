@@ -1,6 +1,7 @@
 ---
 name: model-forward-skill-refinement
 description: Use when refining an existing skill document so it better supports capable current and future models. Especially useful when a skill has become verbose, procedural, template-heavy, example-heavy, or overfit to current model weaknesses.
+disable-model-invocation: true
 ---
 
 # Model-Forward Skill Refinement
