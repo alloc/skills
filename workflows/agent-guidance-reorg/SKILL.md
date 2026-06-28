@@ -1,6 +1,6 @@
 ---
 name: agent-guidance-reorg
-description: Reorganize a repository's agent guidance so AGENTS.md contains only critical rules and routing, `.agents/rules/` contains scoped rulesets, and `.agents/skills/` contains task-oriented workflow skills.
+description: Reorganize a repository's agent guidance so AGENTS.md contains only critical rules and ruleset routing, `.agents/rules/` contains scoped rulesets, and `.agents/skills/` contains task-oriented workflow skills that do not need root signpost entries.
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,7 @@ Reorganize repository agent guidance into a compact always-loaded signpost and s
 ## Core Contract
 
 - Preserve the behavior of existing guidance unless the user explicitly requests a policy change. Do not silently weaken, broaden, or drop obligations.
-- Keep root `AGENTS.md` short enough to read every turn: only critical global rules and routing to narrower guidance.
+- Keep root `AGENTS.md` short enough to read every turn: only critical global rules and routing to rulesets.
 - Put scoped durable obligations in `.agents/rules/`.
 - Put procedural task workflows in `.agents/skills/<skill-name>/SKILL.md`.
 - Classify content by semantics, not filenames. Rules, prompts, docs, and skill files may contain mixed material.
@@ -36,12 +36,13 @@ Use the narrowest durable home:
 
 ## Root Routing
 
-Root `AGENTS.md` must let an agent decide what to read before acting without already knowing the codebase.
+Root `AGENTS.md` must let an agent decide which rulesets to read before acting without already knowing the codebase.
 
 - Make critical root rules few, concrete, and genuinely global.
-- Describe ruleset and skill triggers in terms of recognizable operations, file areas, behavior types, or review moments.
+- Describe ruleset triggers in terms of recognizable operations, file areas, behavior types, or review moments.
 - Use strong trigger language when missing the route would make required guidance optional.
-- Ensure every referenced ruleset or skill exists.
+- Ensure every referenced ruleset exists.
+- Do not list `.agents/skills/` in root `AGENTS.md` unless an existing global rule must point to a specific workflow; skills can be discovered from task context or routed from rulesets.
 - Keep repo-specific constraints repo-specific; do not import another repository's policies just because its structure is useful.
 
 ## Rulesets
@@ -50,7 +51,7 @@ Rulesets are scoped obligations, not background essays.
 
 - Start each `.agents/rules/<topic>.md` with a heading and a concise "read this when..." trigger.
 - State direct rules and local consequences or exceptions.
-- Route to narrower rulesets or skills when broad areas need internal dispatch.
+- Route to narrower rulesets or workflow skills when scoped guidance needs internal dispatch.
 - Avoid restating critical root rules unless the scoped consequence matters.
 
 ## Skills
@@ -70,10 +71,11 @@ Skill bodies should define the workflow contract: required reading, ordering con
 
 1. Map existing guidance into root rules, rulesets, skills, project docs, or removal.
 2. Draft the new `AGENTS.md` routing first.
-3. Create or update every routed ruleset and skill.
-4. Remove obsolete duplicated guidance only after preservation is clear.
-5. Re-read the resulting guidance paths for common tasks such as code edits, tests, docs, git finish, and repo-specific subsystem work.
-6. Search for stale entry points and contradictions before finishing.
+3. Create or update every root-routed ruleset.
+4. Create or update skills only for actual workflows, and route to them from rulesets when useful.
+5. Remove obsolete duplicated guidance only after preservation is clear.
+6. Re-read the resulting guidance paths for common tasks such as code edits, tests, docs, git finish, workflow tasks, and repo-specific subsystem work.
+7. Search for stale entry points and contradictions before finishing.
 
 Useful checks:
 
@@ -85,7 +87,7 @@ rg -n "MUST read|Do not|AGENTS|\\.agents|CLAUDE|GEMINI|copilot|cursor" .
 ## Quality Gates
 
 - `AGENTS.md` is a signpost, not a handbook.
-- Every route resolves to an existing ruleset or skill.
+- Every root route resolves to an existing ruleset.
 - Every ruleset has a clear trigger and scope.
 - Every skill is task-oriented and actionable.
 - Critical root rules are high-signal and globally applicable.
