@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model-Forward Skill Refinement"
+  short_description: "Refine skills into durable guidance"
+  default_prompt: "Use $model-forward-skill-refinement to simplify this skill while preserving the behavior that matters."
