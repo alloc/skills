@@ -6,70 +6,56 @@ disable-model-invocation: true
 
 # Agent Guidance Reorganization
 
-Use this skill when asked to reorganize a repository's agent instructions, rules, prompts, or skills into a compact `AGENTS.md` signpost with detailed `.agents/rules/` and `.agents/skills/` files.
+Reorganize repository agent guidance into a compact always-loaded signpost and scoped on-demand guidance.
 
-The target pattern:
+## Core Contract
 
-- `AGENTS.md`: critical always-on rules plus a routing index for more specific guidance.
-- `.agents/rules/`: concise rulesets loaded by trigger, such as editing production code, testing, documentation, git, UI, data, or subsystem-specific work.
-- `.agents/skills/`: task-oriented procedures with frontmatter when the workflow has steps, required reading, tools, inputs, outputs, or completion criteria.
+- Preserve the behavior of existing guidance unless the user explicitly requests a policy change. Do not silently weaken, broaden, or drop obligations.
+- Keep root `AGENTS.md` short enough to read every turn: only critical global rules and routing to narrower guidance.
+- Put scoped durable obligations in `.agents/rules/`.
+- Put procedural task workflows in `.agents/skills/<skill-name>/SKILL.md`.
+- Classify content by semantics, not filenames. Rules, prompts, docs, and skill files may contain mixed material.
+- Route instead of duplicating full rules across homes.
+- Keep the migration documentation-only and reviewable; prefer one single-purpose commit unless the work naturally splits into independent phases.
 
-## Before Editing
+## Source Sweep
 
-1. Read the target repo's current agent guidance, including `AGENTS.md`, `.agents/**`, `.cursor/**`, `.github/copilot-instructions.md`, `CLAUDE.md`, `GEMINI.md`, `CONTRIBUTING.md`, and any project-specific docs the existing guidance references.
-2. Inventory repeated rules, stale instructions, subsystem-specific guidance, task workflows, and tool-specific prompts.
-3. Identify guidance scope from content, not filenames. A file named "rules" may contain a workflow; a file named "prompt" may contain durable rules.
-4. Preserve semantics unless the user explicitly asks to rewrite policy. Reorganizing should not silently weaken obligations.
-5. Keep changes reviewable. Prefer a single documentation-only commit unless the repo already has unrelated changes or the migration naturally splits into independent phases.
+Before editing, read the repository's existing guidance entry points and the project docs they reference. Inspect `AGENTS.md`, `.agents/**`, `.cursor/**`, `.github/copilot-instructions.md`, `CLAUDE.md`, `GEMINI.md`, `CONTRIBUTING.md`, and any equivalent local instruction files.
 
-## Classify Guidance
+Inventory repeated rules, stale or conflicting instructions, subsystem-specific constraints, procedural workflows, tool-specific prompts, and human-only background.
 
-Put each instruction in the narrowest durable home:
+## Classification
 
-- **Critical root rule**: applies to every agent task, protects user work, prevents destructive operations, defines required verification, or establishes an invariant whose violation is high risk.
-- **Ruleset**: applies when touching a specific domain, subsystem, file area, behavior type, lifecycle step, or repo operation.
-- **Skill**: describes a task workflow with ordered steps, required reading, tools, handoffs, generated artifacts, review criteria, or completion conditions.
-- **Local project doc**: explains human process, background, or architecture but does not need to be agent-loaded automatically.
+Use the narrowest durable home:
 
-Do not duplicate full rules across homes. Root `AGENTS.md` should route to detailed files instead of restating them.
+- `AGENTS.md`: global invariants for all tasks, destructive-action safeguards, user-work protection, required verification/reporting behavior, and routing.
+- `.agents/rules/<topic>.md`: obligations triggered by a domain, subsystem, file area, behavior type, lifecycle step, or repository operation.
+- `.agents/skills/<skill-name>/SKILL.md`: workflows with ordered steps, required reading or tools, decision gates, handoffs, generated artifacts, verification, cleanup, or completion criteria.
+- Project docs: human process, architecture background, rationale, or explanatory material that agents need not load automatically.
+- Remove or archive: obsolete or duplicated guidance after confirming it was preserved elsewhere or intentionally dropped.
 
-## `AGENTS.md` Shape
+## Root Routing
 
-Keep root `AGENTS.md` short enough for agents to read every turn. Use stable sections:
+Root `AGENTS.md` must let an agent decide what to read before acting without already knowing the codebase.
 
-```md
-<critical-rules>
-- Do not overwrite or revert unrelated user changes.
-- Do not use destructive git commands unless explicitly requested.
-- Run or attempt required verification before finishing, and report limitations.
-</critical-rules>
+- Make critical root rules few, concrete, and genuinely global.
+- Describe ruleset and skill triggers in terms of recognizable operations, file areas, behavior types, or review moments.
+- Use strong trigger language when missing the route would make required guidance optional.
+- Ensure every referenced ruleset or skill exists.
+- Keep repo-specific constraints repo-specific; do not import another repository's policies just because its structure is useful.
 
-<rulesets>
-Rules live in `.agents/rules/`. Read every matching ruleset before acting:
+## Rulesets
 
-- `implementation.md`: MUST read when editing production code, refactoring, changing architecture, adding abstractions or exports, or changing dependencies.
-- `testing.md`: MUST read when adding, changing, reviewing, or deciding whether to add tests, and when verifying behavior changes.
-- `git.md`: MUST read before staging, committing, reviewing diffs, splitting work, or finishing any file-changing task.
-</rulesets>
-```
+Rulesets are scoped obligations, not background essays.
 
-Adapt the exact rules to the target repo. Keep trigger language concrete: name file areas, operations, behavior types, or review moments that an agent can recognize before acting.
+- Start each `.agents/rules/<topic>.md` with a heading and a concise "read this when..." trigger.
+- State direct rules and local consequences or exceptions.
+- Route to narrower rulesets or skills when broad areas need internal dispatch.
+- Avoid restating critical root rules unless the scoped consequence matters.
 
-## Ruleset Files
+## Skills
 
-Create `.agents/rules/<topic>.md` for scoped obligations. Each ruleset should:
-
-- Start with a heading and a one-sentence "read this when..." trigger.
-- Contain direct rules, not background essays.
-- Prefer specific constraints over vague preferences.
-- Route to more specific rules or skills when needed.
-- Avoid repeating critical root rules unless the local consequence or exception is important.
-
-Use domain rulesets when a broad area needs internal routing. For example, an `app.md` ruleset can say to read it before editing `app/`, then route app UI, app state, app data, and app-local skills.
-
-## Skill Files
-
-Create `.agents/skills/<skill-name>/SKILL.md` when guidance is procedural. Use skill frontmatter:
+Create `.agents/skills/<skill-name>/SKILL.md` only for actual workflows. Use skill frontmatter:
 
 ```md
 ---
@@ -78,25 +64,16 @@ description: Do the specific workflow, including when agents should use it.
 ---
 ```
 
-Skill bodies should state:
+Skill bodies should define the workflow contract: required reading, ordering constraints, decision gates, ambiguity handling, expected outputs, cleanup, verification, and commit behavior.
 
-- when to use the skill;
-- required reading;
-- ordered workflow steps;
-- decision gates and ambiguity handling;
-- expected output, cleanup, verification, and commit behavior.
+## Migration Protocol
 
-Keep task skills separate from rulesets. A rule says what must be true; a skill says how to perform a workflow.
-
-## Migration Workflow
-
-1. Map existing guidance into `critical`, `ruleset`, `skill`, or `archive/remove`.
+1. Map existing guidance into root rules, rulesets, skills, project docs, or removal.
 2. Draft the new `AGENTS.md` routing first.
-3. Create or update `.agents/rules/` files so every route in `AGENTS.md` resolves.
-4. Create or update `.agents/skills/` only for actual workflows.
-5. Remove obsolete duplicated guidance after confirming it was preserved or intentionally dropped.
-6. Re-read the full new guidance path for common tasks: code edit, test change, docs change, git finish, and any repo-specific subsystem.
-7. Verify with searches that no stale guidance entry points contradict the new pattern.
+3. Create or update every routed ruleset and skill.
+4. Remove obsolete duplicated guidance only after preservation is clear.
+5. Re-read the resulting guidance paths for common tasks such as code edits, tests, docs, git finish, and repo-specific subsystem work.
+6. Search for stale entry points and contradictions before finishing.
 
 Useful checks:
 
@@ -105,12 +82,11 @@ find . -maxdepth 4 \( -name AGENTS.md -o -path './.agents/*' -o -name CLAUDE.md 
 rg -n "MUST read|Do not|AGENTS|\\.agents|CLAUDE|GEMINI|copilot|cursor" .
 ```
 
-## Quality Bar
+## Quality Gates
 
 - `AGENTS.md` is a signpost, not a handbook.
-- Every referenced ruleset or skill exists.
-- Every ruleset has a clear trigger.
+- Every route resolves to an existing ruleset or skill.
+- Every ruleset has a clear trigger and scope.
 - Every skill is task-oriented and actionable.
-- Critical rules are few, high-signal, and genuinely global.
-- Repo-specific constraints remain repo-specific; do not import another repo's policies just because its structure inspired the pattern.
-- Agents can decide what to read before making changes without already knowing the codebase.
+- Critical root rules are high-signal and globally applicable.
+- No stale guidance entry point contradicts the new structure.
