@@ -1,26 +1,24 @@
 ---
 name: zod-v4
-description: Use when writing, reviewing, or explaining Zod v4 schemas and APIs, especially when choosing v4-native features such as Zod Mini, metadata registries, JSON Schema conversion, recursive object getters, file schemas, locales, pretty errors, top-level string formats, template literals, number formats, stringbool, unified error customization, upgraded discriminated unions, multi-value literals, refinements inside schemas, overwrite transforms, or zod/v4/core. Covers Zod v4 differences and feature orientation, not v3-to-v4 migration playbooks.
+description: Use when writing, reviewing, or explaining Zod v4 schemas and APIs, especially when choosing v4-native features such as metadata registries, JSON Schema conversion, recursive object getters, file schemas, locales, pretty errors, top-level string formats, template literals, number formats, stringbool, unified error customization, upgraded discriminated unions, multi-value literals, refinements inside schemas, or overwrite transforms. Covers Zod v4 differences and feature orientation, not v3-to-v4 migration playbooks.
 ---
 
 # Zod v4
 
 ## Operating Stance
 
-Treat Zod v4 as a redesigned schema platform, not just a faster Zod 3. Prefer v4-native APIs when they clarify intent, reduce bundle size, improve TypeScript performance, or preserve runtime introspection.
+Treat Zod v4 as a redesigned schema platform, not just a faster Zod 3. Prefer v4-native APIs when they clarify intent, improve TypeScript performance, or preserve runtime introspection.
 
 Do not answer as though this were migration guidance. If the user asks for migration steps or breaking-change audits, use the official migration guide instead.
 
 ## Before Answering
 
-1. Identify the task shape: schema design, API review, bundle-size advice, JSON Schema generation, error customization, recursive types, library integration, or explanation.
+1. Identify the task shape: schema design, API review, JSON Schema generation, error customization, recursive types, or explanation.
 2. Prefer examples that demonstrate the v4 capability directly. Avoid `zod@3` comparison code unless the user explicitly asks why an old pattern is no longer needed.
-3. Preserve the distinction between regular `zod`, `zod/mini`, and `zod/v4/core`.
 
 ## Defaults
 
 - Use regular `zod` for most application code.
-- Use `zod/mini` only when strict bundle-size constraints justify its functional API.
 - Use top-level string formats such as `z.email()` and `z.uuidv7()` instead of deprecated method forms like `z.string().email()` in new examples.
 - Use `.meta()` or registries for schema metadata; keep metadata outside schema definitions unless the global registry is the right target.
 - Use `z.toJSONSchema()` for first-party JSON Schema conversion and remember that global registry metadata is included.
@@ -38,67 +36,14 @@ When reviewing Zod v4 code, check for:
 - hand-rolled JSON Schema export paths that can be replaced by `z.toJSONSchema()`.
 - recursive object code using casts where getter-based recursion would infer cleanly.
 - discriminated unions that could now compose instead of flattening branches manually.
-- bundle-sensitive code importing regular `zod` when `zod/mini` was explicitly required.
-- library code depending on the full public API when `zod/v4/core` is the intended substrate.
 
 ## Performance And Packaging
 
 - Zod v4 is materially faster than v3 in the release benchmarks: roughly 14x faster string parsing, 7x faster array parsing, and 6.5x faster object parsing.
 - Zod v4 dramatically reduces TypeScript compiler type instantiations for object-heavy schema composition. The release notes show a simple object/extend file dropping from more than 25,000 instantiations with `zod/v3` to roughly 175 with `zod/v4`.
-- Zod v4 regular core bundle size is much smaller than Zod 3 in the release benchmark, and `zod/mini` is smaller still.
+- Zod v4 regular core bundle size is much smaller than Zod 3 in the release benchmark.
 
-Do not overfit answers to exact benchmark numbers unless the user asks for release-note specifics. Use the trend to justify simpler schema composition and `zod/mini` consideration under bundle pressure.
-
-## Import Surfaces
-
-### Regular Zod
-
-Use regular `zod` for most application code:
-
-```ts
-import * as z from "zod";
-```
-
-It keeps the familiar method-oriented API and should be the default unless bundle constraints or library-author needs say otherwise.
-
-### Zod Mini
-
-Use `zod/mini` for strict bundle-size constraints:
-
-```ts
-import * as z from "zod/mini";
-
-const schema = z.optional(z.string());
-const union = z.union([z.string(), z.number()]);
-const extended = z.extend(z.object({ name: z.string() }), {
-  age: z.number(),
-});
-```
-
-Zod Mini replaces many methods with top-level wrapper functions for tree-shaking. Parsing methods remain methods:
-
-```ts
-z.string().parse("value");
-z.string().safeParse("value");
-await z.string().parseAsync("value");
-await z.string().safeParseAsync("value");
-```
-
-Use `.check()` with first-class checks and refinements:
-
-```ts
-const numbers = z.array(z.number()).check(
-  z.minLength(5),
-  z.maxLength(10),
-  z.refine((items) => items.includes(5)),
-);
-```
-
-Common Mini checks include `z.lt`, `z.lte`, `z.gt`, `z.gte`, `z.positive`, `z.negative`, `z.multipleOf`, size and length checks, `z.regex`, case checks, substring checks, `z.property`, `z.mime`, and overwrite helpers such as `z.trim`, `z.toLowerCase`, and `z.toUpperCase`.
-
-### zod/v4/core
-
-`zod/v4/core` is the shared substrate beneath regular Zod and Zod Mini. It is mainly for schema-library authors, not ordinary app code. Reach for it when building tooling or libraries on top of Zod internals while supporting the v4 architecture.
+Do not overfit answers to exact benchmark numbers unless the user asks for release-note specifics. Use the trend to justify simpler schema composition and v4-native patterns.
 
 ## Metadata And Registries
 
@@ -389,7 +334,3 @@ const squaredCapped = z.number()
 ```
 
 Use `.transform()` for transforms that can change the output type or cannot be represented as same-type overwrites.
-
-## Source
-
-Based on the Zod v4 release notes fetched from `https://zod.dev/v4` with `sitefetch https://zod.dev/v4 --limit 0`.
