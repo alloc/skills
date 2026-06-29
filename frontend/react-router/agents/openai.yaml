@@ -1,0 +1,4 @@
+interface:
+  display_name: "React Router"
+  short_description: "Build React Router Data Mode apps"
+  default_prompt: "Use $react-router to add Data Mode routing, loaders, actions, and pending UI."
