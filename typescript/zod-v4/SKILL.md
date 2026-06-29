@@ -1,6 +1,6 @@
 ---
 name: zod-v4
-description: Use when writing, reviewing, or explaining Zod v4 schemas and APIs, especially when choosing v4-native features such as metadata registries, JSON Schema conversion, recursive object getters, file schemas, locales, pretty errors, top-level string formats, template literals, number formats, stringbool, unified error customization, upgraded discriminated unions, multi-value literals, refinements inside schemas, or overwrite transforms. Covers Zod v4 differences and feature orientation, not v3-to-v4 migration playbooks.
+description: Use whenever writing, reviewing, debugging, or explaining Zod code. Focus on Zod v4 APIs, defaults, and feature differences; this is not a v3-to-v4 migration playbook.
 ---
 
 # Zod v4
