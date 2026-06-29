@@ -1,0 +1,4 @@
+interface:
+  display_name: "Drizzle v1 RC"
+  short_description: "Migrate Drizzle v0 code to v1 RC"
+  default_prompt: "Use $drizzle-v1-rc to migrate Drizzle ORM, drizzle-kit, and relational query code from v0 to the v1 RC."
