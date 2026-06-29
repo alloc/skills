@@ -1,35 +1,22 @@
 ---
 name: drizzle-v1-rc
-description: Migrate, update, or review Drizzle ORM v0 code for the Drizzle v1 RC, including drizzle-orm, drizzle-kit, drizzle-seed, Relational Queries v1 removal, defineRelations-based Relational Queries v2, migration folder changes, casing, validators, RLS, arrays, generated columns, and drizzle-kit push/pull behavior.
+description: Explain, use, or review Drizzle ORM v1 RC behavior when model knowledge may be stale, especially differences from Drizzle v0 around Relational Queries v2, defineRelations, object filters, drizzle-kit migrations, casing, validators, RLS, arrays, generated columns, and kit push/pull defaults.
 ---
 
 # Drizzle v1 RC
 
-Treat Drizzle v1 RC upgrades as a source migration, not a package bump. Check schema definitions, database initialization, relation declarations, relational queries, generated migrations, and kit config together.
+Treat this as a compact correction layer for Drizzle knowledge that may not be in model training data. Prefer these v1 RC facts over older Drizzle v0 patterns when answering questions, writing examples, or reviewing code.
 
-## Upgrade Pass
+## Mental Model
 
-1. Inspect installed Drizzle packages, `drizzle.config.*`, schema exports, relation files, database initialization, and migration scripts.
-2. Update package names/imports first, then migrate code by compiler errors and targeted searches.
-3. Prefer the new v1 APIs instead of compatibility shims. Relational Queries v1 is removed.
-4. Run typecheck and the project's migration-generation/check commands before suggesting the upgrade is done.
-
-## Package And Import Changes
-
-- Install the RC packages with the repo's package manager: `drizzle-orm@rc` and `drizzle-kit@rc`.
-- Replace validator package imports with the consolidated Drizzle exports for new work:
-  - `drizzle-zod` -> `drizzle-orm/zod`
-  - `drizzle-valibot` -> `drizzle-orm/valibot`
-  - `drizzle-typebox` for `@sinclair/typebox` -> `drizzle-orm/typebox-legacy`
-  - `drizzle-typebox` for `typebox` -> `drizzle-orm/typebox`
-  - `drizzle-arktype` -> `drizzle-orm/arktype`
-  - Effect schema -> `drizzle-orm/effect-schema`
-- Replace `getTableColumns` with `getColumns`.
-- Remove imports of old relation internals such as `relations`, `Relations`, `extractTablesRelationalConfig`, `createOne`, `createMany`, and `TableRelationsHelpers`.
+- Drizzle v1 RC is not just a version bump; several public APIs and defaults changed.
+- Relational Queries v1 was removed. Relational Queries v2 is centered on `defineRelations()`.
+- `drizzle-kit` was substantially rewritten, with a new migration folder format and different push/pull defaults.
+- Prefer v1 RC API names in examples. Mention v0 names only when explaining a difference.
 
 ## Relations V2
 
-Replace per-table `relations(table, ...)` declarations with one `defineRelations(schema, ...)` entrypoint:
+Relations now live in one `defineRelations(schema, ...)` declaration instead of per-table `relations(table, ...)` declarations.
 
 ```ts
 import { defineRelations } from "drizzle-orm";
@@ -48,7 +35,7 @@ export const relations = defineRelations(schema, (r) => ({
 }));
 ```
 
-Pass `relations` to `drizzle()` instead of `schema` for relational queries:
+Pass the relation object to `drizzle()` when using relational queries:
 
 ```ts
 import { relations } from "./relations";
@@ -56,16 +43,19 @@ import { relations } from "./relations";
 export const db = drizzle(process.env.DATABASE_URL, { relations });
 ```
 
-Use `defineRelationsPart(schema, ...)` only when the project already splits relation ownership; merge parts when constructing the DB: `{ relations: { ...baseRelations, ...extraRelations } }`.
+Important differences from v0:
 
-Migration mapping:
+- `relations` from `drizzle-orm/_relations` is gone; use `defineRelations` from `drizzle-orm`.
+- `fields` became `from`; `references` became `to`.
+- `from` and `to` accept a single column or an array.
+- `relationName` became `alias`.
+- `optional: false` makes a related object required at the type level when that entity is guaranteed to exist.
+- MySQL RQB setup no longer needs `mode: "planetscale"` or `mode: "default"`.
+- `defineRelationsPart(schema, ...)` exists for splitting relation declarations, then spreading parts into one relations object.
 
-- `fields` -> `from`; `references` -> `to`. Each can be a single column or an array.
-- `relationName` -> `alias`.
-- Use `optional: false` only when the related entity is guaranteed to exist and should be required in the result type.
-- MySQL `mode` is no longer needed for RQB v2 initialization.
-- A `many` relation can now stand alone if `from` and `to` make the join explicit.
-- Model many-to-many with `through` instead of exposing junction rows in every query.
+## Many-To-Many
+
+RQB v2 can hide junction tables behind `through`, so examples should query the target relation directly instead of returning junction rows and post-processing them.
 
 ```ts
 export const relations = defineRelations(schema, (r) => ({
@@ -75,17 +65,35 @@ export const relations = defineRelations(schema, (r) => ({
       to: r.groups.id.through(r.usersToGroups.groupId),
     }),
   },
+  groups: {
+    participants: r.many.users(),
+  },
+}));
+
+const users = await db.query.users.findMany({
+  with: {
+    groups: true,
+  },
+});
+```
+
+Relations can also define reusable filters:
+
+```ts
+export const relations = defineRelations(schema, (r) => ({
+  groups: {
+    verifiedUsers: r.many.users({
+      from: r.groups.id.through(r.usersToGroups.groupId),
+      to: r.users.id.through(r.usersToGroups.userId),
+      where: { verified: true },
+    }),
+  },
 }));
 ```
 
-## Query Migration
+## Relational Query Shape
 
-- Use `db.query`, not `db._query`.
-- Rewrite `where` callbacks to object filters.
-- Rewrite `orderBy` callbacks to object sort declarations.
-- Use `AND`, `OR`, `NOT`, and `RAW` inside object filters for complex predicates.
-- Relation filters and `offset` on related objects are supported; use them directly when they replace hand-rolled joins or post-processing.
-- After many-to-many relations use `through`, query the target relation directly instead of selecting junction tables with empty columns.
+Use `db.query`, not `db._query`. Filters and ordering are object-based:
 
 ```ts
 await db.query.users.findMany({
@@ -93,37 +101,69 @@ await db.query.users.findMany({
     OR: [{ id: { gt: 10 } }, { name: { like: "John%" } }],
   },
   orderBy: { id: "asc" },
+});
+```
+
+Object filters support `AND`, `OR`, `NOT`, relation filters, and `RAW`. Use `RAW: (table) => sql\`...\`` for JSON, array, function, range, or other SQL predicates that object operators cannot express.
+
+Nested relations support `offset`:
+
+```ts
+await db.query.posts.findMany({
+  limit: 5,
+  offset: 2,
   with: {
-    groups: true,
+    comments: {
+      offset: 3,
+      limit: 3,
+    },
   },
 });
 ```
 
-Use `RAW: (table) => sql\`...\`` for SQL that cannot be expressed by object filters, especially JSON, array, function, or range predicates.
+## Schema API Differences
 
-## Schema And Column Changes
+- Global `drizzle({ casing: "camelCase" })` was replaced by table/view/schema casing builders from dialect core packages, such as `snakeCase.table(...)` and `camelCase.table(...)`.
+- Multidimensional arrays use string dimensions: `column.array("[][]")`, not chained `column.array().array()`.
+- RLS uses `pgTable.withRLS(...)`, not `pgTable(...).enableRLS()`.
+- `.generatedAlwaysAs()` accepts only `sql\`...\`` or `() => sql\`...\`` expressions, not raw strings.
+- Custom types gained a `codec` option for driver-aware mapping.
+- Column aliases can use `.as()`, such as `users.id.as("userId")`.
 
-- Replace global `drizzle({ casing: "camelCase" })` with table/view/schema casing builders such as `snakeCase.table(...)` and `camelCase.table(...)` from the dialect core package.
-- Replace chained multidimensional arrays such as `column.array().array()` with string dimensions: `column.array("[][]")`.
-- Replace `pgTable(...).enableRLS()` with `pgTable.withRLS(...)`.
-- Ensure `.generatedAlwaysAs()` receives `sql\`...\`` or `() => sql\`...\``, not raw strings.
-- For custom types, use the new `codec` option when driver-aware mapping is needed.
+## Validation Packages
 
-## Drizzle Kit And Migrations
+New validation work should import from `drizzle-orm` subpaths:
 
-- Expect the v3 migration folder layout: no `journal.json`; SQL files and snapshots are grouped into per-migration folders.
-- `drizzle-kit drop` is removed.
-- `schemaFilter` now defaults to all schemas for `push` and `pull`, not only `public`. Set `schemaFilter` explicitly, including glob patterns such as `app_*`, when scope must be limited.
-- `drizzle-kit push --strict` is removed because strict confirmation is now default. Use `--force` to skip prompts and `push --explain` to preview SQL.
-- Use `drizzle-kit check` before merging branches with migration changes; use `--ignore-conflicts` only when conflicts are understood.
-- Run `drizzle-kit up` as part of migration upgrade validation because the migration table gains `name` and `applied_at`.
-- `drizzle-kit pull --init` can initialize the migration table and mark the first pulled migration as applied.
-- Config and schema files may use top-level `await` on Node.js.
-- Only `.js`, `.mjs`, `.cjs`, `.jsx`, `.ts`, `.mts`, `.cts`, and `.tsx` schema files are processed.
+- `drizzle-orm/zod`
+- `drizzle-orm/valibot`
+- `drizzle-orm/typebox-legacy` for `@sinclair/typebox`
+- `drizzle-orm/typebox` for `typebox`
+- `drizzle-orm/arktype`
+- `drizzle-orm/effect-schema`
 
-## Review Checklist
+Older standalone packages may still exist, but new updates are added in Drizzle ORM directly.
 
-- Search for `drizzle-orm/_relations`, `relations(`, `db._query`, `fields:`, `references:`, `relationName`, `schema:`, `mode:`, `casing:`, `enableRLS`, `array().array`, `generatedAlwaysAs(`, `getTableColumns`, `schemaFilter`, `--strict`, and `drizzle-kit drop`.
-- Verify DB initialization uses the new relation object where relational queries are used.
-- Verify generated migrations use the new folder structure and no stale `journal.json` assumptions remain in scripts or CI.
-- Prefer typecheck failures and generated SQL diffs over broad manual rewrites when validating behavior.
+## Drizzle Kit Differences
+
+- Migrations use the v3 folder structure: no `journal.json`; SQL files and snapshots live in migration folders.
+- The migration table has new `name` and `applied_at` columns. Migrations are matched by full folder name, not just timestamp.
+- The migrator applies every missing migration, regardless of timestamp ordering.
+- `drizzle-kit drop` was removed.
+- `drizzle-kit push --strict` was removed because confirmation for data-loss statements is now default. Use `--force` to skip prompts.
+- `drizzle-kit push --explain` previews SQL without applying it.
+- `drizzle-kit check` detects non-commutative migration branches; `--ignore-conflicts` bypasses this when conflicts are known.
+- `drizzle-kit generate` detects incompatible migration branches and also accepts `--ignore-conflicts`.
+- `drizzle-kit pull --init` creates the migration table and marks the first pulled migration as applied.
+- `schemaFilter` now defaults to all schemas for `push` and `pull`, not only `public`; glob patterns such as `app_*` are supported.
+- Config and schema files can use top-level `await` on Node.js.
+- Schema processing only considers `.js`, `.mjs`, `.cjs`, `.jsx`, `.ts`, `.mts`, `.cts`, and `.tsx`.
+
+## Other V1 RC Additions
+
+- JIT row mappers can be enabled with `drizzle({ ..., jit: true })`.
+- Codecs normalize request/response mapping across driver and JSON/array contexts.
+- MSSQL and CockroachDB dialect support were added.
+- NetlifyDB driver support was added.
+- Effect support includes `@effect/sql-pg` and `drizzle-orm/effect-schema`.
+- SQLcommenter tags can be appended with `.comment("tag")`.
+- `.prepare(name)` can omit the name.
