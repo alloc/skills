@@ -67,6 +67,12 @@ Routing rules:
 - Use `:param` dynamic segments; read them in components with `useParams`.
 - Use `?` for optional static or dynamic segments, and `/*` splats for catchall paths. Destructure splats as `const { "*": splat } = params`.
 
+## Prefer URL-Derived State
+
+Prefer URL-derived state over component state for shareable page state. Search, filters, pagination, selected tabs, and modal IDs should usually live in path params or search params, then be parsed with `useParams`, `useSearchParams`, or a small URL schema helper.
+
+Feed parsed URL state into TanStack Query keys and mutation inputs when it affects server data. Page data that should survive reloads, links, and back/forward navigation should not depend on `useState` plus `useEffect` fetching.
+
 ## Server State
 
 Use TanStack Query for server state. Route params, URL search params, and component state should feed query keys and mutation inputs.
