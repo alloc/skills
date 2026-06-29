@@ -1,148 +1,81 @@
 ---
 name: react
-description: Build and review client-only React code with pure component projection, TanStack Query for server state, no application `useEffect`, and React Compiler-aware avoidance of `useMemo` and `useCallback`.
+description: Build and review client-only React code that treats components as pure UI projections, uses TanStack Query for server state, and avoids effect-driven orchestration and speculative memoization.
 ---
 
-# react
+# React
 
-React components should be boring: a component projects state into UI.
+React components should be boring: they project state into UI.
 
 ```tsx
 UI = f(state)
 ```
 
-Do not use React components to orchestrate data flow, synchronize unrelated state, manage request lifecycles, or imperatively coordinate the application. Put those responsibilities in event handlers, TanStack Query, adapter hooks, reusable infrastructure, or the owner of the state.
+Feature components render, derive display values, and call event handlers. Data flow, subscriptions, request lifecycles, browser integration, and cross-component coordination belong in TanStack Query, owner components, adapter hooks, or reusable infrastructure.
 
-This guidance assumes a client-only React application:
+This skill assumes a client-only React app. Do not suggest SSR, React Server Components, hydration-sensitive patterns, or `getServerSnapshot`.
 
-- No SSR.
-- No React Server Components.
-- No hydration-sensitive rendering.
-- Do not suggest SSR-specific patterns.
+## Core Rules
 
-## Hard Rules
+- Feature/application components must not call `useEffect`.
+- Components must not hand-roll fetching, caching, retry, cancellation, refetching, or invalidation behavior.
+- Store only source-of-truth UI state. Derive filtered, sorted, grouped, selected, counted, labeled, permissioned, and boolean values during render.
+- User-caused behavior belongs in the event handler for the click, submit, drag, confirmation, selection, or input change that caused it.
+- Do not create state whose only purpose is to trigger later behavior.
+- Reset component state with ownership boundaries and `key`, not synchronization logic.
+- Use refs or callback refs for imperative DOM access.
+- External subscriptions must use `useSyncExternalStore` behind an adapter hook.
+- Browser APIs that need setup or teardown belong in reusable adapter hooks. Feature components consume the hook.
+- `useMemo` and `useCallback` are banned unless they fix a confirmed correctness bug and the adjacent comment names that bug. React Compiler is enabled; stable identity and speculative performance are not goals.
 
-- Never call `useEffect` in application code.
-- Never fetch from a component with `fetch`, Axios, or a hand-rolled request lifecycle.
-- Never store derived state.
-- Never duplicate state that can be derived from existing values.
-- Never use state variables whose only purpose is to trigger later behavior.
-- Never add `useMemo` unless it fixes a confirmed correctness bug and has a comment explaining that bug.
-- Never add `useCallback` unless it fixes a confirmed correctness bug and has a comment explaining that bug.
-- Never pass `getServerSnapshot` to `useSyncExternalStore`; this app is client-only.
+## Effect Alternatives
 
-## Effect Replacements
+When an effect seems necessary, choose the matching ownership model instead.
 
-When you think you need an effect, classify the actual problem first:
-
-| Problem | Use instead |
+| Need | Owner |
 | --- | --- |
-| Compute a value | Derive it during render |
-| React to a click, submit, drag, confirmation, selection, or typing | Event handler |
-| Fetch data | TanStack Query `useQuery` |
-| Submit or write data | TanStack Query `useMutation` |
-| Reset state | React `key` |
-| Synchronize duplicated state | Remove the duplication |
-| Subscribe to external state | `useSyncExternalStore` |
-| Access the DOM | `useRef` or a callback ref |
+| Compute a value | Render derivation |
+| Respond to a user action | Event handler |
+| Read server state | TanStack Query `useQuery` |
+| Write server state | TanStack Query `useMutation` from a handler |
+| Reset local state | Component `key` |
+| Keep duplicated values aligned | One source of truth |
+| Subscribe to external state | Adapter hook using `useSyncExternalStore` |
+| Imperatively touch the DOM | Ref or callback ref |
 | Integrate browser APIs | Adapter hook |
 
-If none of these categories fit, question the design before adding an escape hatch.
+If no row fits, question the component boundary before adding an escape hatch.
 
-## Derive During Render
+## State Standard
 
-If a value can be computed from current props, state, or query data, compute it while rendering.
+State is for values that cannot be derived from current props, existing state, or query results, such as text input, selected ids, dialog visibility, optimistic edits, and drag state.
 
-Bad:
-
-```tsx
-const [fullName, setFullName] = useState("");
-
-useEffect(() => {
-  setFullName(`${first} ${last}`);
-}, [first, last]);
-```
-
-Good:
-
-```tsx
-const fullName = `${first} ${last}`;
-```
-
-Derive filtered lists, sorted lists, grouped data, selected objects, booleans, labels, permissions, counts, and totals.
+Derived values stay in render:
 
 ```tsx
 const visibleTodos = todos.filter((todo) => !todo.completed);
-
 const selectedUser = users.find((user) => user.id === selectedUserId);
-
-const hasErrors = errors.length > 0;
-
 const itemCount = items.length;
 ```
 
-State is only for source-of-truth values that cannot be derived, such as text input, selected ids, dialog visibility, optimistic edits, and drag state.
+If two values must be synchronized, remove the duplication, lift ownership, or pass callbacks so there is one owner.
 
-## Put User Actions In Handlers
+## Server State Standard
 
-If behavior happens because the user clicked, typed, submitted, dragged, confirmed, or selected something, run the logic in that handler.
+TanStack Query owns server state. Components consume query results and invoke mutations; they do not implement request lifecycles.
 
-Bad:
-
-```tsx
-const [shouldSave, setShouldSave] = useState(false);
-
-useEffect(() => {
-  if (shouldSave) {
-    saveDraft();
-  }
-}, [shouldSave]);
-```
-
-Good:
-
-```tsx
-async function handleSave() {
-  await saveDraft();
-}
-```
-
-Do not build effect-driven state machines.
-
-## Use TanStack Query For Server State
-
-Components consume server state. TanStack Query owns server state.
-
-Never manually manage loading, error, retry, cancellation, deduplication, cache invalidation, or refetching from a component.
-
-Bad:
-
-```tsx
-useEffect(() => {
-  fetch(url).then(handleResponse);
-}, [url]);
-```
-
-Good:
+Use `useQuery` for reads and `useMutation` for writes. Put network writes in event handlers, and put cache invalidation in mutation callbacks or shared mutation helpers.
 
 ```tsx
 const user = useQuery({
   queryKey: ["user", id],
   queryFn: () => getUser(id),
 });
-```
-
-Network writes belong in event handlers using mutations.
-
-```tsx
-const queryClient = useQueryClient();
 
 const mutation = useMutation({
   mutationFn: updateUser,
   onSuccess() {
-    queryClient.invalidateQueries({
-      queryKey: ["user", id],
-    });
+    queryClient.invalidateQueries({ queryKey: ["user", id] });
   },
 });
 
@@ -151,147 +84,13 @@ function handleSubmit(values: FormValues) {
 }
 ```
 
-## Reset With Keys
+Do not use component state to trigger fetches, saves, invalidation, or refetching.
 
-Do not synchronize reset behavior with effects.
+## Adapter Hooks
 
-Bad:
+Wrap unavoidable React or browser integration once, then expose a domain-level hook to components.
 
-```tsx
-useEffect(() => {
-  setComment("");
-}, [postId]);
-```
-
-Good:
-
-```tsx
-<CommentEditor key={postId} postId={postId} />
-```
-
-## Use Refs For DOM Work
-
-Use refs for imperative DOM work.
-
-```tsx
-const inputRef = useRef<HTMLInputElement>(null);
-
-function focusInput() {
-  inputRef.current?.focus();
-}
-```
-
-For setup that occurs when a node appears or disappears, use a callback ref.
-
-```tsx
-function inputRef(node: HTMLInputElement | null) {
-  if (node) {
-    node.focus();
-  }
-}
-
-return <input ref={inputRef} />;
-```
-
-Do not introduce `useCallback` for callback refs unless a confirmed correctness bug requires stable identity.
-
-## Use External Store Subscriptions
-
-Never subscribe inside an effect.
-
-Bad:
-
-```tsx
-useEffect(() => {
-  return store.subscribe(handleChange);
-}, []);
-```
-
-Good:
-
-```tsx
-const value = useSyncExternalStore(store.subscribe, store.getSnapshot);
-```
-
-Wrap browser APIs once in adapter hooks. Components should consume the adapter hook, not implement subscriptions themselves.
-
-```tsx
-function subscribe(callback: () => void) {
-  window.addEventListener("online", callback);
-  window.addEventListener("offline", callback);
-
-  return () => {
-    window.removeEventListener("online", callback);
-    window.removeEventListener("offline", callback);
-  };
-}
-
-function getSnapshot() {
-  return navigator.onLine;
-}
-
-export function useOnlineStatus() {
-  return useSyncExternalStore(subscribe, getSnapshot);
-}
-```
-
-## Avoid Manual Memoization
-
-React Compiler is enabled. Do not stabilize references or memoize values speculatively.
-
-Bad:
-
-```tsx
-const filtered = useMemo(() => items.filter((item) => item.visible), [items]);
-```
-
-Good:
-
-```tsx
-const filtered = items.filter((item) => item.visible);
-```
-
-Manual memoization is allowed only when it fixes a confirmed correctness bug. Every `useMemo` must include a comment explaining the bug.
-
-```tsx
-// Required: AG Grid treats a new columns array as a schema reset.
-// Without this memoization, edited cells are discarded.
-const columns = useMemo(() => buildColumns(schema), [schema]);
-```
-
-The same rule applies to `useCallback`.
-
-Bad:
-
-```tsx
-const handleClick = useCallback(() => {
-  onSelect(id);
-}, [id, onSelect]);
-```
-
-Good:
-
-```tsx
-function handleClick() {
-  onSelect(id);
-}
-```
-
-Stable callback identity is not a goal. Measure first, fix real bugs, and trust React Compiler.
-
-## Hide React Complexity Behind Adapter Hooks
-
-Some APIs genuinely require React hooks or lifecycle-style integration:
-
-- `useSyncExternalStore`
-- ResizeObserver
-- IntersectionObserver
-- Media queries
-- BroadcastChannel
-- WebSocket
-- Browser events
-
-Wrap them once in infrastructure hooks.
+Good component APIs:
 
 ```tsx
 const online = useOnlineStatus();
@@ -299,41 +98,50 @@ const size = useElementSize(ref);
 const visible = useIntersection(ref);
 ```
 
-Infrastructure hooks may use React escape hatches internally when no better API exists. Feature components should not.
+Adapter hooks may use the minimal React escape hatch internally when render derivation, handlers, refs, TanStack Query, `key`, or `useSyncExternalStore` cannot express the integration cleanly. Keep that complexity out of feature components.
 
-## Prefer Ownership Over Synchronization
+For external subscriptions:
 
-If two pieces of state need to stay synchronized, they are probably the same piece of state. Remove duplicated state, lift ownership, pass callbacks, or use composition so one owner controls the value.
+- Use `useSyncExternalStore(subscribe, getSnapshot)`.
+- Do not subscribe from an effect.
+- Do not pass `getServerSnapshot`.
 
-## Escape Hatch Checklist
+## Manual Memoization
 
-Before adding `useEffect`, `useMemo`, or `useCallback`, ask:
+React Compiler is enabled. Prefer ordinary values and functions:
 
-1. Can I derive this during render?
-2. Can this happen inside an event handler?
-3. Should this be a TanStack Query?
-4. Should this be a mutation?
-5. Should this be a ref?
-6. Should this be a `key`?
-7. Should this be `useSyncExternalStore`?
-8. Should this be an adapter hook?
+```tsx
+const filtered = items.filter((item) => item.visible);
 
-If any answer is yes, do that instead.
+function handleClick() {
+  onSelect(id);
+}
+```
 
-## Code Review Checklist
+Manual `useMemo` or `useCallback` requires a confirmed correctness bug, not a performance guess. The required adjacent comment must state the concrete failure:
 
-Reject new application code that contains:
+```tsx
+// Required: AG Grid treats a new columns array as a schema reset.
+// Without this memoization, edited cells are discarded.
+const columns = useMemo(() => buildColumns(schema), [schema]);
+```
 
-- `useEffect(...)`.
-- `useMemo(...)` without a comment documenting the confirmed bug it fixes.
-- `useCallback(...)` without a comment documenting the confirmed bug it fixes.
-- Manual fetches from components.
-- Duplicated state.
-- Effects that synchronize state.
-- Effects that respond to user actions.
-- SSR-specific React patterns.
+No bug comment means no memoization hook.
 
-Prefer React code shaped like this:
+## Review Gate
+
+Reject new code that introduces:
+
+- `useEffect` in feature/application components.
+- Component-level manual fetching or request lifecycle state.
+- Derived or duplicated state.
+- Effect-driven state machines.
+- State flags that exist only to trigger behavior.
+- `useMemo` or `useCallback` without a confirmed-bug comment.
+- External subscriptions implemented with effects.
+- SSR, RSC, hydration-specific code, or `getServerSnapshot`.
+
+Prefer components shaped like this:
 
 ```tsx
 function UserRow({ user, selectedUserId, onSelect }: Props) {
@@ -350,5 +158,3 @@ function UserRow({ user, selectedUserId, onSelect }: Props) {
   );
 }
 ```
-
-The ideal React component is a pure projection from state to UI. Everything else belongs in event handlers, TanStack Query, adapter hooks, or reusable infrastructure.
