@@ -24,6 +24,13 @@ frontend:
     Rework the fetched documentation into concise, task-oriented reference files and update `frontend/react-virtual/SKILL.md` with the most useful operational knowledge. Keep setup guidance in `references/setup.md`, keep the skill description sharp and concise, and use `SKILL.md` for common use cases and routing to reference files and examples.
 
 typescript:
+  ai-sdk: |-
+    Run `sitefetch https://ai-sdk.dev/docs/migration-guides/migration-guide-7-0 --limit 0` to fetch the AI SDK v7 migration documentation for source material only; do not include raw sitefetch output in the skill.
+
+    Rework the fetched documentation into a concise v7-focused correction layer for agents that already understand AI SDK concepts. Keep `typescript/ai-sdk/SKILL.md` focused on when to apply v7-specific guidance, default v7 coding/review stances, and high-signal review checks. Keep exact API names, behavior changes, package notes, and provider-specific details in `typescript/ai-sdk/references/v7-changes.md`.
+
+    Do not turn the skill into a step-by-step migration guide. Mention the official migration guide or codemods only as external tools for users who explicitly ask for migration execution.
+
   cmd-ts: |-
     Run `sitefetch https://cmd-ts.vercel.app/ -o /tmp/cmd-ts-docs.json` to fetch the full cmd-ts docs for source material only; do not include raw sitefetch output in the skill.
 
