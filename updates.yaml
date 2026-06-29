@@ -9,6 +9,13 @@ frontend:
 
     Rework the fetched documentation into concise, task-oriented guidance. Keep `frontend/pragmatic-drag-and-drop/SKILL.md` focused on operational decisions and common implementation/debugging patterns, and keep API details in `frontend/pragmatic-drag-and-drop/references/core-api.md`.
 
+  react-router: |-
+    Run `sitefetch https://reactrouter.com/start/data/installation -m '/start/data/**'` to fetch the docs specific to React Router's Data Mode.
+
+    If a fetched Data Mode page says to refer to a `/start/framework/**` page, fetch that referenced framework page too. Use only guidance that applies to both modes or specifically to Data Mode; ignore framework-mode-only guidance.
+
+    Rework the fetched documentation into concise, task-oriented guidance for React Router Data Mode. Keep `frontend/react-router/SKILL.md` focused on Data Mode setup, route objects, loaders, actions, navigation, pending UI, custom-framework integration, and testing. Do not include raw sitefetch output in the skill.
+
   react-virtual: |-
     Run `sitefetch https://tanstack.com/virtual/latest/docs/introduction -m '/virtual/latest/docs/**' -e '**/examples/**'` to fetch the full package docs for source material only; do not include raw sitefetch output in the skill.
 
