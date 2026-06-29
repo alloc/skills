@@ -1,0 +1,4 @@
+interface:
+  display_name: "Zod v4"
+  short_description: "Zod v4 feature and API differences"
+  default_prompt: "Use $zod-v4 to write or review Zod schemas using v4 APIs and concepts."
