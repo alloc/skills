@@ -1,6 +1,6 @@
 ---
 name: react-router
-description: Build, update, or review React Router apps using createBrowserRouter, route objects, navigation APIs, pending UI, TanStack Query server state, and createRoutesStub testing. Use for client-owned React Router routing.
+description: Build, update, or review React Router apps using createBrowserRouter, lazy route components, route objects, navigation APIs, pending UI, TanStack Query server state, and createRoutesStub testing. Use for client-owned React Router routing.
 ---
 
 # React Router
@@ -17,24 +17,35 @@ Use React Router when the app owns router creation and route object configuratio
 
 ```tsx
 import ReactDOM from "react-dom/client";
+import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
+
+const App = lazy(() => import("./App"));
 
 const router = createBrowserRouter([
   { path: "/", Component: App },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />,
+  <Suspense fallback={null}>
+    <RouterProvider router={router} />
+  </Suspense>,
 );
 ```
 
 ## Route Objects
 
-Route objects define URL matching, rendering, layout nesting, error handling, and metadata. Prefer `Component` for route components in route object configs.
+Route objects define URL matching, rendering, layout nesting, error handling, and metadata. Prefer `Component` for route components in route object configs, with route components assigned from React `lazy()`.
 
 ```tsx
-import { Outlet, createBrowserRouter } from "react-router";
+import { lazy } from "react";
+import { createBrowserRouter } from "react-router";
+
+const RootLayout = lazy(() => import("./routes/RootLayout"));
+const Home = lazy(() => import("./routes/Home"));
+const ProjectsHome = lazy(() => import("./routes/projects/ProjectsHome"));
+const Project = lazy(() => import("./routes/projects/Project"));
 
 const router = createBrowserRouter([
   {
@@ -52,14 +63,11 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
-function RootLayout() {
-  return <Outlet />;
-}
 ```
 
 Routing rules:
 
+- Wrap route components with `lazy()` and provide a `Suspense` fallback above the route tree.
 - Use `children` for nested routes; parent components render child matches with `<Outlet />`.
 - Use pathless parent routes for layout without adding URL segments.
 - Use a route with `path` and no component to prefix child URLs without adding a layout.
