@@ -1,18 +1,18 @@
 ---
 name: react-router
-description: Build, update, or review React Router apps using createBrowserRouter, route objects, loaders, actions, fetchers, navigation APIs, pending UI, custom runtime integration, and createRoutesStub testing. Use for client-owned React Router data routers.
+description: Build, update, or review React Router apps using createBrowserRouter, route objects, navigation APIs, pending UI, TanStack Query server state, custom runtime integration, and createRoutesStub testing. Use for client-owned React Router routing.
 ---
 
 # React Router
 
-Use React Router when the app owns router creation and route object configuration directly. Prefer route loaders/actions and router primitives over component-level request orchestration.
+Use React Router when the app owns router creation and route object configuration directly. Use React Router for routing and navigation; use TanStack Query for server reads, writes, caching, invalidation, and optimistic updates.
 
 ## Scope
 
-- Use `react-router` for route objects, route APIs, data hooks, forms, fetchers, redirects, and tests.
+- Use `react-router` for route objects, route APIs, links, navigation state, URL params, outlets, redirects, and tests.
 - Import `RouterProvider` from `react-router/dom`.
 - Configure routes with `createBrowserRouter([...])`.
-- Create the data router once outside the React tree.
+- Create the router once outside the React tree.
 - Use `patchRoutesOnNavigation` when routes must be added programmatically after router creation.
 
 ```tsx
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
 ## Route Objects
 
-Route objects define URL matching, rendering, data loading, mutations, revalidation, error handling, and metadata. Prefer `Component` for route components in route object configs.
+Route objects define URL matching, rendering, layout nesting, error handling, and metadata. Prefer `Component` for route components in route object configs.
 
 ```tsx
 import { Outlet, createBrowserRouter } from "react-router";
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         path: "projects",
         children: [
           { index: true, Component: ProjectsHome },
-          { path: ":projectId", loader: projectLoader, Component: Project },
+          { path: ":projectId", Component: Project },
         ],
       },
     ],
@@ -64,76 +64,34 @@ Routing rules:
 - Use pathless parent routes for layout without adding URL segments.
 - Use a route with `path` and no component to prefix child URLs without adding a layout.
 - Use `{ index: true }` for a default child at the parent URL.
-- Use `:param` dynamic segments; read them from loaders/actions via `params` and components via `useParams`.
+- Use `:param` dynamic segments; read them in components with `useParams`.
 - Use `?` for optional static or dynamic segments, and `/*` splats for catchall paths. Destructure splats as `const { "*": splat } = params`.
 
-## Loaders
+## Server State
 
-Loaders run before route components render during navigation. Put route-owned reads in loaders and read the result with `useLoaderData`.
+Use TanStack Query for server state. Route params, URL search params, and component state should feed query keys and mutation inputs.
 
 ```tsx
-import { createBrowserRouter, useLoaderData } from "react-router";
-
-const router = createBrowserRouter([
-  {
-    path: "/teams/:teamId",
-    loader: async ({ params }) => {
-      const team = await fetchTeam(params.teamId);
-      return { name: team.name };
-    },
-    Component: Team,
-  },
-]);
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router";
 
 function Team() {
-  const { name } = useLoaderData() as { name: string };
-  return <h1>{name}</h1>;
-}
-```
+  const { teamId } = useParams();
+  const team = useQuery({
+    queryKey: ["team", teamId],
+    queryFn: () => fetchTeam(teamId!),
+    enabled: Boolean(teamId),
+  });
 
-Prefer loader data over component effects for route reads. If loader freshness needs custom control, use `shouldRevalidate`; defining it opts out of the default behavior, so preserve default cases deliberately. Loaders normally revalidate when route params change, URL search params change, or an action returns a non-error status.
-
-Use `lazy` on a route when component, loader, or action code should be imported on demand. Use `handle` for route metadata consumed through `useMatches`.
-
-## Actions
-
-Actions own route mutations. When an action completes successfully, loader data on the page revalidates automatically.
-
-```tsx
-import { Form, createBrowserRouter, useActionData } from "react-router";
-
-const router = createBrowserRouter([
-  {
-    path: "/projects/:projectId",
-    loader: projectLoader,
-    action: async ({ request, params }) => {
-      const formData = await request.formData();
-      return updateProject(params.projectId, {
-        title: String(formData.get("title") ?? ""),
-      });
-    },
-    Component: Project,
-  },
-]);
-
-function Project() {
-  const actionData = useActionData() as { title?: string } | undefined;
   return (
-    <Form method="post">
-      <input name="title" />
-      <button type="submit">Save</button>
-      {actionData?.title ? <p>{actionData.title} saved</p> : null}
-    </Form>
+    <section>
+      {team.isPending ? <Spinner /> : <h1>{team.data.name}</h1>}
+    </section>
   );
 }
 ```
 
-Call actions with the API that matches the UX:
-
-- Use `<Form method="post" action="/path">` when the submission should navigate and add a browser history entry.
-- Use `useSubmit` for imperative submissions caused by non-click events such as timers or external callbacks.
-- Use `useFetcher` or `<fetcher.Form>` when submitting to actions or loading data without navigation.
-- Use `redirect()` inside loaders/actions for route decisions such as auth redirects or redirecting to a newly created record.
+Use `lazy` on a route when component code should be imported on demand. Use `handle` for route metadata consumed through `useMatches`.
 
 ## Navigation
 
@@ -141,48 +99,44 @@ Use declarative navigation first:
 
 - `<Link>` for ordinary links.
 - `<NavLink>` for links that need active, pending, or transitioning state; its `className`, `style`, and children props can be functions.
-- `<Form action="/search">` for URL-search-param navigation from user input.
-- `redirect()` from loaders/actions for data-driven navigation.
+- `useSearchParams` for URL-search-param navigation from user input.
+- `redirect()` for route-driven navigation.
 
-Reserve `useNavigate` for cases outside direct link or form interaction, such as inactivity timeouts or timed flows. Prefer links, forms, and redirects for ordinary navigation.
+Reserve `useNavigate` for cases outside direct link or form events, such as inactivity timeouts or timed flows. Prefer links, forms, and redirects for ordinary navigation.
 
 ## Pending And Optimistic UI
 
-Pending UI uses router state from navigation, links, forms, and fetchers.
+Pending UI uses router state for navigation and TanStack Query state for server requests.
 
-- Use `useNavigation()` for global route navigations and non-fetcher form submissions.
+- Use `useNavigation()` for global route navigations.
 - Use `NavLink` pending state for local link indicators.
-- Use `fetcher.state` for independent pending state around `fetcher.Form`.
-- Use `fetcher.formData` for optimistic UI when the submitted data predicts the next UI state.
+- Use query and mutation status for local server request indicators.
+- Use TanStack Query optimistic updates when the submitted data predicts the next UI state.
 
 ```tsx
-import { useFetcher, useNavigation } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigation, useParams } from "react-router";
 
 function GlobalPending() {
   const navigation = useNavigation();
   return navigation.location ? <Spinner /> : null;
 }
 
-function Task({ task }: { task: { title: string; status: string } }) {
-  const fetcher = useFetcher();
-  const isComplete = fetcher.formData
-    ? fetcher.formData.get("status") === "complete"
-    : task.status === "complete";
+function ProjectSummary() {
+  const { projectId } = useParams();
+  const project = useQuery({
+    queryKey: ["project", projectId],
+    queryFn: () => fetchProject(projectId!),
+    enabled: Boolean(projectId),
+  });
 
-  return (
-    <fetcher.Form method="post">
-      <span>{task.title}</span>
-      <button name="status" value={isComplete ? "incomplete" : "complete"}>
-        {isComplete ? "Mark Incomplete" : "Mark Complete"}
-      </button>
-    </fetcher.Form>
-  );
+  return project.isPending ? <InlineSpinner /> : <h2>{project.data.title}</h2>;
 }
 ```
 
 ## Custom Runtime Integration
 
-Use React Router as the browser runtime when integrating data APIs into custom bundler or server abstractions. Create route objects yourself or from an app-specific abstraction, then pass SSR hydration data if the server prepared it.
+Use React Router as the browser runtime when integrating routing APIs into custom bundler or server systems. Create route objects yourself or from an app-specific helper, then pass SSR hydration data if the server prepared it.
 
 ```tsx
 import { StrictMode } from "react";
@@ -205,29 +159,24 @@ hydrateRoot(
 
 ## Testing
 
-Use `createRoutesStub` to unit test reusable components that depend on router context such as `useLoaderData`, `useActionData`, `useMatches`, `<Link>`, or `<Form>`.
+Use `createRoutesStub` to unit test reusable components that depend on router context such as `useParams`, `useMatches`, `<Link>`, or `<Outlet>`.
 
 ```tsx
 import { createRoutesStub } from "react-router";
 import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 
-test("renders action errors", async () => {
+test("renders a routed component", async () => {
   const Stub = createRoutesStub([
     {
-      path: "/login",
-      Component: LoginForm,
-      action() {
-        return { errors: { username: "Username is required" } };
-      },
+      path: "/projects/:projectId",
+      Component: ProjectHeading,
     },
   ]);
 
-  render(<Stub initialEntries={["/login"]} />);
+  render(<Stub initialEntries={["/projects/123"]} />);
 
-  await userEvent.click(screen.getByText("Login"));
-  await waitFor(() => screen.findByText("Username is required"));
+  await waitFor(() => screen.findByText("Project 123"));
 });
 ```
 
-Prefer integration or E2E tests for full route behavior, especially when validating real route trees, loader/action wiring, redirects, or app shell behavior.
+Prefer integration or E2E tests for full route behavior, especially when validating real route trees, redirects, or app shell behavior.
