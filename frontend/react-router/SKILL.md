@@ -11,8 +11,8 @@ Use React Router when the app owns router creation and route object configuratio
 
 - Use `react-router` for route objects, route APIs, data hooks, forms, fetchers, redirects, and tests.
 - Import `RouterProvider` from `react-router/dom`.
-- Configure routes with `createBrowserRouter([...])`; do not introduce `@react-router/dev`, file-based route config, or route typegen unless explicitly requested.
-- Create the data router once outside the React tree. Do not hold it in React state.
+- Configure routes with `createBrowserRouter([...])`.
+- Create the data router once outside the React tree.
 - Use `patchRoutesOnNavigation` when routes must be added programmatically after router creation.
 
 ```tsx
@@ -63,7 +63,7 @@ Routing rules:
 - Use `children` for nested routes; parent components render child matches with `<Outlet />`.
 - Use pathless parent routes for layout without adding URL segments.
 - Use a route with `path` and no component to prefix child URLs without adding a layout.
-- Use `{ index: true }` for a default child at the parent URL; index routes cannot have children.
+- Use `{ index: true }` for a default child at the parent URL.
 - Use `:param` dynamic segments; read them from loaders/actions via `params` and components via `useParams`.
 - Use `?` for optional static or dynamic segments, and `/*` splats for catchall paths. Destructure splats as `const { "*": splat } = params`.
 
@@ -144,7 +144,7 @@ Use declarative navigation first:
 - `<Form action="/search">` for URL-search-param navigation from user input.
 - `redirect()` from loaders/actions for data-driven navigation.
 
-Reserve `useNavigate` for cases where the user is not directly interacting, such as inactivity timeouts or timed flows. Do not use it as a replacement for links, forms, or redirects.
+Reserve `useNavigate` for cases outside direct link or form interaction, such as inactivity timeouts or timed flows. Prefer links, forms, and redirects for ordinary navigation.
 
 ## Pending And Optimistic UI
 
