@@ -12,9 +12,9 @@ frontend:
   react-router: |-
     Run `sitefetch https://reactrouter.com/start/data/installation -m '/start/data/**'` to fetch React Router source docs for client-owned route object configuration.
 
-    If a fetched page says to refer to another React Router start page, fetch that referenced page too. Use only guidance that applies to route objects, navigation, pending UI, custom runtime integration, and testing.
+    If a fetched page says to refer to another React Router start page, fetch that referenced page too. Use only guidance that applies to route objects, navigation, pending UI, and testing.
 
-    Rework the fetched documentation into concise, task-oriented React Router guidance. Keep `frontend/react-router/SKILL.md` focused on setup, route objects, navigation, pending UI, TanStack Query server state, custom runtime integration, and testing. Use fetched documentation as source material only; keep raw sitefetch output out of the skill.
+    Rework the fetched documentation into concise, task-oriented React Router guidance. Keep `frontend/react-router/SKILL.md` focused on setup, route objects, navigation, pending UI, TanStack Query server state, and testing. Use fetched documentation as source material only; keep raw sitefetch output out of the skill.
 
   react-virtual: |-
     Run `sitefetch https://tanstack.com/virtual/latest/docs/introduction -m '/virtual/latest/docs/**' -e '**/examples/**'` to fetch the full package docs for source material only; do not include raw sitefetch output in the skill.

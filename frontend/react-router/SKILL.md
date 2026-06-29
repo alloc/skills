@@ -1,6 +1,6 @@
 ---
 name: react-router
-description: Build, update, or review React Router apps using createBrowserRouter, route objects, navigation APIs, pending UI, TanStack Query server state, custom runtime integration, and createRoutesStub testing. Use for client-owned React Router routing.
+description: Build, update, or review React Router apps using createBrowserRouter, route objects, navigation APIs, pending UI, TanStack Query server state, and createRoutesStub testing. Use for client-owned React Router routing.
 ---
 
 # React Router
@@ -132,29 +132,6 @@ function ProjectSummary() {
 
   return project.isPending ? <InlineSpinner /> : <h2>{project.data.title}</h2>;
 }
-```
-
-## Custom Runtime Integration
-
-Use React Router as the browser runtime when integrating routing APIs into custom bundler or server systems. Create route objects yourself or from an app-specific helper, then pass SSR hydration data if the server prepared it.
-
-```tsx
-import { StrictMode } from "react";
-import { hydrateRoot } from "react-dom/client";
-import { createBrowserRouter } from "react-router";
-import { RouterProvider } from "react-router/dom";
-import routes from "./routes";
-
-const router = createBrowserRouter(routes, {
-  hydrationData: window.__staticRouterHydrationData,
-});
-
-hydrateRoot(
-  document,
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-);
 ```
 
 ## Testing
