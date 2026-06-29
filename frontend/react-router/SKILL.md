@@ -1,11 +1,11 @@
 ---
 name: react-router
-description: Build, update, or review React Router Data Mode apps using createBrowserRouter, route objects, loaders, actions, fetchers, navigation APIs, pending UI, custom runtime integration, and createRoutesStub testing. Use for client-owned React Router data routers.
+description: Build, update, or review React Router apps using createBrowserRouter, route objects, loaders, actions, fetchers, navigation APIs, pending UI, custom runtime integration, and createRoutesStub testing. Use for client-owned React Router data routers.
 ---
 
 # React Router
 
-Use React Router Data Mode when the app owns router creation and route object configuration directly. Prefer route loaders/actions and router primitives over component-level request orchestration.
+Use React Router when the app owns router creation and route object configuration directly. Prefer route loaders/actions and router primitives over component-level request orchestration.
 
 ## Scope
 
@@ -91,7 +91,7 @@ function Team() {
 }
 ```
 
-Prefer loader data over component effects for route reads. If loader freshness needs custom control, use `shouldRevalidate`; defining it opts out of the default behavior, so preserve default cases deliberately. In Data Mode, loaders normally revalidate when route params change, URL search params change, or an action returns a non-error status.
+Prefer loader data over component effects for route reads. If loader freshness needs custom control, use `shouldRevalidate`; defining it opts out of the default behavior, so preserve default cases deliberately. Loaders normally revalidate when route params change, URL search params change, or an action returns a non-error status.
 
 Use `lazy` on a route when component, loader, or action code should be imported on demand. Use `handle` for route metadata consumed through `useMatches`.
 
@@ -148,7 +148,7 @@ Reserve `useNavigate` for cases where the user is not directly interacting, such
 
 ## Pending And Optimistic UI
 
-Data Mode pending UI uses router state from navigation, links, forms, and fetchers.
+Pending UI uses router state from navigation, links, forms, and fetchers.
 
 - Use `useNavigation()` for global route navigations and non-fetcher form submissions.
 - Use `NavLink` pending state for local link indicators.
@@ -182,7 +182,7 @@ function Task({ task }: { task: { title: string; status: string } }) {
 
 ## Custom Runtime Integration
 
-Use Data Mode as the browser runtime when integrating React Router data APIs into custom bundler or server abstractions. Create route objects yourself or from an app-specific abstraction, then pass SSR hydration data if the server prepared it.
+Use React Router as the browser runtime when integrating data APIs into custom bundler or server abstractions. Create route objects yourself or from an app-specific abstraction, then pass SSR hydration data if the server prepared it.
 
 ```tsx
 import { StrictMode } from "react";
