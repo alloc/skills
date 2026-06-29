@@ -49,7 +49,8 @@ Root `AGENTS.md` must let an agent decide which rulesets to read before acting w
 
 Rulesets are scoped obligations, not background essays.
 
-- Start each `.agents/rules/<topic>.md` with a heading and a concise "read this when..." trigger.
+- Start each `.agents/rules/<topic>.md` with a heading that names the scope.
+- Put concise "read this when..." trigger language in root routes or upstream dispatchers, not inside a ruleset the agent has already loaded.
 - State direct rules and local consequences or exceptions.
 - Route to narrower rulesets or workflow skills when scoped guidance needs internal dispatch.
 - Avoid restating critical root rules unless the scoped consequence matters.
@@ -88,7 +89,7 @@ rg -n "MUST read|Do not|AGENTS|\\.agents|CLAUDE|GEMINI|copilot|cursor" .
 
 - `AGENTS.md` is a signpost, not a handbook.
 - Every root route resolves to an existing ruleset.
-- Every ruleset has a clear trigger and scope.
+- Every root-routed ruleset has a clear trigger at the route and a clear scope in the ruleset.
 - Every skill is task-oriented and actionable.
 - Critical root rules are high-signal and globally applicable.
 - No stale guidance entry point contradicts the new structure.
