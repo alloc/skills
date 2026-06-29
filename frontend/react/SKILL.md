@@ -29,6 +29,7 @@ This skill assumes a client-only React 19 app. Do not suggest SSR, React Server 
 - `useMemo` and `useCallback` are banned unless they satisfy a documented third-party identity contract, fix a confirmed correctness bug, or address a measured performance regression. The adjacent comment must name the concrete reason. React Compiler is enabled; stable identity and speculative performance are not goals.
 - For new function components, accept `ref` as a normal prop. Do not introduce `forwardRef` in new code; leave existing `forwardRef` code alone unless already touching it.
 - Prefer `<Context value={...}>` over `<Context.Provider value={...}>` in new code.
+- Use `lazy()` at feature boundaries, not component boundaries. It is for loading less JavaScript, not making renders faster.
 
 ## Effect Alternatives
 
@@ -46,6 +47,7 @@ When an effect seems necessary, choose the matching ownership model instead.
 | Run lifecycle tied to a DOM node | Callback ref with cleanup |
 | Integrate browser APIs | Adapter hook |
 | Set simple document title or metadata | Render `<title>`, `<meta>`, or `<link>` |
+| Defer code the user may never need this session | `lazy()` plus a coherent `<Suspense>` boundary |
 
 If no row fits, question the component boundary before adding an escape hatch.
 
@@ -91,6 +93,45 @@ Render simple document metadata where it is known instead of mutating `document`
 Use `<Context value={value}>` for new providers. Read context with `use(Context)` only when a conditional context read is genuinely useful; do not use `use` for data fetching or promises in this codebase.
 
 Use `preload`, `preinit`, `preconnect`, and `prefetchDNS` from `react-dom` only for concrete resources or origins with known benefit. Do not scatter speculative resource hints.
+
+## Strategic Code Splitting
+
+Use `lazy()` to defer expensive feature code until the user actually needs it. Good lazy boundaries are routes, large modals, drawers, wizards, admin panels, dashboards, charts, maps, editors, previews, PDF viewers, media tools, 3D/canvas experiences, rarely used settings panels, authenticated-only features, and feature-flagged surfaces.
+
+Do not lazy-load buttons, form fields, icons, tiny presentational components, initial shell layout, always-visible content, or components whose fallback would cost more user patience than the chunk saves.
+
+Declare lazy components at module scope. Declaring them inside another component can reset state on re-renders.
+
+```tsx
+const BillingSettingsPanel = lazy(() => import("./BillingSettingsPanel"));
+
+function SettingsPage() {
+  return (
+    <Suspense fallback={<PanelSkeleton />}>
+      <BillingSettingsPanel />
+    </Suspense>
+  );
+}
+```
+
+Place `<Suspense>` where the product wants a loading sequence. Prefer one coherent feature fallback over scattered spinners around small children.
+
+`lazy()` loads code. TanStack Query loads server state. Keep `useQuery` and `useMutation` inside the lazy feature as usual; do not use Suspense as a reason to bypass Query.
+
+For high-value lazy features, preload code and data when the user shows intent, such as hover, focus, or navigation. Do that in event handlers, not effects.
+
+```tsx
+const loadBillingSettingsPanel = () => import("./BillingSettingsPanel");
+const BillingSettingsPanel = lazy(loadBillingSettingsPanel);
+
+function handlePointerEnter() {
+  void loadBillingSettingsPanel();
+  void queryClient.prefetchQuery({
+    queryKey: ["billing-settings"],
+    queryFn: getBillingSettings,
+  });
+}
+```
 
 ## State Standard
 
@@ -191,6 +232,9 @@ Reject new code that introduces:
 - New `forwardRef` wrappers instead of `ref` props.
 - Implicit-return callback refs such as `ref={(node) => (instance = node)}`.
 - Effects that mutate `document.title` or simple metadata.
+- `lazy()` for tiny, initial, always-visible, or purely presentational components.
+- Lazy components declared inside another component.
+- Fragmented Suspense boundaries that do not match a coherent product loading sequence.
 - `useMemo` or `useCallback` without an adjacent comment documenting an identity contract, correctness bug, or measured regression.
 - React Actions, `useActionState`, or form Actions for server-state writes that need Query cache consistency.
 - `use` for data fetching or promises.
