@@ -13,20 +13,20 @@ UI = f(state)
 
 Feature components render, derive display values, and call event handlers. Data flow, subscriptions, request lifecycles, browser integration, and cross-component coordination belong in TanStack Query, owner components, adapter hooks, or reusable infrastructure.
 
-This skill assumes a client-only React app. Do not suggest SSR, React Server Components, hydration-sensitive patterns, or `getServerSnapshot`.
+This skill assumes a client-only React app. Do not suggest SSR, React Server Components, or hydration-sensitive patterns.
 
 ## Core Rules
 
-- Feature/application components must not call `useEffect`.
+- Feature/application components must not call effect-family hooks: `useEffect`, `useLayoutEffect`, or `useInsertionEffect`.
 - Components must not hand-roll fetching, caching, retry, cancellation, refetching, or invalidation behavior.
 - Store only source-of-truth UI state. Derive filtered, sorted, grouped, selected, counted, labeled, permissioned, and boolean values during render.
+- Do not mirror query data into component state unless creating explicit draft or optimistic state with separate ownership.
 - User-caused behavior belongs in the event handler for the click, submit, drag, confirmation, selection, or input change that caused it.
 - Do not create state whose only purpose is to trigger later behavior.
 - Reset component state with ownership boundaries and `key`, not synchronization logic.
 - Use refs or callback refs for imperative DOM access.
-- External subscriptions must use `useSyncExternalStore` behind an adapter hook.
-- Browser APIs that need setup or teardown belong in reusable adapter hooks. Feature components consume the hook.
-- `useMemo` and `useCallback` are banned unless they fix a confirmed correctness bug and the adjacent comment names that bug. React Compiler is enabled; stable identity and speculative performance are not goals.
+- External stores, event sources, and browser APIs that need setup or teardown belong in reusable adapter hooks. Feature components consume the hook.
+- `useMemo` and `useCallback` are banned unless they satisfy a documented third-party identity contract, fix a confirmed correctness bug, or address a measured performance regression. The adjacent comment must name the concrete reason. React Compiler is enabled; stable identity and speculative performance are not goals.
 
 ## Effect Alternatives
 
@@ -40,7 +40,7 @@ When an effect seems necessary, choose the matching ownership model instead.
 | Write server state | TanStack Query `useMutation` from a handler |
 | Reset local state | Component `key` |
 | Keep duplicated values aligned | One source of truth |
-| Subscribe to external state | Adapter hook using `useSyncExternalStore` |
+| Subscribe to or listen to external systems | Adapter hook |
 | Imperatively touch the DOM | Ref or callback ref |
 | Integrate browser APIs | Adapter hook |
 
@@ -66,6 +66,8 @@ TanStack Query owns server state. Components consume query results and invoke mu
 
 Use `useQuery` for reads and `useMutation` for writes. Put network writes in event handlers, and put cache invalidation in mutation callbacks or shared mutation helpers.
 
+Query keys must encode every value that changes the read. Use `enabled` or conditional query inputs for conditional reads, not state flags and effects.
+
 ```tsx
 const user = useQuery({
   queryKey: ["user", id],
@@ -88,7 +90,7 @@ Do not use component state to trigger fetches, saves, invalidation, or refetchin
 
 ## Adapter Hooks
 
-Wrap unavoidable React or browser integration once, then expose a domain-level hook to components.
+Wrap unavoidable React, browser, or third-party integration once, then expose a domain-level hook to components.
 
 Good component APIs:
 
@@ -98,13 +100,7 @@ const size = useElementSize(ref);
 const visible = useIntersection(ref);
 ```
 
-Adapter hooks may use the minimal React escape hatch internally when render derivation, handlers, refs, TanStack Query, `key`, or `useSyncExternalStore` cannot express the integration cleanly. Keep that complexity out of feature components.
-
-For external subscriptions:
-
-- Use `useSyncExternalStore(subscribe, getSnapshot)`.
-- Do not subscribe from an effect.
-- Do not pass `getServerSnapshot`.
+Adapter hooks may use effect-family hooks only to synchronize with non-React systems. They must expose a declarative API and must not become feature-specific orchestration buckets.
 
 ## Manual Memoization
 
@@ -118,7 +114,7 @@ function handleClick() {
 }
 ```
 
-Manual `useMemo` or `useCallback` requires a confirmed correctness bug, not a performance guess. The required adjacent comment must state the concrete failure:
+Manual `useMemo` or `useCallback` requires a documented third-party identity contract, a confirmed correctness bug, or a measured performance regression. The required adjacent comment must state the concrete reason:
 
 ```tsx
 // Required: AG Grid treats a new columns array as a schema reset.
@@ -132,14 +128,15 @@ No bug comment means no memoization hook.
 
 Reject new code that introduces:
 
-- `useEffect` in feature/application components.
+- `useEffect`, `useLayoutEffect`, or `useInsertionEffect` in feature/application components.
 - Component-level manual fetching or request lifecycle state.
 - Derived or duplicated state.
+- Query data mirrored into local component state without explicit draft or optimistic ownership.
 - Effect-driven state machines.
 - State flags that exist only to trigger behavior.
-- `useMemo` or `useCallback` without a confirmed-bug comment.
-- External subscriptions implemented with effects.
-- SSR, RSC, hydration-specific code, or `getServerSnapshot`.
+- `useMemo` or `useCallback` without an adjacent comment documenting an identity contract, correctness bug, or measured regression.
+- External subscriptions, event listeners, or browser integration implemented in feature components.
+- SSR, RSC, or hydration-specific code.
 
 Prefer components shaped like this:
 
