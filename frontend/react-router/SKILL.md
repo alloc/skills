@@ -1,6 +1,6 @@
 ---
 name: react-router
-description: Build, update, or review React Router Data Mode apps using createBrowserRouter, route objects, loaders, actions, fetchers, navigation APIs, pending UI, custom framework integration, and createRoutesStub testing. Use for client-owned React Router data routers; do not use for Framework Mode route modules unless the user explicitly asks.
+description: Build, update, or review React Router Data Mode apps using createBrowserRouter, route objects, loaders, actions, fetchers, navigation APIs, pending UI, custom runtime integration, and createRoutesStub testing. Use for client-owned React Router data routers.
 ---
 
 # React Router
@@ -11,7 +11,7 @@ Use React Router Data Mode when the app owns router creation and route object co
 
 - Use `react-router` for route objects, route APIs, data hooks, forms, fetchers, redirects, and tests.
 - Import `RouterProvider` from `react-router/dom`.
-- Configure routes with `createBrowserRouter([...])`; do not introduce `@react-router/dev`, file-based route config, or Framework Mode typegen unless explicitly requested.
+- Configure routes with `createBrowserRouter([...])`; do not introduce `@react-router/dev`, file-based route config, or route typegen unless explicitly requested.
 - Create the data router once outside the React tree. Do not hold it in React state.
 - Use `patchRoutesOnNavigation` when routes must be added programmatically after router creation.
 
@@ -148,7 +148,7 @@ Reserve `useNavigate` for cases where the user is not directly interacting, such
 
 ## Pending And Optimistic UI
 
-Data Mode pending UI uses the same primitives as Framework Mode.
+Data Mode pending UI uses router state from navigation, links, forms, and fetchers.
 
 - Use `useNavigation()` for global route navigations and non-fetcher form submissions.
 - Use `NavLink` pending state for local link indicators.
@@ -180,7 +180,7 @@ function Task({ task }: { task: { title: string; status: string } }) {
 }
 ```
 
-## Custom Framework Integration
+## Custom Runtime Integration
 
 Use Data Mode as the browser runtime when integrating React Router data APIs into custom bundler or server abstractions. Create route objects yourself or from an app-specific abstraction, then pass SSR hydration data if the server prepared it.
 
@@ -202,8 +202,6 @@ hydrateRoot(
   </StrictMode>,
 );
 ```
-
-Keep Framework Mode-only guidance out of Data Mode work unless it is explicitly shared by the Data Mode docs.
 
 ## Testing
 
