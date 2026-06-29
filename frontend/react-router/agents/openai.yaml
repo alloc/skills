@@ -1,4 +1,4 @@
 interface:
   display_name: "React Router"
   short_description: "Build React Router route trees"
-  default_prompt: "Use $react-router to add routing, navigation, params, and pending UI."
+  default_prompt: "Use $react-router to add routing, typed route builders, URL params, and pending UI."
