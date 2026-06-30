@@ -5,7 +5,7 @@ description: Write, review, debug, or explain Vercel AI SDK code where v7 APIs o
 
 # AI SDK v7
 
-Prefer v7-native APIs and result semantics in new examples and reviews. AI SDK v7 changed package baselines, naming, prompt handling, telemetry, streaming, tool context, and multi-step result shapes.
+Prefer v7-native APIs and result semantics when writing new AI SDK code or reviewing existing AI SDK code. AI SDK v7 changed package baselines, naming, prompt handling, telemetry, streaming, tool context, and multi-step result shapes.
 
 For full project migrations, use the official migration guide or codemods separately. For normal coding and review tasks, assume AI SDK concepts are already familiar and apply only the v7-specific deltas.
 
