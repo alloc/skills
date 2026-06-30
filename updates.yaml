@@ -27,9 +27,9 @@ typescript:
   ai-sdk: |-
     Run `sitefetch https://ai-sdk.dev/docs/migration-guides/migration-guide-7-0 --limit 0` to fetch the AI SDK v7 migration documentation for source material only; do not include raw sitefetch output in the skill.
 
-    Rework the fetched documentation into a concise v7-focused correction layer for agents that already understand AI SDK concepts. Keep all guidance in `typescript/ai-sdk/SKILL.md`, including exact API names, behavior changes, package notes, and provider-specific details.
+    Rework the fetched documentation into concise greenfield AI SDK v7 guidance for agents that already understand AI SDK concepts. Keep all guidance in `typescript/ai-sdk/SKILL.md`, including current API names, package notes, result semantics, and provider-specific details.
 
-    Do not turn the skill into a step-by-step migration guide. Mention the official migration guide or codemods only as external tools for users who explicitly ask for migration execution.
+    Do not turn the skill into a step-by-step migration guide or v6-to-v7 comparison document. Assume v6 was never used, and teach v7 as the baseline for new projects.
 
   cmd-ts: |-
     Run `sitefetch https://cmd-ts.vercel.app/ -o /tmp/cmd-ts-docs.json` to fetch the full cmd-ts docs for source material only; do not include raw sitefetch output in the skill.

@@ -1,4 +1,4 @@
 interface:
   display_name: "AI SDK"
-  short_description: "Apply AI SDK v7 API and behavior changes"
-  default_prompt: "Use $ai-sdk to review this AI SDK code for v7-native APIs and behavior."
+  short_description: "Design greenfield AI SDK v7 code"
+  default_prompt: "Use $ai-sdk to design a greenfield AI SDK v7 implementation."
