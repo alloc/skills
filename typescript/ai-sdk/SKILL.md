@@ -1,13 +1,13 @@
 ---
 name: ai-sdk
-description: Use when writing, reviewing, debugging, or explaining Vercel AI SDK code where v7 APIs or behavior matter, especially Node/ESM requirements, instructions prompts, lifecycle events, telemetry, streaming, tool context, UI messages, multi-step results, MCP transport, Vue, and OpenAI/Anthropic/Google provider changes. This is a focused AI SDK v7 correction layer, not a v6-to-v7 migration walkthrough.
+description: Write, review, debug, or explain Vercel AI SDK code where v7 APIs or behavior matter, especially Node/ESM requirements, instructions prompts, lifecycle events, telemetry, streaming, tool context, UI messages, multi-step results, MCP transport, Vue, and OpenAI/Anthropic/Google provider changes.
 ---
 
 # AI SDK v7
 
-Treat this as a compact correction layer for AI SDK knowledge that may still reflect v6. Prefer v7-native APIs and result semantics in new examples and reviews.
+Prefer v7-native APIs and result semantics in new examples and reviews. AI SDK v7 changed package baselines, naming, prompt handling, telemetry, streaming, tool context, and multi-step result shapes.
 
-Do not answer as though this were a migration guide. If the user asks for a full migration plan, use the official migration guide or codemods separately. For normal coding/review tasks, assume the agent already knows AI SDK concepts and only apply the v7-specific deltas.
+For full project migrations, use the official migration guide or codemods separately. For normal coding and review tasks, assume AI SDK concepts are already familiar and apply only the v7-specific deltas.
 
 ## First Checks
 
@@ -165,11 +165,3 @@ Use the `End` naming consistently:
 - OpenAI Responses sets `providerOptions.openai.reasoningSummary` to `"detailed"` by default when reasoning is enabled. Set it to `null` to disable summaries.
 - Anthropic `providerMetadata.anthropic.cacheCreationInputTokens` was removed. Use `usage.inputTokenDetails.cacheWriteTokens`; raw Anthropic usage remains under `finalStep.providerMetadata?.anthropic?.usage`.
 - `@ai-sdk/google` removed the `GoogleGenerativeAI` affix from provider type/class/function names, e.g. `createGoogle` and `GoogleProvider`. The `google` entry point is unchanged.
-
-## Source
-
-This skill was distilled from the AI SDK v7 migration documentation fetched with:
-
-```sh
-sitefetch https://ai-sdk.dev/docs/migration-guides/migration-guide-7-0 --limit 0
-```
