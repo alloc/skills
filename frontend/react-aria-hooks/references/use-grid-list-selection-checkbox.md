@@ -49,4 +49,3 @@ Use `useGridListSelectionCheckbox` for the grid list selection checkbox part of 
 - State management
 - Example
 - Usage
-- Internationalization

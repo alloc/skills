@@ -57,4 +57,3 @@ Use `useTableRowGroup` for the table row group part of the `useTable` pattern. T
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

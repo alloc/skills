@@ -21,8 +21,6 @@ Provides the accessibility implementation for a color swatch component. A color 
 
 ## Source Highlights
 
-- **Accessible** - Includes a localized color description for screen reader users (e.g. "dark vibrant blue"). Uses the [img](https://w3c.github.io/aria/#img) role with a custom `aria-roledescription` of "color swatch".
-- **International** - Accessible color description and role description are translated into over 30 languages.
 
 ## Implementation Guidance
 

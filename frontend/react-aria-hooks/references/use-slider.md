@@ -46,4 +46,3 @@ Provides the behavior and accessibility implementation for a slider component re
 - Anatomy
 - Examples
 - Usage
-- Internationalization

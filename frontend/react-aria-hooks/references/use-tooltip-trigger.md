@@ -45,4 +45,3 @@ Provides the behavior and accessibility implementation for a tooltip trigger, e.
 - Anatomy
 - Example
 - Usage
-- Internationalization

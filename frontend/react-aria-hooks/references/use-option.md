@@ -58,4 +58,3 @@ Use `useOption` for the option part of the `useListBox` pattern. The upstream pa
 - Asynchronous loading
 - Links
 - Disabled items
-- Internationalization

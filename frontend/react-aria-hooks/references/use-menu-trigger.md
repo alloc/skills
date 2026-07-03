@@ -59,4 +59,3 @@ Use `useMenuTrigger` for the menu trigger part of the `useMenu` pattern. The ups
 - Disabled items
 - Links
 - Controlled open state
-- Internationalization

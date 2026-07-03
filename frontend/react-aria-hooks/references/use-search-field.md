@@ -25,7 +25,7 @@ Provides the behavior and accessibility implementation for a search field.
 - Visual and ARIA labeling support
 - Keyboard submit handling via the Enter key
 - Keyboard support for clearing the search field with the Escape key
-- Custom clear button support with internationalized label for accessibility
+- Custom clear button support with an accessible label; use Lingui for custom clear-button copy
 - Support for native HTML constraint validation with customizable UI, custom validation functions, realtime validation, and server-side validation errors
 
 ## Implementation Guidance
@@ -41,4 +41,3 @@ Provides the behavior and accessibility implementation for a search field.
 - Example
 - Styling
 - Usage
-- Internationalization

@@ -44,4 +44,3 @@ Use `useTooltip` for the tooltip part of the `useTooltipTrigger` pattern. The up
 - Anatomy
 - Example
 - Usage
-- Internationalization

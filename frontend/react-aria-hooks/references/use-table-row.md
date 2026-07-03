@@ -59,4 +59,3 @@ Use `useTableRow` for the table row part of the `useTable` pattern. The upstream
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

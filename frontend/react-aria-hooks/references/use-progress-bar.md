@@ -23,7 +23,6 @@ Provides the accessibility implementation for a progress bar component. Progress
 
 - Exposed to assistive technology as a progress bar via ARIA
 - Labeling support for accessibility
-- Internationalized number formatting as a percentage or value
 - Determinate and indeterminate progress support
 
 ## Implementation Guidance
@@ -38,4 +37,3 @@ Provides the accessibility implementation for a progress bar component. Progress
 - Example
 - Circular example
 - Usage
-- Internationalization

@@ -57,4 +57,3 @@ Use `useTableSelectionCheckbox` for the table selection checkbox part of the `us
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

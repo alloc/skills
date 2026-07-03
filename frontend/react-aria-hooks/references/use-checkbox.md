@@ -41,4 +41,3 @@ Provides the behavior and accessibility implementation for a checkbox component.
 - Styling
 - Styled examples
 - Usage
-- Internationalization

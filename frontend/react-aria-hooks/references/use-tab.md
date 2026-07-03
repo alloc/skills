@@ -48,4 +48,3 @@ Use `useTab` for the tab part of the `useTabList` pattern. The upstream page des
 - Example
 - Styled examples
 - Usage
-- Internationalization

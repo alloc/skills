@@ -21,11 +21,6 @@ Provides the behavior and accessibility implementation for a number field compon
 
 ## Source Highlights
 
-- Support for internationalized number formatting and parsing including decimals, percentages, currency values, and units
-- Support for the Latin, Arabic, and Han positional decimal numbering systems in [over 30 locales](https://react-aria.adobe.com/quality#supported-locales)
-- Automatically detects the numbering system used and supports parsing numbers not in the default numbering system for the locale
-- Support for multiple currency formats including symbol, code, and name in standard or accounting notation
-- Validates keyboard entry as the user types so that only valid numeric input according to the locale and numbering system is accepted
 - Handles composed input from input method editors, e.g. Pinyin
 - Automatically selects an appropriate software keyboard for mobile according to the current platform and allowed values
 - Supports rounding to a configurable number of fraction digits
@@ -42,4 +37,3 @@ Provides the behavior and accessibility implementation for a number field compon
 - Anatomy
 - Example
 - Usage
-- Internationalization

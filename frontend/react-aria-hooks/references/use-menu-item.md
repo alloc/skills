@@ -59,4 +59,3 @@ Use `useMenuItem` for the menu item part of the `useMenu` pattern. The upstream 
 - Disabled items
 - Links
 - Controlled open state
-- Internationalization

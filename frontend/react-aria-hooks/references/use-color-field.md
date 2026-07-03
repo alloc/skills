@@ -43,4 +43,3 @@ Provides the behavior and accessibility implementation for a color field compone
 - Anatomy
 - Example
 - Usage
-- Internationalization

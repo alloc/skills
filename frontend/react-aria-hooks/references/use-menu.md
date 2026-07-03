@@ -57,4 +57,3 @@ Provides the behavior and accessibility implementation for a menu component. A m
 - Disabled items
 - Links
 - Controlled open state
-- Internationalization

@@ -1,21 +1,29 @@
 ---
 name: react-aria-hooks
-description: Use React Aria and React Stately hooks to build accessible custom React components, including choosing the right hook, wiring refs/state/props, preserving ARIA and keyboard behavior, and checking hook-specific guidance in bundled references.
+description: Use React Aria and React Stately hooks to build accessible custom React SPA components with Lingui-managed i18n, including choosing the right hook, wiring refs/state/props, preserving ARIA and keyboard behavior, and checking hook-specific guidance in bundled references.
 ---
 
 # React Aria Hooks
 
-Use React Aria hooks as the owner of accessibility semantics, keyboard behavior, focus management, collection navigation, overlays, drag and drop, and localized date or color interactions. Use React Stately hooks as the owner of state machines, collection state, selection, validation, queues, and async list data.
+Use React Aria hooks as the owner of accessibility semantics, keyboard behavior, focus management, collection navigation, overlays, drag and drop, and date, time, and color interactions. Use React Stately hooks as the owner of state machines, collection state, selection, validation, queues, and async list data.
+
+## Project Defaults
+
+- Build for SPA apps only. Do not introduce `SSRProvider`, `useIsSSR`, SSR-specific id wiring, or server-rendering guidance.
+- Use Lingui for user-facing i18n, translated labels, validation text, formatting, and product copy. Do not use React Aria's `I18nProvider`, `useLocale`, `useDateFormatter`, `useNumberFormatter`, `useCollator`, or `useFilter`.
+- Pass Lingui-translated strings into React Aria label, description, and error-message props when user-facing copy is needed.
+- React Aria's internal localized accessibility strings are acceptable for hidden generic controls unless product-specific copy is required.
 
 ## Workflow
 
 1. Identify the component pattern and read the matching hook reference in `references/` before implementing or changing behavior.
 2. Use the hook pair the docs expect: behavior hooks from `react-aria`, state hooks from `react-stately`, and date values from `@internationalized/date` where date and time hooks require them.
-3. Spread every returned props object onto the named DOM slot, attach the same ref passed into the hook, and merge props with existing app handlers instead of overwriting them.
-4. Keep labels, descriptions, validation state, disabled state, ids, and relationships wired through the hook props. Do not hand-roll ARIA attributes when the hook returns them.
-5. For collections, render from the React Stately collection/state APIs and pass the same state to parent and item hooks. Keep item keys stable.
-6. For overlays and triggers, keep trigger props, overlay props, dismissal behavior, focus restoration, and portal placement together.
-7. Validate with keyboard, pointer, touch where relevant, screen-reader naming, focus order, disabled/invalid states, and controlled/uncontrolled state behavior.
+3. Read helper references before using low-level utilities: `mergeProps`, focus helpers, `VisuallyHidden`, `Overlay`, `DismissButton`, and `HiddenSelect`.
+4. Spread every returned props object onto the named DOM slot, attach the same ref passed into the hook, and merge props with existing app handlers instead of overwriting them.
+5. Keep labels, descriptions, validation state, disabled state, ids, and relationships wired through the hook props. Do not hand-roll ARIA attributes when the hook returns them.
+6. For collections, render from the React Stately collection/state APIs and pass the same state to parent and item hooks. Keep item keys stable.
+7. For overlays and triggers, keep trigger props, overlay props, dismissal behavior, focus restoration, and portal placement together.
+8. Validate with keyboard, pointer, touch where relevant, screen-reader naming, focus order, disabled/invalid states, and controlled/uncontrolled state behavior.
 
 ## Reference Navigation
 
@@ -95,6 +103,8 @@ Each hook has its own document under `references/`. Search by hook name or use t
 
 ### Drag And Drop
 
+- [useDrag](./references/use-drag.md)
+- [useDrop](./references/use-drop.md)
 - [useDraggableCollection](./references/use-draggable-collection.md)
 - [useDraggableCollectionState](./references/use-draggable-collection-state.md)
 - [useDraggableItem](./references/use-draggable-item.md)
@@ -102,6 +112,20 @@ Each hook has its own document under `references/`. Search by hook name or use t
 - [useDroppableCollection](./references/use-droppable-collection.md)
 - [useDroppableCollectionState](./references/use-droppable-collection-state.md)
 - [useDroppableItem](./references/use-droppable-item.md)
+
+### Event And Focus Hooks
+
+- [useClipboard](./references/use-clipboard.md)
+- [useFocus](./references/use-focus.md)
+- [useFocusManager](./references/use-focus-manager.md)
+- [useFocusRing](./references/use-focus-ring.md)
+- [useFocusVisible](./references/use-focus-visible.md)
+- [useFocusWithin](./references/use-focus-within.md)
+- [useHover](./references/use-hover.md)
+- [useKeyboard](./references/use-keyboard.md)
+- [useLongPress](./references/use-long-press.md)
+- [useMove](./references/use-move.md)
+- [usePress](./references/use-press.md)
 
 ### Feedback And Structure
 
@@ -158,9 +182,27 @@ Each hook has its own document under `references/`. Search by hook name or use t
 - [useTooltipTrigger](./references/use-tooltip-trigger.md)
 - [useTooltipTriggerState](./references/use-tooltip-trigger-state.md)
 
+### Utility Hooks And Helpers
+
+- [DismissButton](./references/dismiss-button.md)
+- [FocusRing](./references/focus-ring.md)
+- [FocusScope](./references/focus-scope.md)
+- [HiddenSelect](./references/hidden-select.md)
+- [Overlay](./references/overlay.md)
+- [VisuallyHidden](./references/visually-hidden.md)
+- [mergeProps](./references/merge-props.md)
+- [useField](./references/use-field.md)
+- [useId](./references/use-id.md)
+- [useLabel](./references/use-label.md)
+- [useLandmark](./references/use-landmark.md)
+- [useObjectRef](./references/use-object-ref.md)
+- [useVisuallyHidden](./references/use-visually-hidden.md)
+
 ## Review Gate
 
 - Do not remove returned props, refs, ids, or event handlers unless the replacement preserves the same accessibility contract.
 - Do not split parent and item hooks across unrelated state owners.
 - Do not replace React Aria collection, overlay, date, color, or drag-and-drop behavior with custom DOM event code unless the hook cannot model the product requirement.
-- Recheck the hook reference before changing controlled props, selection behavior, validation, locale, virtualization, drag payloads, or overlay dismissal.
+- Do not use React Aria i18n or SSR utilities in this skill; use Lingui and SPA assumptions instead.
+- Do not omit `Overlay`, `DismissButton`, `HiddenSelect`, `FocusScope`, or `VisuallyHidden` when the hook pattern needs the accessibility behavior those helpers provide.
+- Recheck the hook reference before changing controlled props, selection behavior, validation, date value handling, virtualization, drag payloads, or overlay dismissal.

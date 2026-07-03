@@ -23,7 +23,6 @@ Provides the behavior and accessibility implementation for a breadcrumbs compone
 
 - Support for mouse, touch, and keyboard interactions on breadcrumbs
 - Support for navigation links via `<a>` elements or custom element types via ARIA
-- Localized ARIA labeling support for landmark navigation region
 - Support for disabled breadcrumbs
 
 ## Implementation Guidance

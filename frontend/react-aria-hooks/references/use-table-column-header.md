@@ -58,4 +58,3 @@ Use `useTableColumnHeader` for the table column header part of the `useTable` pa
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

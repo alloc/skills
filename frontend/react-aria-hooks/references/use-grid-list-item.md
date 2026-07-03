@@ -51,4 +51,3 @@ Use `useGridListItem` for the grid list item part of the `useGridList` pattern. 
 - State management
 - Example
 - Usage
-- Internationalization

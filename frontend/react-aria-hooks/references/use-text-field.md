@@ -39,4 +39,3 @@ Provides the behavior and accessibility implementation for a text field.
 - Anatomy
 - Example
 - Usage
-- Internationalization

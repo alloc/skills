@@ -45,4 +45,3 @@ Provides the behavior and accessibility implementation for a combo box component
 - Example
 - Styled examples
 - Usage
-- Internationalization

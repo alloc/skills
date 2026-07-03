@@ -42,4 +42,3 @@ Provides the behavior and accessibility implementation for a color wheel compone
 - Anatomy
 - Example
 - Usage
-- Internationalization

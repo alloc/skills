@@ -23,7 +23,6 @@ Provides the accessibility implementation for a meter component. Meters represen
 
 - Exposed to assistive technology as a `meter` via ARIA, with fallback to `progressbar` where unsupported
 - Labeling support for accessibility
-- Internationalized number formatting as a percentage or value
 
 ## Implementation Guidance
 
@@ -37,4 +36,3 @@ Provides the accessibility implementation for a meter component. Meters represen
 - Example
 - Styled examples
 - Usage
-- Internationalization

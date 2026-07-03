@@ -38,4 +38,3 @@ Provides the behavior and accessibility implementation for a toolbar. A toolbar 
 - Features
 - Anatomy
 - Example
-- Internationalization

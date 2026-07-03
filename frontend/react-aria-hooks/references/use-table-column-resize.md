@@ -58,4 +58,3 @@ Use `useTableColumnResize` for the table column resize part of the `useTable` pa
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

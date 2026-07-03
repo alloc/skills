@@ -24,7 +24,6 @@ Provides state management for a date picker component. A date picker combines a 
 - Use this hook as the state owner for the matching React Aria behavior hook rather than recreating selection, open state, validation, or collection logic by hand.
 - Keep keys stable across renders for collection items, especially when data can be inserted, removed, sorted, filtered, or loaded asynchronously.
 - Use the hook result as the single source of truth for related child hooks and rendered collection items.
-- Use `@internationalized/date` values and preserve locale, calendar, time zone, min/max, disabled, and unavailable-date constraints.
 
 ## Upstream Sections To Recheck
 

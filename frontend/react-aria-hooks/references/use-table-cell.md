@@ -59,4 +59,3 @@ Use `useTableCell` for the table cell part of the `useTable` pattern. The upstre
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

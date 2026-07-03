@@ -56,4 +56,3 @@ Provides the behavior and accessibility implementation for a listbox component. 
 - Asynchronous loading
 - Links
 - Disabled items
-- Internationalization

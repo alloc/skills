@@ -46,4 +46,3 @@ Provides the behavior and accessibility implementation for a radio group compone
 - Styling
 - Styled examples
 - Usage
-- Internationalization

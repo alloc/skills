@@ -56,4 +56,3 @@ Use `useMenuSection` for the menu section part of the `useMenu` pattern. The ups
 - Disabled items
 - Links
 - Controlled open state
-- Internationalization

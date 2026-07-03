@@ -46,4 +46,3 @@ Provides the behavior and accessibility implementation for a select component. A
 - Example
 - Styled examples
 - Usage
-- Internationalization

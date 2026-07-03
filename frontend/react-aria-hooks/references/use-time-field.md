@@ -21,9 +21,8 @@ Provides the behavior and accessibility implementation for a time field componen
 
 ## Source Highlights
 
-- **International** - Support for locale-specific formatting, number systems, hour cycles, and right-to-left layout.
 - **Time zone aware** - Times can optionally include a time zone. All modifications follow time zone rules such as daylight saving time.
-- **Accessible** - Each time unit is displayed as an individually focusable and editable segment, which allows users an easy way to edit times using the keyboard, in any format and locale.
+- **Accessible** - Each time unit is displayed as an individually focusable and editable segment, which allows users an easy way to edit times using the keyboard in supported time formats.
 - **Touch friendly** - Time segments are editable using an easy to use numeric keypad, and all interactions are accessible using touch-based screen readers.
 - **Customizable** - As with all of React Aria, the DOM structure and styling of all elements can be fully customized.
 
@@ -33,7 +32,6 @@ Provides the behavior and accessibility implementation for a time field componen
 - Pass the ref for the rendered DOM element into the hook and attach that same ref to the element receiving the returned props.
 - Create the matching `react-stately` state object once in the owning component and pass that same state to related item, cell, or trigger hooks.
 - Preserve user-provided labels and descriptions; icon-only controls still need `aria-label` or `aria-labelledby`.
-- Use `@internationalized/date` values and preserve locale, calendar, time zone, min/max, disabled, and unavailable-date constraints.
 
 ## Related Hooks From The Same Source Page
 

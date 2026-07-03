@@ -40,4 +40,3 @@ Provides the behavior and accessibility implementation for a switch component. A
 - Anatomy
 - Example
 - Usage
-- Internationalization

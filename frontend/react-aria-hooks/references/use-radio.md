@@ -48,4 +48,3 @@ Use `useRadio` for the radio part of the `useRadioGroup` pattern. The upstream p
 - Styling
 - Styled examples
 - Usage
-- Internationalization

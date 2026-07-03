@@ -47,4 +47,3 @@ Use `useTabPanel` for the tab panel part of the `useTabList` pattern. The upstre
 - Example
 - Styled examples
 - Usage
-- Internationalization

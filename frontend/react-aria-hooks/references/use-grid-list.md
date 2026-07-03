@@ -49,4 +49,3 @@ Provides the behavior and accessibility implementation for a list component with
 - State management
 - Example
 - Usage
-- Internationalization

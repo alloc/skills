@@ -57,4 +57,3 @@ Use `useTableSelectAllCheckbox` for the table select all checkbox part of the `u
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

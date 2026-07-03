@@ -30,4 +30,3 @@ beta # useAutocomplete Provides the behavior and accessibility implementation fo
 
 - Features
 - Anatomy
-- Internationalization

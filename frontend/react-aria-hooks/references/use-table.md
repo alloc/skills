@@ -57,4 +57,3 @@ Provides the behavior and accessibility implementation for a table component. A 
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

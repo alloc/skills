@@ -47,4 +47,3 @@ Provides the behavior and accessibility implementation for a tab list. Tabs orga
 - Example
 - Styled examples
 - Usage
-- Internationalization

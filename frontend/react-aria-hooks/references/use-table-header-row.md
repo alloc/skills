@@ -59,4 +59,3 @@ Use `useTableHeaderRow` for the table header row part of the `useTable` pattern.
 - Example
 - Usage
 - Resizable Columns
-- Internationalization

@@ -55,4 +55,3 @@ Use `useListBoxSection` for the list box section part of the `useListBox` patter
 - Asynchronous loading
 - Links
 - Disabled items
-- Internationalization

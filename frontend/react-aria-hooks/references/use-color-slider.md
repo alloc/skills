@@ -42,4 +42,3 @@ Provides the behavior and accessibility implementation for a color slider compon
 - Anatomy
 - Example
 - Usage
-- Internationalization

@@ -48,4 +48,3 @@ Use `useSliderThumb` for the slider thumb part of the `useSlider` pattern. The u
 - Anatomy
 - Examples
 - Usage
-- Internationalization
