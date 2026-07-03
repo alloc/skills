@@ -1,6 +1,6 @@
 ---
 name: postgres-sqlite-best-practices
-description: Best practices for designing, writing, reviewing, and optimizing PostgreSQL and SQLite databases. Use when Codex is creating schemas, queries, migrations, transactions, indexes, or data-access code for Postgres, SQLite, or SQL that should stay portable between them.
+description: Design, review, and optimize PostgreSQL and SQLite schemas, queries, migrations, transactions, indexes, and data-access code, especially when SQL should remain portable between both engines.
 ---
 
 # Postgres and SQLite Best Practices
