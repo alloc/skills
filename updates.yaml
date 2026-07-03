@@ -1,4 +1,9 @@
 frontend:
+  motion-react: |-
+    Run `sitefetch https://motion.dev/docs/react -m '/docs/react-*' --link-source-selector '[id="learn-mobile-sidebar"]'` to fetch the React docs for source material only; do not include raw sitefetch output in the skill.
+
+    Rework the fetched documentation into concise, task-oriented guidance. Keep `frontend/motion-react/SKILL.md` focused on Motion primitives only, and put setup, migrations, accessibility, bundle-size, Motion+, integrations, and other non-primitive pages into individual guide files that closely match the source pages. Include a signpost in `SKILL.md` pointing to those guide files.
+
   lingui: |-
     Run `sitefetch https://lingui.dev/tutorials/javascript -m '/ref/macro' -m '/ref/vite-plugin' -m '/ref/conf' -m '/guides/dynamic-loading-catalogs'` to fetch the source docs for the vanilla JavaScript tutorial, core macro reference, Vite plugin reference, Lingui configuration reference, and dynamic catalog loading guide.
 
