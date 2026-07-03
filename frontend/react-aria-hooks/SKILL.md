@@ -14,6 +14,26 @@ Use React Aria hooks as the owner of accessibility semantics, keyboard behavior,
 - Pass application-prepared labels, descriptions, validation text, and formatted values into React Aria props when user-facing copy is needed.
 - React Aria internal accessibility strings for generic hidden controls are acceptable; do not add React Aria i18n providers or formatting hooks.
 
+## Use React Aria Only When It Pays For It
+
+Start with native HTML, existing app components, and ordinary React state. Reach for React Aria hooks only when they clearly remove or centralize nontrivial accessibility or interaction logic.
+
+Treat the benefit as measurable: the hook should delete custom code, prevent duplicated behavior, or replace a fragile interaction contract with a maintained React Aria contract.
+
+Use a React Aria API when it owns at least one behavior that would otherwise be easy to get wrong:
+
+- ARIA relationships, labels, descriptions, or invalid state across multiple elements.
+- Keyboard navigation beyond native browser behavior.
+- Focus containment, restoration, roving focus, or focus-visible behavior.
+- Collection semantics, item keys, selection managers, disabled items, or virtualized collection integration.
+- Overlay dismissal, portal focus behavior, hidden dismiss controls, or outside interaction handling.
+- Cross-input press, drag, drop, long-press, move, hover, or clipboard behavior.
+- Hidden native form integration, browser autofill, native validation, or FormData support.
+
+Do not add React Aria when it only wraps behavior the platform already handles well, such as a plain `<button>`, `<a>`, `<input>`, `<textarea>`, or `<select>` with no custom interaction model.
+
+Before adding a hook, name the behavior it will own and the custom code it replaces. If that list is empty or vague, do not use the hook.
+
 ## Workflow
 
 1. Identify the component pattern and read the matching hook reference in `references/` before implementing or changing behavior.
@@ -203,6 +223,7 @@ Each hook has its own document under `references/`. Search by hook name or use t
 - Do not remove returned props, refs, ids, or event handlers unless the replacement preserves the same accessibility contract.
 - Do not split parent and item hooks across unrelated state owners.
 - Do not replace React Aria collection, overlay, date, color, or drag-and-drop behavior with custom DOM event code unless the hook cannot model the product requirement.
+- Reject React Aria usage that does not clearly replace custom ARIA, focus, keyboard, collection, overlay, form, or cross-input interaction logic.
 - Do not use React Aria i18n or SSR utilities in this skill.
 - Do not omit `Overlay`, `DismissButton`, `HiddenSelect`, `FocusScope`, or `VisuallyHidden` when the hook pattern needs the accessibility behavior those helpers provide.
 - Recheck the hook reference before changing controlled props, selection behavior, validation, date value handling, virtualization, drag payloads, or overlay dismissal.
