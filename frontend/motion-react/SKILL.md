@@ -26,8 +26,6 @@ This skill documents only Motion primitives. For non-primitive setup and project
 - `guides/vanilla-hover.md`, `guides/vanilla-inview.md`, `guides/vanilla-press.md`, `guides/vanilla-resize.md` — vanilla gesture and observer helpers.
 - `guides/vanilla-effects.md` — `styleEffect`, `attrEffect`, `svgEffect`, and `propEffect` for rendering Motion values outside React.
 - `guides/vanilla-motion-values.md` — `motionValue`, `mapValue`, `springValue`, and `transformValue` without React hooks.
-- `guides/motion-plus.md` — Motion+ installation overview.
-- `guides/animate-number.md`, `guides/carousel.md`, `guides/scramble-text.md`, `guides/ticker.md`, `guides/typewriter.md`, `guides/use-curtains.md` — Motion+ feature pages.
 
 Docs were gathered with:
 
@@ -35,11 +33,7 @@ Docs were gathered with:
 sitefetch https://motion.dev/docs/react -m '/docs/react-*' --link-source-selector '[id="learn-mobile-sidebar"]'
 ```
 
-Vanilla JavaScript docs were identified with:
-
-```sh
-sitefetch https://motion.dev/docs/quick-start -e '/docs/{squarespace,wordpress,css,webflow,scramble-text,split-text,curtains,layout-animations,upgrade,motion-plus,gsap,improvements,migrate,faqs}*' --link-source-selector '[id="learn-mobile-sidebar"]'
-```
+Vanilla JavaScript docs source: `https://motion.dev/docs/quick-start`.
 
 Use React APIs first inside React component trees. Reach for the vanilla guides when animation must target DOM created outside React, arbitrary SVG/object/WebGL state, browser View Transitions, scroll-linked timelines, or high-frequency Motion values that should not be modeled as React state.
 
