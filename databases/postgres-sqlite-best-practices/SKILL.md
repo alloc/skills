@@ -24,7 +24,6 @@ Read only the reference files that match the task:
 
 | Task | Read |
 | --- | --- |
-| Engine choice, portability, or Postgres-vs-SQLite tradeoffs | `references/compat-engine-selection.md` |
 | Tables, columns, data types, constraints, keys, timestamps | `references/schema-types-constraints.md` |
 | Query shape, indexes, pagination, aggregation, joins | `references/query-indexes.md` |
 | `EXPLAIN`, plan inspection, or slow-query diagnosis | `references/query-explain.md` |
