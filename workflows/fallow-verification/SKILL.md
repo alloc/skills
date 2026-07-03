@@ -12,7 +12,7 @@ Use Fallow as a verification oracle for JavaScript and TypeScript work. Treat it
 After any nontrivial JavaScript or TypeScript code change, run:
 
 ```bash
-npx fallow audit --format json --quiet
+pnpx fallow audit --format json --quiet
 ```
 
 Read the JSON result before deciding what to do next. Use the overall status and findings to identify changed-code risk, dead code, health issues, duplication, complexity, or dependency signals connected to the current work.
@@ -28,19 +28,19 @@ Do not delete an export, source file, or dependency based only on search results
 For an export:
 
 ```bash
-npx fallow dead-code --trace <file>:<export> --format json
+pnpx fallow dead-code --trace <file>:<export> --format json
 ```
 
 For a file:
 
 ```bash
-npx fallow dead-code --trace-file <path> --format json
+pnpx fallow dead-code --trace-file <path> --format json
 ```
 
 For a dependency:
 
 ```bash
-npx fallow dead-code --trace-dependency <package> --format json
+pnpx fallow dead-code --trace-dependency <package> --format json
 ```
 
 Read the trace output and combine it with the repository's tests, build, and any known dynamic usage. Static analysis can miss runtime imports, external package entrypoints, plugin registration, generated code, and reflection-style access.
@@ -50,7 +50,7 @@ Read the trace output and combine it with the repository's tests, build, and any
 Never start with a write-mode Fallow fix. Preview first:
 
 ```bash
-npx fallow fix --dry-run --format json
+pnpx fallow fix --dry-run --format json
 ```
 
 Apply a suggested fix only when the preview is small, obviously safe, and directly related to the current task. After applying it, run the project's relevant build and tests.
