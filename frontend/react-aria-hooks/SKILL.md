@@ -1,0 +1,166 @@
+---
+name: react-aria-hooks
+description: Use React Aria and React Stately hooks to build accessible custom React components, including choosing the right hook, wiring refs/state/props, preserving ARIA and keyboard behavior, and checking hook-specific guidance in bundled references.
+---
+
+# React Aria Hooks
+
+Use React Aria hooks as the owner of accessibility semantics, keyboard behavior, focus management, collection navigation, overlays, drag and drop, and localized date or color interactions. Use React Stately hooks as the owner of state machines, collection state, selection, validation, queues, and async list data.
+
+## Workflow
+
+1. Identify the component pattern and read the matching hook reference in `references/` before implementing or changing behavior.
+2. Use the hook pair the docs expect: behavior hooks from `react-aria`, state hooks from `react-stately`, and date values from `@internationalized/date` where date and time hooks require them.
+3. Spread every returned props object onto the named DOM slot, attach the same ref passed into the hook, and merge props with existing app handlers instead of overwriting them.
+4. Keep labels, descriptions, validation state, disabled state, ids, and relationships wired through the hook props. Do not hand-roll ARIA attributes when the hook returns them.
+5. For collections, render from the React Stately collection/state APIs and pass the same state to parent and item hooks. Keep item keys stable.
+6. For overlays and triggers, keep trigger props, overlay props, dismissal behavior, focus restoration, and portal placement together.
+7. Validate with keyboard, pointer, touch where relevant, screen-reader naming, focus order, disabled/invalid states, and controlled/uncontrolled state behavior.
+
+## Reference Navigation
+
+Each hook has its own document under `references/`. Search by hook name or use these groups:
+
+### Collections And Selection
+
+- [useAsyncList](./references/use-async-list.md)
+- [useAutocomplete](./references/use-autocomplete.md)
+- [useAutocompleteState](./references/use-autocomplete-state.md)
+- [useComboBox](./references/use-combo-box.md)
+- [useComboBoxState](./references/use-combo-box-state.md)
+- [useGridList](./references/use-grid-list.md)
+- [useGridListItem](./references/use-grid-list-item.md)
+- [useGridListSelectionCheckbox](./references/use-grid-list-selection-checkbox.md)
+- [useListBox](./references/use-list-box.md)
+- [useListBoxSection](./references/use-list-box-section.md)
+- [useListData](./references/use-list-data.md)
+- [useListState](./references/use-list-state.md)
+- [useMenu](./references/use-menu.md)
+- [useMenuItem](./references/use-menu-item.md)
+- [useMenuSection](./references/use-menu-section.md)
+- [useMenuTrigger](./references/use-menu-trigger.md)
+- [useMenuTriggerState](./references/use-menu-trigger-state.md)
+- [useMultipleSelectionState](./references/use-multiple-selection-state.md)
+- [useOption](./references/use-option.md)
+- [useSelect](./references/use-select.md)
+- [useSelectState](./references/use-select-state.md)
+- [useSingleSelectListState](./references/use-single-select-list-state.md)
+- [useTable](./references/use-table.md)
+- [useTableCell](./references/use-table-cell.md)
+- [useTableColumnHeader](./references/use-table-column-header.md)
+- [useTableColumnResize](./references/use-table-column-resize.md)
+- [useTableColumnResizeState](./references/use-table-column-resize-state.md)
+- [useTableHeaderRow](./references/use-table-header-row.md)
+- [useTableRow](./references/use-table-row.md)
+- [useTableRowGroup](./references/use-table-row-group.md)
+- [useTableSelectAllCheckbox](./references/use-table-select-all-checkbox.md)
+- [useTableSelectionCheckbox](./references/use-table-selection-checkbox.md)
+- [useTableState](./references/use-table-state.md)
+- [useTabList](./references/use-tab-list.md)
+- [useTabListState](./references/use-tab-list-state.md)
+- [useTag](./references/use-tag.md)
+- [useTagGroup](./references/use-tag-group.md)
+- [useTreeData](./references/use-tree-data.md)
+- [useTreeState](./references/use-tree-state.md)
+
+### Color
+
+- [useColorArea](./references/use-color-area.md)
+- [useColorAreaState](./references/use-color-area-state.md)
+- [useColorField](./references/use-color-field.md)
+- [useColorFieldState](./references/use-color-field-state.md)
+- [useColorSlider](./references/use-color-slider.md)
+- [useColorSliderState](./references/use-color-slider-state.md)
+- [useColorSwatch](./references/use-color-swatch.md)
+- [useColorWheel](./references/use-color-wheel.md)
+- [useColorWheelState](./references/use-color-wheel-state.md)
+
+### Date And Time
+
+- [useCalendar](./references/use-calendar.md)
+- [useCalendarCell](./references/use-calendar-cell.md)
+- [useCalendarGrid](./references/use-calendar-grid.md)
+- [useCalendarState](./references/use-calendar-state.md)
+- [useDateField](./references/use-date-field.md)
+- [useDateFieldState](./references/use-date-field-state.md)
+- [useDatePicker](./references/use-date-picker.md)
+- [useDatePickerState](./references/use-date-picker-state.md)
+- [useDateRangePicker](./references/use-date-range-picker.md)
+- [useDateRangePickerState](./references/use-date-range-picker-state.md)
+- [useDateSegment](./references/use-date-segment.md)
+- [useRangeCalendar](./references/use-range-calendar.md)
+- [useRangeCalendarState](./references/use-range-calendar-state.md)
+- [useTimeField](./references/use-time-field.md)
+- [useTimeFieldState](./references/use-time-field-state.md)
+
+### Drag And Drop
+
+- [useDraggableCollection](./references/use-draggable-collection.md)
+- [useDraggableCollectionState](./references/use-draggable-collection-state.md)
+- [useDraggableItem](./references/use-draggable-item.md)
+- [useDropIndicator](./references/use-drop-indicator.md)
+- [useDroppableCollection](./references/use-droppable-collection.md)
+- [useDroppableCollectionState](./references/use-droppable-collection-state.md)
+- [useDroppableItem](./references/use-droppable-item.md)
+
+### Feedback And Structure
+
+- [useMeter](./references/use-meter.md)
+- [useProgressBar](./references/use-progress-bar.md)
+- [useSeparator](./references/use-separator.md)
+- [useToast](./references/use-toast.md)
+- [useToastRegion](./references/use-toast-region.md)
+- [useToastState](./references/use-toast-state.md)
+
+### Inputs
+
+- [useButton](./references/use-button.md)
+- [useCheckbox](./references/use-checkbox.md)
+- [useCheckboxGroup](./references/use-checkbox-group.md)
+- [useCheckboxGroupItem](./references/use-checkbox-group-item.md)
+- [useCheckboxGroupState](./references/use-checkbox-group-state.md)
+- [useNumberField](./references/use-number-field.md)
+- [useNumberFieldState](./references/use-number-field-state.md)
+- [useRadio](./references/use-radio.md)
+- [useRadioGroup](./references/use-radio-group.md)
+- [useRadioGroupState](./references/use-radio-group-state.md)
+- [useSearchField](./references/use-search-field.md)
+- [useSearchFieldState](./references/use-search-field-state.md)
+- [useSlider](./references/use-slider.md)
+- [useSliderState](./references/use-slider-state.md)
+- [useSliderThumb](./references/use-slider-thumb.md)
+- [useSwitch](./references/use-switch.md)
+- [useTextField](./references/use-text-field.md)
+- [useToggleButton](./references/use-toggle-button.md)
+- [useToggleButtonGroup](./references/use-toggle-button-group.md)
+- [useToggleButtonGroupItem](./references/use-toggle-button-group-item.md)
+- [useToggleState](./references/use-toggle-state.md)
+
+### Navigation
+
+- [useBreadcrumbItem](./references/use-breadcrumb-item.md)
+- [useBreadcrumbs](./references/use-breadcrumbs.md)
+- [useLink](./references/use-link.md)
+- [useTab](./references/use-tab.md)
+- [useTabPanel](./references/use-tab-panel.md)
+- [useToolbar](./references/use-toolbar.md)
+
+### Overlays And Disclosure
+
+- [useDialog](./references/use-dialog.md)
+- [useDisclosure](./references/use-disclosure.md)
+- [useDisclosureGroupState](./references/use-disclosure-group-state.md)
+- [useDisclosureState](./references/use-disclosure-state.md)
+- [useModalOverlay](./references/use-modal-overlay.md)
+- [useOverlayTriggerState](./references/use-overlay-trigger-state.md)
+- [usePopover](./references/use-popover.md)
+- [useTooltip](./references/use-tooltip.md)
+- [useTooltipTrigger](./references/use-tooltip-trigger.md)
+- [useTooltipTriggerState](./references/use-tooltip-trigger-state.md)
+
+## Review Gate
+
+- Do not remove returned props, refs, ids, or event handlers unless the replacement preserves the same accessibility contract.
+- Do not split parent and item hooks across unrelated state owners.
+- Do not replace React Aria collection, overlay, date, color, or drag-and-drop behavior with custom DOM event code unless the hook cannot model the product requirement.
+- Recheck the hook reference before changing controlled props, selection behavior, validation, locale, virtualization, drag payloads, or overlay dismissal.

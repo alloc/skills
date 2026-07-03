@@ -1,0 +1,53 @@
+# useDateSegment
+
+Source: https://react-aria.adobe.com/DateField/useDateField.html
+
+## Import
+
+- Package: `react-aria`
+- Import: `import {useDateSegment} from 'react-aria'`
+- Install: `yarn add react-aria`
+- Source version: 3.50.0
+- Documented on upstream page: `useDateField`
+
+## Signature
+
+```ts
+useDateSegment(segment: DateSegment, state: DateFieldState, ref: RefObject<HTMLElement | null>): DateSegmentAria
+```
+
+## Use For
+
+Use `useDateSegment` for the date segment part of the `useDateField` pattern. The upstream page describes the broader pattern as: Provides the behavior and accessibility implementation for a date field component. A date field allows users to enter and edit date and time values using a keyboard. Each part of a date value is displayed in an individually editable segment.
+
+## Source Highlights
+
+- **Dates and times** - Support for dates and times with configurable granularity.
+- **International** - Support for 13 calendar systems used around the world, including Gregorian, Buddhist, Islamic, Persian, and more. Locale-specific formatting, number systems, hour cycles, and right-to-left support are available as well.
+- **Time zone aware** - Dates and times can optionally include a time zone. All modifications follow time zone rules such as daylight saving time.
+- **Accessible** - Each date and time unit is displayed as an individually focusable and editable segment, which allows users an easy way to edit dates using the keyboard, in any date format and locale.
+- **Touch friendly** - Date segments are editable using an easy to use numeric keypad, and all interactions are accessible using touch-based screen readers.
+- **Customizable** - As with all of React Aria, the DOM structure and styling of all elements can be fully customized.
+
+## Implementation Guidance
+
+- Spread every returned `*Props` object onto the exact DOM slot it names; these props carry ARIA attributes, event handlers, ids, and keyboard behavior.
+- Pass the ref for the rendered DOM element into the hook and attach that same ref to the element receiving the returned props.
+- Create the matching `react-stately` state object once in the owning component and pass that same state to related item, cell, or trigger hooks.
+- Preserve user-provided labels and descriptions; icon-only controls still need `aria-label` or `aria-labelledby`.
+- Render item-level hooks inside the parent collection/control and pass the parent state or item data from the same render pass.
+- Use `@internationalized/date` values and preserve locale, calendar, time zone, min/max, disabled, and unavailable-date constraints.
+
+## Related Hooks From The Same Source Page
+
+- [useDateField](./use-date-field.md)
+
+## Upstream Sections To Recheck
+
+- Features
+- Anatomy
+- Date and time values
+- Example
+- Styled examples
+- Usage
+- Advanced topics
