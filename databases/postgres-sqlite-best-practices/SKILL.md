@@ -11,13 +11,13 @@ Start portable, then specialize deliberately. Prefer SQL and schema patterns tha
 
 Do not assume managed-platform behavior. Avoid vendor-specific connection pools, auth functions, roles, schemas, extensions, dashboards, or migration systems unless they appear in the project.
 
-## First Steps
+## Core Rules
 
-1. Identify the target engine: Postgres, SQLite, both, or unknown.
-2. Inspect constraints that change database advice: expected data size, write concurrency, hosted vs embedded deployment, migration tooling, ORM/query builder, framework, required extensions, and test database setup.
-3. Prefer portable recommendations when the engine is unclear. Label engine-specific SQL as `Postgres only` or `SQLite only`.
-4. Separate correctness from performance. Constraints, transactions, and safe migrations come before speed tweaks.
-5. Show concrete SQL or application-code examples when the recommendation is non-obvious.
+- State whether guidance is portable, Postgres-specific, SQLite-specific, or based on an unknown engine.
+- Treat constraints, transaction safety, and migration reversibility as correctness concerns; handle them before performance tuning.
+- Tie index and query-performance advice to the query shape, data distribution, and planner behavior it serves.
+- Use concrete SQL or application-code examples when the recommendation changes behavior or risk.
+- Cite primary PostgreSQL or SQLite documentation when relying on detailed engine behavior.
 
 ## Reference Routing
 
@@ -52,13 +52,3 @@ Before finalizing database work, verify:
 - Foreign-key enforcement and cascade behavior are intentional.
 - Portability risks are labeled when SQL differs between Postgres and SQLite.
 - Operational follow-up is included when data volume, lock duration, or vacuum/analyze behavior matters.
-
-## Output Style
-
-When responding to users:
-
-- State whether the answer is portable, Postgres-specific, or SQLite-specific.
-- Use the placeholder style that matches the surrounding project or ecosystem.
-- Prefer before/after SQL for reviews and migrations.
-- Explain performance advice in terms of query shape, cardinality, and planner behavior.
-- Keep source links to primary PostgreSQL or SQLite documentation when citing engine behavior.
