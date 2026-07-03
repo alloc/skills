@@ -13,7 +13,6 @@ Do not assume managed-platform behavior. Avoid vendor-specific connection pools,
 
 ## Core Rules
 
-- State whether guidance is portable, Postgres-specific, SQLite-specific, or based on an unknown engine.
 - Treat constraints, transaction safety, and migration reversibility as correctness concerns; handle them before performance tuning.
 - Tie index and query-performance advice to the query shape, data distribution, and planner behavior it serves.
 - Use concrete SQL or application-code examples when the recommendation changes behavior or risk.
@@ -43,7 +42,7 @@ Use `postgres-only.md` or `sqlite-only.md` only when engine-specific behavior is
 
 Before finalizing database work, verify:
 
-- Target engine assumptions are stated when they affect the answer.
+- Engine-specific behavior is intentional, justified, and isolated from portable paths where practical.
 - Destructive changes have a safer migration path or an explicit justification.
 - Constraints enforce core data invariants instead of relying only on application code.
 - Query examples use parameters, not string interpolation.
