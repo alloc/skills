@@ -1,3 +1,13 @@
+databases:
+  postgres-sqlite-best-practices: |-
+    Fetch PostgreSQL and SQLite primary documentation for source material only; do not include raw sitefetch output in the skill.
+
+    Run `sitefetch https://www.postgresql.org/docs/current/ -m '/docs/current/ddl-constraints.html' -m '/docs/current/datatype.html' -m '/docs/current/indexes.html' -m '/docs/current/indexes-multicolumn.html' -m '/docs/current/using-explain.html' -m '/docs/current/planner-stats.html' -m '/docs/current/sql-altertable.html' -m '/docs/current/sql-createindex.html' -m '/docs/current/tutorial-transactions.html' -m '/docs/current/explicit-locking.html' -m '/docs/current/transaction-iso.html' -m '/docs/current/ddl-priv.html' -m '/docs/current/ddl-rowsecurity.html' -m '/docs/current/routine-vacuuming.html' -m '/docs/current/monitoring.html' -m '/docs/current/datatype-json.html'` to fetch the PostgreSQL docs used by the skill.
+
+    Run `sitefetch https://sqlite.org/docs.html -m '/datatype3.html' -m '/foreignkeys.html' -m '/queryplanner.html' -m '/optoverview.html' -m '/eqp.html' -m '/lang_analyze.html' -m '/lang_altertable.html' -m '/isolation.html' -m '/wal.html' -m '/pragma.html' -m '/backup.html' -m '/lang_vacuum.html'` to fetch the SQLite docs used by the skill.
+
+    Rework the fetched material into concise, task-oriented guidance. Keep `databases/postgres-sqlite-best-practices/SKILL.md` as a routing signpost with the must-run final checklist, and keep task-specific details in `references/`. Prefer portable guidance first, then clearly label Postgres-only and SQLite-only behavior.
+
 frontend:
   motion-react: |-
     Run `sitefetch https://motion.dev/docs/react -m '/docs/react-*' --link-source-selector '[id="learn-mobile-sidebar"]'` to fetch the React docs for source material only; do not include raw sitefetch output in the skill.

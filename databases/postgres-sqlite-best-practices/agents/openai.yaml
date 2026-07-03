@@ -1,0 +1,4 @@
+interface:
+  display_name: "Postgres and SQLite Best Practices"
+  short_description: "Database design and SQL review guidance"
+  default_prompt: "Use $postgres-sqlite-best-practices to review this database schema, query, or migration for correctness, portability, and performance."
