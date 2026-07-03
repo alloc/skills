@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fallow Verification"
+  short_description: "Use Fallow as scoped JS/TS verification"
+  default_prompt: "Use $fallow-verification to verify my TypeScript or JavaScript change with scoped Fallow evidence."
