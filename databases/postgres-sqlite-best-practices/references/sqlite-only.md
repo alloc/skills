@@ -1,6 +1,6 @@
 # SQLite-Specific Guidance
 
-Use this reference only when the project targets SQLite or SQLite-specific deployment behavior matters.
+Use this reference when evaluating whether SQLite-specific behavior materially improves correctness, safety, performance, or deployment fit.
 
 ## Strengths
 

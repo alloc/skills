@@ -7,7 +7,7 @@ description: Best practices for designing, writing, reviewing, and optimizing Po
 
 ## Default Posture
 
-Start portable, then specialize deliberately. Prefer SQL and schema patterns that work in both PostgreSQL and SQLite unless the user asks for a specific engine, the existing project clearly targets one engine, or an engine-specific feature materially improves correctness, safety, or performance.
+Start portable, then specialize deliberately. Prefer SQL and schema patterns that work in both PostgreSQL and SQLite unless an engine-specific feature materially improves correctness, safety, or performance.
 
 Do not assume managed-platform behavior. Avoid vendor-specific connection pools, auth functions, roles, schemas, extensions, dashboards, or migration systems unless they appear in the project.
 

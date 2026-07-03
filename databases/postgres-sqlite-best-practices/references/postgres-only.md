@@ -1,6 +1,6 @@
 # Postgres-Specific Guidance
 
-Use this reference only when the project targets Postgres or a Postgres-specific feature materially improves the design.
+Use this reference when evaluating whether Postgres-specific behavior materially improves correctness, safety, or performance.
 
 ## Features Worth Specializing For
 
