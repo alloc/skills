@@ -21,7 +21,6 @@ This skill documents only Motion primitives. For non-primitive setup and project
 - `guides/upgrade-guide.md` — migration notes.
 - `guides/motion-plus.md` — Motion+ installation overview.
 - `guides/animate-number.md`, `guides/carousel.md`, `guides/scramble-text.md`, `guides/ticker.md`, `guides/typewriter.md`, `guides/use-curtains.md` — Motion+ feature pages.
-- `guides/tailwind.md` — Tailwind integration.
 
 Docs were gathered with:
 
