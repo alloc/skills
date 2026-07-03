@@ -14,7 +14,7 @@ useFocusWithin(props: FocusWithinProps): FocusWithinResult
 
 ## Use For
 
-Use `useFocusWithin` for the React Aria behavior documented by the source page.
+Use when a parent component needs focus enter/leave state for any descendant without duplicating child focus handlers.
 
 ## Implementation Guidance
 

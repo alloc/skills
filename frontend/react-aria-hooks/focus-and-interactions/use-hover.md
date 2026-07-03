@@ -14,7 +14,7 @@ useHover(props: HoverProps): HoverResult
 
 ## Use For
 
-Use `useHover` for the React Aria behavior documented by the source page.
+Use when hover behavior must ignore touch-emulated hover and compose pointer and mouse events consistently.
 
 ## Implementation Guidance
 

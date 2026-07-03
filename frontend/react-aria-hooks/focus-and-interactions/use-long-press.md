@@ -14,7 +14,7 @@ useLongPress(props: LongPressProps): LongPressResult
 
 ## Use For
 
-Use `useLongPress` for the React Aria behavior documented by the source page.
+Use when an element needs an accessible long-press gesture across mouse, touch, keyboard, and screen readers.
 
 ## Implementation Guidance
 

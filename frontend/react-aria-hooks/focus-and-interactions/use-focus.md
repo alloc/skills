@@ -14,7 +14,7 @@ useFocus<Target extends FocusableElement = FocusableElement>(props: FocusProps<T
 
 ## Use For
 
-Use `useFocus` for the React Aria behavior documented by the source page.
+Use when a focusable element needs normalized focus and blur props that compose with React Aria event handling.
 
 ## Implementation Guidance
 

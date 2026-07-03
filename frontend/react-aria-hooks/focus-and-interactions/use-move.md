@@ -14,7 +14,7 @@ useMove(props: MoveEvents): MoveResult
 
 ## Use For
 
-Use `useMove` for the React Aria behavior documented by the source page.
+Use when a custom slider, color control, or draggable surface needs normalized move gestures across mouse, touch, and keyboard.
 
 ## Implementation Guidance
 

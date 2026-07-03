@@ -14,7 +14,7 @@ usePress(props: PressHookProps): PressResult
 
 ## Use For
 
-Use `usePress` for the React Aria behavior documented by the source page.
+Use when a custom interactive element needs button-like press behavior across mouse, touch, keyboard, and screen readers.
 
 ## Implementation Guidance
 
