@@ -43,14 +43,16 @@ This is Postgres-specific and useful for worker queues. State the tradeoff: skip
 
 ## SQLite Concurrency
 
-SQLite is excellent for embedded workloads, but writes are serialized. WAL mode improves reader/writer coexistence, not multi-writer throughput.
+Classic SQLite is excellent for embedded workloads, but writes are serialized. WAL mode improves reader/writer coexistence, not multi-writer throughput.
+
+Some SQLite-compatible providers or alternate engines relax the single-writer model. For example, Turso supports MVCC-based concurrent writes when `PRAGMA journal_mode = 'mvcc'` is enabled and transactions use `BEGIN CONCURRENT`; conflicting transactions must roll back and retry. Treat this as provider-specific behavior, not portable SQLite.
 
 For SQLite applications:
 
 - Keep write transactions short.
 - Configure busy timeouts through the driver or connection settings.
 - Use WAL for persistent databases when appropriate.
-- Avoid using a single database file as a high-write shared server database.
+- Avoid using a classic single-writer SQLite database as a high-write shared server database.
 - Be careful on network filesystems and environments with unreliable file locking.
 
 ## Isolation
@@ -63,7 +65,7 @@ Do not assume the same anomalies or lock behavior across engines. If a workflow 
 - Long transaction wraps API calls or expensive computation.
 - Check-then-insert race without a unique constraint or upsert.
 - Retry loop around non-idempotent side effects.
-- SQLite used for high-concurrency server writes without acknowledging serialized writers.
+- SQLite used for high-concurrency server writes without distinguishing classic single-writer behavior from provider-specific concurrent-write support and retry requirements.
 
 ## Primary Sources
 
@@ -72,3 +74,4 @@ Do not assume the same anomalies or lock behavior across engines. If a workflow 
 - PostgreSQL transaction isolation: https://www.postgresql.org/docs/current/transaction-iso.html
 - SQLite isolation: https://sqlite.org/isolation.html
 - SQLite WAL: https://sqlite.org/wal.html
+- Turso concurrent writes: https://docs.turso.tech/tursodb/concurrent-writes

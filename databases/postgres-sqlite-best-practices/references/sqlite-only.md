@@ -12,7 +12,7 @@ Use this reference when evaluating whether SQLite-specific behavior materially i
 
 ## Guardrails
 
-- SQLite serializes writes. It is not a high-write-concurrency server database.
+- Classic SQLite serializes writes. Some SQLite-compatible hosting providers or alternate engines relax this with MVCC-style concurrent writes, but those modes are provider-specific and usually require conflict detection, rollback, and retry handling.
 - Enable and verify foreign-key enforcement through the driver or connection settings.
 - Use `STRICT` tables when available and type enforcement matters.
 - Be cautious on network filesystems or environments with unreliable file locking.
@@ -52,7 +52,7 @@ PRAGMA integrity_check;
 
 ## Review Questions
 
-- Is SQLite appropriate for the expected write concurrency?
+- Is the target SQLite runtime classic single-writer SQLite, or a provider/engine with documented concurrent-write support and retry semantics?
 - Are connection pragmas applied consistently?
 - Does the app use transactions for multi-statement writes?
 - Are database files stored on safe local storage?
@@ -65,3 +65,4 @@ PRAGMA integrity_check;
 - SQLite isolation: https://sqlite.org/isolation.html
 - SQLite PRAGMA statements: https://sqlite.org/pragma.html
 - SQLite ALTER TABLE: https://sqlite.org/lang_altertable.html
+- Turso concurrent writes: https://docs.turso.tech/tursodb/concurrent-writes
