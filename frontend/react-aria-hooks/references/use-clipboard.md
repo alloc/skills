@@ -18,7 +18,7 @@ Handles clipboard interactions for a focusable element. Supports items of multip
 
 ## Implementation Guidance
 
-- Use for keyboard-accessible copy/paste on focusable custom elements; pair with app-owned selection state and Lingui-translated user-facing labels.
+- Use for keyboard-accessible copy/paste on focusable custom elements; pair with app-owned selection state and application-provided user-facing labels.
 - Prefer native text selection behavior when copying plain editable text is enough.
 
 ## Upstream Sections To Recheck

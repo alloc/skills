@@ -26,6 +26,6 @@ Use `HiddenSelect` with `useSelect` when the select must participate in browser 
 ## Implementation Guidance
 
 - Pass the same `SelectState` and trigger ref used by `useSelect`.
-- In SPA forms, add it for browser integration, not for server-post workflows by default.
+- Add it for browser integration when needed, not as a default for every custom select.
 - Keep `name`, `form`, `autoComplete`, disabled, required, and validation behavior aligned with the visible select control.
 - For large collections, expect the implementation to fall back to hidden inputs rather than rendering every option in a hidden select.

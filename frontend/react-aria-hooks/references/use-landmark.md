@@ -18,7 +18,7 @@ Provides landmark navigation in an application. Call this with a role and label 
 
 ## Implementation Guidance
 
-- Use only for app regions that need F6 landmark navigation; labels must come from Lingui when visible or product-specific.
+- Use only for app regions that need F6 landmark navigation; labels must be application-provided when visible or product-specific.
 
 ## Upstream Sections To Recheck
 

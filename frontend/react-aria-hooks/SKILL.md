@@ -1,18 +1,18 @@
 ---
 name: react-aria-hooks
-description: Use React Aria and React Stately hooks to build accessible custom React SPA components with Lingui-managed i18n, including choosing the right hook, wiring refs/state/props, preserving ARIA and keyboard behavior, and checking hook-specific guidance in bundled references.
+description: Use React Aria and React Stately hooks to build accessible custom React components, including choosing the right hook, wiring refs/state/props, preserving ARIA and keyboard behavior, excluding React Aria i18n and SSR utilities, and checking hook-specific guidance in bundled references.
 ---
 
 # React Aria Hooks
 
 Use React Aria hooks as the owner of accessibility semantics, keyboard behavior, focus management, collection navigation, overlays, drag and drop, and date, time, and color interactions. Use React Stately hooks as the owner of state machines, collection state, selection, validation, queues, and async list data.
 
-## Project Defaults
+## Excluded React Aria Features
 
-- Build for SPA apps only. Do not introduce `SSRProvider`, `useIsSSR`, SSR-specific id wiring, or server-rendering guidance.
-- Use Lingui for user-facing i18n, translated labels, validation text, formatting, and product copy. Do not use React Aria's `I18nProvider`, `useLocale`, `useDateFormatter`, `useNumberFormatter`, `useCollator`, or `useFilter`.
-- Pass Lingui-translated strings into React Aria label, description, and error-message props when user-facing copy is needed.
-- React Aria's internal localized accessibility strings are acceptable for hidden generic controls unless product-specific copy is required.
+- Do not include React Aria SSR utilities such as `SSRProvider`, `useIsSSR`, or SSR-specific id wiring.
+- Do not include React Aria i18n utilities such as `I18nProvider`, `useLocale`, `useDateFormatter`, `useNumberFormatter`, `useCollator`, or `useFilter`.
+- Pass application-prepared labels, descriptions, validation text, and formatted values into React Aria props when user-facing copy is needed.
+- React Aria internal accessibility strings for generic hidden controls are acceptable; do not add React Aria i18n providers or formatting hooks.
 
 ## Workflow
 
@@ -203,6 +203,6 @@ Each hook has its own document under `references/`. Search by hook name or use t
 - Do not remove returned props, refs, ids, or event handlers unless the replacement preserves the same accessibility contract.
 - Do not split parent and item hooks across unrelated state owners.
 - Do not replace React Aria collection, overlay, date, color, or drag-and-drop behavior with custom DOM event code unless the hook cannot model the product requirement.
-- Do not use React Aria i18n or SSR utilities in this skill; use Lingui and SPA assumptions instead.
+- Do not use React Aria i18n or SSR utilities in this skill.
 - Do not omit `Overlay`, `DismissButton`, `HiddenSelect`, `FocusScope`, or `VisuallyHidden` when the hook pattern needs the accessibility behavior those helpers provide.
 - Recheck the hook reference before changing controlled props, selection behavior, validation, date value handling, virtualization, drag payloads, or overlay dismissal.

@@ -18,8 +18,8 @@ Use `useId` to create a stable id for ARIA relationships when callers have not p
 
 ## Implementation Guidance
 
-- Use for stable ARIA relationships in SPA components when no app-provided id exists.
-- Do not add SSRProvider; this skill assumes SPA-only apps.
+- Use for stable ARIA relationships when no app-provided id exists.
+- Do not add `SSRProvider`; this skill excludes React Aria SSR utilities.
 
 ## Upstream Sections To Recheck
 

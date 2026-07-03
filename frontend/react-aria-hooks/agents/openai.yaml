@@ -1,4 +1,4 @@
 interface:
   display_name: "React Aria Hooks"
-  short_description: "Use React Aria hooks in SPA apps"
-  default_prompt: "Use $react-aria-hooks to build an accessible React SPA component with Lingui-managed copy."
+  short_description: "Use React Aria hooks accessibly"
+  default_prompt: "Use $react-aria-hooks to build an accessible React component with React Aria hooks."

@@ -26,5 +26,5 @@ Use `Overlay` as the source-documented portal and focus-scope wrapper used by Re
 
 - Use it for popup/modal content that should render in a portal and restore focus when it closes.
 - Leave focus management enabled unless you are replacing focus containment and restoration yourself.
-- Use `portalContainer` only when the app has a concrete portal root requirement; SPA apps usually let it default to `document.body`.
-- Do not introduce SSR handling around it; this skill assumes SPA-only apps.
+- Use `portalContainer` only when the app has a concrete portal root requirement; otherwise let it default to `document.body`.
+- Do not introduce SSR handling around it; this skill excludes React Aria SSR utilities.

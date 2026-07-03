@@ -17,7 +17,7 @@ useSliderState<T extends number | number[]>(props: SliderStateOptions<T>): Slide
 
 ## Use For
 
-Provides state management for a slider component. Stores values for all thumbs and provides methods to update the position of any thumbs. Use Lingui for user-facing value text and formatting.
+Provides state management for a slider component. Stores values for all thumbs and provides methods to update the position of any thumbs. Use application-owned formatting for user-facing value text.
 
 ## Implementation Guidance
 

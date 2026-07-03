@@ -14,7 +14,7 @@ VisuallyHidden hides its children visually, while keeping content visible to scr
 
 - Use for content that must remain available to assistive technology while hidden visually, such as custom checkbox/radio inputs or table selection labels.
 - Ensure the visually hidden element has a positioned ancestor when the docs require it to avoid unwanted scrollbars.
-- Use Lingui for hidden text when it is product-specific user-facing copy.
+- Use application-provided hidden text when it is product-specific user-facing copy.
 
 ## Upstream Sections To Recheck
 

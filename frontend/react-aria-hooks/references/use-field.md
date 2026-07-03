@@ -19,7 +19,7 @@ Provides the accessibility implementation for input fields. Fields accept user i
 ## Implementation Guidance
 
 - Use for custom form controls that are not already covered by `useTextField`, `useSelect`, `useComboBox`, or another field hook.
-- Use Lingui for label, description, and error-message copy before passing it into React Aria props.
+- Prepare label, description, and error-message copy before passing it into React Aria props.
 
 ## Upstream Sections To Recheck
 

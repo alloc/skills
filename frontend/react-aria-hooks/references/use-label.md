@@ -19,7 +19,7 @@ Provides the accessibility implementation for labels and their associated elemen
 ## Implementation Guidance
 
 - Use for custom label/control relationships when a higher-level field hook is not in use.
-- Use Lingui for product-specific label text.
+- Use application-provided product-specific label text.
 
 ## Upstream Sections To Recheck
 
