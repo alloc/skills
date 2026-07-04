@@ -1,25 +1,25 @@
-# Styling, Tailwind, and Data Hooks
+# Styling and Data Hooks
 
 `SmoothCorners` forwards `className`, style, events, and normal element props to the clipped inner element. The wrapper created by the component is positional and should not be treated as the styled surface.
 
-## Tailwind
+## Classes and styles
 
-Tailwind works normally because Lisse reads computed styles and applies the clip path inline.
+Classes and inline styles work normally because Lisse reads computed styles and applies the clip path inline.
 
 ```tsx
 <SmoothCorners
   corners={{ radius: 20, smoothing: 0.7 }}
-  className="bg-white p-6 shadow-lg dark:bg-neutral-900"
+  className="cardSurface"
 >
   Content
 </SmoothCorners>
 ```
 
-By default, Tailwind `shadow-*`, `shadow-inner`, `border-*`, `border-dashed`, `border-dotted`, and `border-double` utilities are auto-extracted into SVG effects. Color modifiers that compile to standard `rgb()` or `rgba()` are parsed.
+By default, CSS `box-shadow` and `border` are auto-extracted into SVG effects. Color values that resolve to standard `rgb()` or `rgba()` are parsed.
 
-Drop `rounded-*` from the clipped element unless it is needed as a fallback. Lisse's `clip-path` defines the visible geometry, so `border-radius` is redundant once the path is ready.
+Drop `border-radius` from the clipped element unless it is needed as a fallback. Lisse's `clip-path` defines the visible geometry, so `border-radius` is redundant once the path is ready.
 
-Drop `overflow-hidden` when it only exists to clip the same element. `clip-path` already clips descendants. Keep overflow rules only when a surrounding layout needs them independently.
+Drop `overflow: hidden` when it only exists to clip the same element. `clip-path` already clips descendants. Keep overflow rules only when a surrounding layout needs them independently.
 
 ## `asChild` class merging
 
@@ -27,7 +27,7 @@ Use `asChild` when styling must remain on an existing child:
 
 ```tsx
 <SmoothCorners asChild corners={{ radius: 12 }}>
-  <button className="bg-neutral-900 px-5 py-2.5 text-white shadow-sm">
+  <button className="primaryButton">
     Save
   </button>
 </SmoothCorners>

@@ -27,7 +27,7 @@ export function PrimaryButton({ className, ...props }: React.ComponentProps<"but
 
 ## Card
 
-Let auto-effects lift the Tailwind shadow into an SVG shadow that follows the squircle.
+Let auto-effects lift CSS shadows into SVG shadows that follow the squircle.
 
 ```tsx
 import { SmoothCorners } from "@lisse/react";

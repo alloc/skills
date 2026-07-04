@@ -1,4 +1,4 @@
 interface:
   display_name: "Lisse"
   short_description: "Build React smooth-corner UIs with Lisse"
-  default_prompt: "Use $lisse to build React UI with Figma-style smooth corners, borders, shadows, and SSR-safe path generation."
+  default_prompt: "Use $lisse to build React SPA UI with Figma-style smooth corners, borders, shadows, and client-side path generation."

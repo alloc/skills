@@ -22,7 +22,7 @@ frontend:
   lisse: |-
     Run `pnpx degit JaceThings/Lisse.wiki.git /tmp/lisse-wiki` to fetch the Lisse wiki docs for source material only; do not include raw wiki output in the skill.
 
-    Rework the fetched documentation into concise, task-oriented React guidance. Keep `frontend/lisse/SKILL.md` as a routing signpost and put detailed material in `references/`. Omit non-React renderer guidance. Keep `@lisse/core`, `@lisse/core/path`, SSR, performance, limitations, and migration guidance only when it supports React use.
+    Rework the fetched documentation into concise, task-oriented greenfield React SPA guidance. Keep `frontend/lisse/SKILL.md` as a routing signpost and put detailed material in `references/`. Omit non-React renderer guidance, SSR/server/edge guidance, Tailwind-specific guidance, and migration guidance. Keep `@lisse/core`, performance, and limitations guidance only when it supports client-side React SPA use.
 
   pragmatic-drag-and-drop: |-
     Run `sitefetch https://atlassian.design/components/pragmatic-drag-and-drop/core-package -m '**/core-package/**' -o /tmp/pragmatic-dnd-core.txt` against the core-package docs for source material. If Atlassian's readable extraction is sparse for some pages or the crawl becomes too broad, fetch the same core-package pages explicitly with `--limit 0` and document which source file was used.
