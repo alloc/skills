@@ -1,6 +1,6 @@
 ---
 name: lisse
-description: Use when building React UI with Lisse (`@lisse/react` or `@lisse/core`) for Figma-style smooth/squircle corners, choosing `SmoothCorners` vs `useSmoothCorners`, configuring corner smoothing, borders, gradient borders, shadows, Tailwind styling, auto-effects, SSR-safe path generation, performance, limitations, or migrations from `figma-squircle` or `corner-smoothing`. Do not use for non-React Lisse renderer APIs.
+description: Use when building React UI with Lisse (`@lisse/react` or `@lisse/core`) for Figma-style smooth/squircle corners, choosing `SmoothCorners` vs `useSmoothCorners`, configuring corner smoothing, borders, gradient borders, shadows, Tailwind styling, auto-effects, SSR-safe path generation, performance, limitations, or migrations from `figma-squircle` or `corner-smoothing`.
 ---
 
 # Lisse
@@ -29,6 +29,5 @@ pnpx degit JaceThings/Lisse.wiki.git /tmp/lisse-wiki
 - Prefer `@lisse/react` APIs in React component trees; use `@lisse/core` only for direct path generation, custom DOM wiring, or SSR/static output.
 - Use `SmoothCorners` for the normal case where an extra wrapper is acceptable and effects should work automatically.
 - Use `useSmoothCorners` when the clipped element must keep exact DOM position, be a direct flex/grid child, or attach SVG effects to a specific ancestor.
-- Keep non-React renderer APIs and renderer comparison instructions out of this skill.
 - Treat `autoEffects` as mount-time extraction of CSS `border` and `box-shadow`, not as a reactive bridge for changing stylesheet values.
 - Validate visual behavior when changing layout wrappers, effects, focus indicators, overflow, SSR-generated dimensions, or animation patterns.
