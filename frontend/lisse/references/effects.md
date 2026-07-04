@@ -1,7 +1,5 @@
 # Borders, Shadows, Gradients, and Auto-Effects
 
-Source wiki pages: `Auto-Effects.md`, `Border-Effects.md`, `Gradient-Borders.md`, `Shadow-Effects.md`, `Multiple-Shadows.md`, `Limitations.md`.
-
 Lisse renders borders and shadows as SVG paths so they follow the smooth-corner outline instead of the rectangular box.
 
 ## Auto-effects

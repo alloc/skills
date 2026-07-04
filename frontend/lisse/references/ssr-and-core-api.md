@@ -1,7 +1,5 @@
 # SSR and Core API
 
-Source wiki pages: `SSR-Support.md`, `API-Reference.md`, `Type-Reference.md`, `Getting-Started.md`.
-
 Use `@lisse/core/path` when code must run without DOM APIs.
 
 ```ts

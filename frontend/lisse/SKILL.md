@@ -18,12 +18,6 @@ Use Lisse for React smooth corners that need to match Figma-style corner smoothi
 - Read [recipes.md](./references/recipes.md) for compact React patterns for buttons, cards, and dialogs.
 - Read [migrations.md](./references/migrations.md) before migrating from `figma-squircle` or `corner-smoothing`.
 
-Source docs were gathered with:
-
-```sh
-pnpx degit JaceThings/Lisse.wiki.git /tmp/lisse-wiki
-```
-
 ## Core Rules
 
 - Prefer `@lisse/react` APIs in React component trees; use `@lisse/core` only for direct path generation, custom DOM wiring, or SSR/static output.

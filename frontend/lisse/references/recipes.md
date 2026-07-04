@@ -1,7 +1,5 @@
 # React Recipes
 
-Source wiki pages: `Recipes.md`, `Getting-Started.md`, `Tailwind-Integration.md`.
-
 Use these as compact starting patterns, then adapt markup, accessibility, tokens, and state to the application.
 
 ## Button

@@ -1,7 +1,5 @@
 # Migrations
 
-Source wiki pages: `Migrating-from-Figma-Squircle.md`, `Migrating-from-Corner-Smoothing.md`.
-
 ## From `figma-squircle`
 
 Use `@lisse/core` when replacing raw path generation:

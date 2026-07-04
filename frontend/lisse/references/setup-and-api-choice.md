@@ -1,7 +1,5 @@
 # Setup and API Choice
 
-Source wiki pages: `Getting-Started.md`, `Which-API-Should-I-Use.md`, `FAQ.md`.
-
 ## Install
 
 Use `@lisse/react` in React 18 or later:

@@ -1,7 +1,5 @@
 # Styling, Tailwind, and Data Hooks
 
-Source wiki pages: `Tailwind-Integration.md`, `Styling-Hooks.md`, `FAQ.md`, `Limitations.md`.
-
 `SmoothCorners` forwards `className`, style, events, and normal element props to the clipped inner element. The wrapper created by the component is positional and should not be treated as the styled surface.
 
 ## Tailwind

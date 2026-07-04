@@ -1,7 +1,5 @@
 # Corners and Core Path Generation
 
-Source wiki pages: `Smooth-Corners.md`, `How-It-Works.md`, `API-Reference.md`, `Type-Reference.md`, `Corner-Shapes-Comparison.md`.
-
 Lisse implements Figma-style smooth corners: cubic Bezier shoulders around a small circular arc, not CSS `corner-shape: squircle`'s superellipse family.
 
 ## Corner options

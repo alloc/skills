@@ -1,7 +1,5 @@
 # Performance and Limitations
 
-Source wiki pages: `Performance.md`, `Animation-Performance.md`, `Limitations.md`, `FAQ.md`, `Corner-Shapes-Comparison.md`.
-
 Lisse cost depends mostly on effects. Bare clipping is path math plus `clip-path`; borders and shadows add SVG overlays, filters, DOM updates, and paint cost.
 
 ## Cost rules
