@@ -1,6 +1,6 @@
 ---
 name: task-plan
-description: Use TASK.md as an ignored short-term planning file for coding work. Trigger before implementation when the work is broad, ambiguous, risky, design-heavy, architectural, expensive to unwind, or needs explicit scope, behavior, or commit-plan approval. Do not trigger for narrow, obvious, low-risk edits solely because code will change or a commit is needed.
+description: Trigger before implementation when the work is broad, ambiguous, risky, design-heavy, architectural, expensive to unwind, or needs explicit scope, behavior, or commit-plan approval. Do not trigger for narrow, obvious, low-risk edits solely because code will change or a commit is needed.
 disable-model-invocation: true
 ---
 
