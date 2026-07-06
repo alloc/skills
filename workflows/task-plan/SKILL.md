@@ -28,6 +28,8 @@ Write the smallest contract that preserves the supervisor-approved intent.
 
 Include a detail only when omitting it would materially increase the risk of misunderstanding, scope drift, incorrect implementation, incorrect review, or incorrect commit grouping.
 
+For design-driven work, include the full set of supervisor-approved design requirements that affect implementation, review, or acceptance. Preserve required layout, interaction, visual, responsive, accessibility, copy, and asset constraints unless they are clearly out of scope.
+
 Do not include details merely because they are true, inferable, recently discovered, or potentially useful.
 
 Prefer observable behavior and durable constraints over implementation narration.
@@ -112,7 +114,7 @@ Describe only the existing behavior needed to understand the change.
 
 ## Intended Behavior
 
-Specify the desired behavior in observable terms, including relevant constraints, edge cases, compatibility expectations, and non-goals.
+Specify the desired behavior in observable terms, including relevant design requirements, constraints, edge cases, compatibility expectations, and non-goals.
 
 ## Scope
 
@@ -138,6 +140,7 @@ Omit anything that does not preserve the approved contract, including:
 - Ambiguity, assumptions, open questions, or supervisor negotiation
 - Verification logs, progress notes, discoveries, or retrospectives
 - Exhaustive inventories of affected routes, tests, errors, features, or packages
+- Design exploration, rationale, or discarded alternatives unless needed to preserve an approved requirement
 - Speculative cleanup phases
 - Step-by-step implementation narration
 - Repeated details across sections
