@@ -18,6 +18,7 @@ It is not a scratchpad, log, checklist, transcript, or retrospective.
 - Do not force-stage `TASK.md`; it is temporary and already git-ignored.
 - Do not begin implementation until the supervisor explicitly approves proceeding.
 - Surface ambiguity and assumptions to the supervisor in conversation, not in `TASK.md`.
+- After each clarification round, incorporate every resolved decision and its material consequences into `TASK.md`. Preserve the resulting requirement, not the negotiation transcript.
 - After implementation begins, treat `TASK.md` as locked.
 - Edit locked `TASK.md` only when the supervisor changes requirements or explicitly authorizes restructuring.
 - Implement the approved commit plan in order.
@@ -57,6 +58,8 @@ Surface ambiguity in conversation:
 - Ask for explicit permission to proceed.
 
 Only after high-risk ambiguity is resolved and the supervisor approves proceeding should `TASK.md` become the locked task contract.
+
+Before requesting approval, reconcile the complete task conversation against `TASK.md`. Ensure the contract preserves all resolved requirements and constraints; if a clarified detail is intentionally omitted, confirm that its omission cannot affect implementation, scope, acceptance, review, or commit grouping.
 
 Use the approval handoff to make the supervisor’s required attention explicit.
 
@@ -137,7 +140,7 @@ Omit sections that would be empty or redundant.
 
 Omit anything that does not preserve the approved contract, including:
 
-- Ambiguity, assumptions, open questions, or supervisor negotiation
+- Unresolved ambiguity, assumptions, open questions, or the transcript of supervisor negotiation; preserve all requirements produced by resolved clarification
 - Verification logs, progress notes, discoveries, or retrospectives
 - Exhaustive inventories of affected routes, tests, errors, features, or packages
 - Design exploration, rationale, or discarded alternatives unless needed to preserve an approved requirement
