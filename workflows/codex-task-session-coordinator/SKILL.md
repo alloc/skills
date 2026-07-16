@@ -20,8 +20,8 @@ For each task:
 1. Immediately create a new Codex session and require the thread-creation operation to allocate a fresh dedicated worktree.
 2. Give it a self-contained prompt containing the user's requirements and relevant context.
 3. Include the coordinator session ID in the prompt.
-4. Tell it to preserve development velocity: run only targeted tests relevant to its changes; never proactively run the full test suite, typecheck, lint, or formatting commands. Slower or broader commands are appropriate only when debugging requires them or the user explicitly requests them.
-5. Tell the task session to start a side conversation with the coordinator using `codex_app.send_message_to_thread` only when its implementation is committed, its worktree is clean, and it is ready to be rebased onto local main and merged. Require the readiness message to include the commit hash, worktree path, targeted validation results or a concise reason validation was not run, worktree cleanliness, and unresolved concerns.
+4. Tell it to scale validation to the scope and risk of its changes. For simple, localized tweaks, run only relevant targeted tests and do not proactively run the full test suite, typecheck, lint, or formatting commands. For complex or sweeping changes, broader or slower safety checks are appropriate; they are also appropriate when debugging requires them or the user explicitly requests them.
+5. Tell the task session to start a side conversation with the coordinator using `codex_app.send_message_to_thread` only when its implementation is committed, its worktree is clean, and it is ready to be rebased onto local main and merged. Require the readiness message to include the commit hash, worktree path, validation results or a concise reason validation was not run, worktree cleanliness, and unresolved concerns.
 6. Choose the lowest reasoning level likely to complete the task reliably: low for localized work, medium for investigation or multi-file judgment, and high only for genuinely difficult architectural work.
 
 Do not create parallel sessions that are likely to make conflicting edits unless their work can be cleanly partitioned.
@@ -37,7 +37,7 @@ A task is ready for integration only after its session has reported that it:
 - Completed the requested implementation.
 - Committed all intended changes and provided the commit hash.
 - Left the reported worktree clean.
-- Reported targeted validation results, or why no narrow validation was available.
+- Reported validation proportional to the changes' scope and risk, or why no useful validation was available.
 - Reported any known limitations or unresolved concerns.
 
 A session completing its implementation does not by itself make the task complete. Completion requires successful integration into local main.
@@ -51,7 +51,7 @@ Integrate ready tasks serially. While one task is being rebased, having conflict
 For each ready task:
 
 1. In the reported worktree, confirm that the worktree is clean and `HEAD` matches the reported commit, then run `GIT_EDITOR=true git rebase main`.
-2. If the rebase succeeds, rerun validation only when the readiness report identifies a targeted command relevant to the changes. Do not substitute a full test suite, typecheck, lint, or formatting command. Do not review or modify the implementation.
+2. If the rebase succeeds, rerun validation when the readiness report identifies commands appropriate to the changes' scope and risk. Do not broaden validation beyond the reported commands. Do not review or modify the implementation.
 3. If the rebase stops on conflicts, do not resolve them in the coordinator session. Notify the same task session with `codex_app.send_message_to_thread`, list the conflicted files and rebase state, and tell it to resolve the conflicts, continue or abort the rebase as appropriate, rerun relevant validation, leave the worktree clean, and notify the coordinator when ready again. Then stop; do not poll or monitor it.
 4. When the rebase and post-rebase validation are complete and the worktree is clean, resolve the bundled `scripts/git-merge-main` relative to this `SKILL.md`. From the reported worktree, run `<skill-directory>/scripts/git-merge-main <commit>`, where `<commit>` is the rebased worktree's current `HEAD`.
 5. Confirm that the helper fast-forwarded local `main` to that exact commit before integrating another task.
