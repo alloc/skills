@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+if (( $# != 1 )); then
+  printf 'usage: git-merge-main <commit>\n' >&2
+  exit 2
+fi
+
+source_commit=$(git rev-parse --verify "$1^{commit}") || exit
+main_worktree=$(git worktree list --porcelain | awk '
+  /^worktree / { path = substr($0, 10) }
+  $0 == "branch refs/heads/main" { print path; exit }
+')
+
+# Merge where main is already checked out so the caller's worktree stays untouched.
+if [[ -n "$main_worktree" ]]; then
+  cd "$main_worktree" && git merge --ff-only "$source_commit"
+  exit
+fi
+
+# Otherwise borrow the caller's worktree and restore its branch or detached HEAD.
+original_ref=$(git symbolic-ref --quiet --short HEAD) || original_ref=$(git rev-parse HEAD) || exit
+git switch main || exit
+git merge --ff-only "$source_commit"
+merge_status=$?
+
+if git show-ref --verify --quiet "refs/heads/$original_ref"; then
+  git switch "$original_ref"
+else
+  git switch --detach "$original_ref"
+fi
+restore_status=$?
+
+(( merge_status == 0 )) || exit "$merge_status"
+exit "$restore_status"
