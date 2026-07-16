@@ -1,6 +1,6 @@
 ---
 name: chrome-devtools-cli
-description: Use only when explicitly requested by the user or during an explicit debugging session.
+description: Use only when explicitly requested by the user or, during an explicit debugging session, after other relevant checks such as typecheck, lint, and tests have been exhausted.
 ---
 
 The `chrome-devtools-mcp` CLI lets you interact with the browser from your terminal.
