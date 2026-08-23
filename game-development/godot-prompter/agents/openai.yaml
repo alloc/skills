@@ -1,0 +1,4 @@
+interface:
+  display_name: "GodotPrompter"
+  short_description: "Route Godot work to focused GodotPrompter skills"
+  default_prompt: "Use $godot-prompter to choose and apply the right GodotPrompter skill for this task."

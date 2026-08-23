@@ -1,0 +1,3 @@
+[submodule "game-development/godot-prompter/references/godot-prompter"]
+	path = game-development/godot-prompter/references/godot-prompter
+	url = https://github.com/jame581/GodotPrompter.git

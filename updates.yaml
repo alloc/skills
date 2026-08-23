@@ -43,6 +43,12 @@ frontend:
 
     Rework the fetched documentation into concise, task-oriented reference files and update `frontend/react-virtual/SKILL.md` with the most useful operational knowledge. Keep setup guidance in `references/setup.md`, keep the skill description sharp and concise, and use `SKILL.md` for common use cases and routing to reference files and examples.
 
+game-development:
+  godot-prompter: |-
+    Initialize `game-development/godot-prompter/references/godot-prompter` with `git submodule update --init game-development/godot-prompter/references/godot-prompter`, fetch its upstream default branch, and advance the submodule to the latest upstream commit in detached-HEAD state.
+
+    Compare the old and new `skills/*/SKILL.md` files. Update the routing table in `game-development/godot-prompter/SKILL.md` if upstream added, removed, renamed, or changed the scope of a skill. Keep the local skill as a concise signpost and keep upstream content inside the submodule. Validate the local skill after updating it.
+
 typescript:
   ai-sdk: |-
     Run `sitefetch https://ai-sdk.dev/docs/migration-guides/migration-guide-7-0 --limit 0` to fetch the AI SDK v7 migration documentation for source material only; do not include raw sitefetch output in the skill.
