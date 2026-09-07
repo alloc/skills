@@ -2,3 +2,5 @@ interface:
   display_name: "No Slop UI"
   short_description: "Design restrained, product-specific interfaces"
   default_prompt: "Use $no-slop-ui to design or review this interface without generic AI visual patterns."
+policy:
+  allow_implicit_invocation: false

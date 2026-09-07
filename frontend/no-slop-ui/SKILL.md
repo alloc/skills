@@ -1,6 +1,6 @@
 ---
 name: no-slop-ui
-description: Design, implement, or review visible product interfaces with restrained, context-specific visual judgment and without generic AI-generated UI tropes. Use when interface design, layout, visual polish, or UI critique is a primary part of the task.
+description: Design, implement, or review visible product interfaces with restrained, context-specific visual judgment and without generic AI-generated UI tropes. Do not use this skill unless the user explicitly requests it.
 ---
 
 # No Slop UI
