@@ -13,8 +13,6 @@ Apply this skill to visible interfaces across platforms and rendering technologi
 
 Treat these instructions as a visual-quality layer. Product requirements, accessibility, platform conventions, localization, data integrity, and an established design system take precedence. A distinctive brand or intentionally expressive experience is not slop merely because it is decorative.
 
-Do not activate this skill for backend-only work, non-interface diagrams, copywriting by itself, or general code review where the visible experience is out of scope.
-
 ## Establish the Context
 
 Before making material visual decisions, inspect what is available:
@@ -29,7 +27,7 @@ Preserve a coherent existing visual language unless the user asks to change it. 
 
 - Let tasks and content determine the composition. Do not reach for a hero, card grid, side rail, or dashboard template before the information calls for it.
 - Create hierarchy with structure, spacing, typography, and contrast before adding containers or effects.
-- Use visual treatments consistently and sparingly. Each accent, badge, border, elevation change, icon, and animation should communicate hierarchy, state, affordance, or feedback.
+- Use visual treatments coherently. Accents, surfaces, icons, and animation may support hierarchy, state, affordance, feedback, identity, atmosphere, or delight. Judge whether they serve this experience without obscuring content or interaction.
 - Match information density to the work. Dense operational interfaces and spacious editorial interfaces have different legitimate needs.
 - Write direct interface copy. Avoid vague promotional language in product surfaces unless the product calls for marketing copy.
 - Make controls look and behave like controls on the target platform. Provide clear labels, focus or selection states, feedback, and sufficiently large interaction targets.
