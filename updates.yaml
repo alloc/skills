@@ -71,6 +71,11 @@ protocols:
     Prominently include this instruction: for projects using `@agentclientprotocol/sdk` from npm, check the TypeScript SDK changelog at https://raw.githubusercontent.com/agentclientprotocol/typescript-sdk/refs/heads/main/CHANGELOG.md when updating or validating SDK-specific guidance.
 
 workflows:
+  clkup: |-
+    Run `clkup --help` and the `--help` output for every top-level command group to capture the locally installed command surface. Run nested help for every command taught by example in `workflows/clkup/SKILL.md`.
+
+    Review https://github.com/nicholasbester/clickup-cli and its linked official documentation for current behavior. Rework the sources into a lightweight tutorial for common setup, hierarchy navigation, task, comment, time-tracking, output, and pagination workflows. Keep `workflows/clkup/references/commands.md` as a complete command-group signpost rather than a copied manual. Tell agents to run the narrowest applicable `--help` before using commands the tutorial does not teach, and prefer installed help when it differs from the bundled reference.
+
   sem: |-
     Run `sitefetch https://ataraxy-labs.github.io/sem/details.html --limit 0` to fetch the sem commands and details page for source material.
 

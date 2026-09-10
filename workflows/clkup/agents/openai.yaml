@@ -1,0 +1,4 @@
+interface:
+  display_name: "clkup"
+  short_description: "Manage ClickUp from the command line"
+  default_prompt: "Use $clkup to find my ClickUp tasks and update the relevant one."
