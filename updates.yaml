@@ -43,6 +43,11 @@ frontend:
 
     Rework the fetched documentation into concise, task-oriented reference files and update `frontend/react-virtual/SKILL.md` with the most useful operational knowledge. Keep setup guidance in `references/setup.md`, keep the skill description sharp and concise, and use `SKILL.md` for common use cases and routing to reference files and examples.
 
+  octane: |-
+    Fetch https://octanejs.dev/llms.txt for source material only; do not include the raw file in the skill. When a section references a deeper guide at octanejs.dev/docs/* or a github.com/octanejs/octane doc that the llms.txt only summarizes, fetch that page too before rewriting the affected reference file.
+
+    Rework the fetched material into concise, task-oriented guidance. Keep `frontend/octane/SKILL.md` as a routing signpost holding the cross-cutting facts every edit needs (native events/`onInput`, conditional hooks vs loops, inferred dependency arrays, ref-as-prop, the `useState` third tuple member, `.tsrx` essentials, the import map), and keep topic detail in `frontend/octane/references/`. Preserve the existing reference split — authoring, events-and-forms, styling, signals, ssr-and-hydration, react-interop, strong-mode, setup-and-tooling, bindings — unless the docs structure has clearly moved.
+
 game-development:
   godot-prompter: |-
     Initialize `game-development/godot-prompter/references/godot-prompter` with `git submodule update --init game-development/godot-prompter/references/godot-prompter`, fetch its upstream default branch, and advance the submodule to the latest upstream commit in detached-HEAD state.

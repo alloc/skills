@@ -1,0 +1,4 @@
+interface:
+  display_name: "Octane"
+  short_description: "Build UIs with the compiled Octane framework"
+  default_prompt: "Use $octane to build or edit components, signals, styling, hydration, or React interop in an Octane app."
