@@ -1,17 +1,19 @@
 # Authoring Octane components
 
-Contents: choosing `.tsrx` vs `.tsx`, component shape, `@{ … }`, text holes, template control flow, hook rules, dependency inference, state hooks, and async data with `use()`.
+Contents: choosing `.tsrx` vs `.tsx`, component shape, the `@{ … }` result rule, JSX conveniences, text holes, directive control flow, hook rules, dependency inference, state hooks, async data with `use()`, and legacy `.tsrx` syntax.
 
 ## `.tsrx` vs `.tsx`/`.jsx`
 
-Both dialects compile through the Octane compiler. Prefer `.tsrx` for new UI — it unlocks the compiler's best output:
+TSRX is TypeScript + JSX with opt-in `@` syntax for JSX-producing templates; existing TypeScript and JSX keep their meanings. Octane compiles both dialects — prefer `.tsrx` for new UI because it unlocks the compiler's best output:
 
-- `@{ … }` function bodies
+- `@{ … }` function bodies and nested setup blocks
 - Directive control flow (`@if`, `@for`, `@switch`, `@try`)
 - `@for` compiles rendered lists to a keyed fast path (a compiled per-item body + the raw array) instead of allocating a descriptor per row — the main reason to prefer `.tsrx` for collection-heavy UI.
-- Text holes, sibling-scoped `<style>` blocks (see [styling.md](./styling.md))
+- Text holes and sibling-scoped `<style>` blocks (see [styling.md](./styling.md))
 
 `.tsx`/`.jsx` keeps ordinary JSX returns and passes `<style>{css}</style>` through untouched (no scoping).
+
+To render syntax markers as text, use JSX string expressions like `{'@if'}`.
 
 ## Components
 
@@ -23,7 +25,46 @@ export function Greeting({ name }: { name: string }) @{
 }
 ```
 
-`@{ … }` desugars to `{ … return <jsx> }`: setup (hooks, locals) sits next to the output. The `@{ … }` scope ends with exactly one output node — a JSX element or fragment `<>…</>`. Multiple trailing outputs are a parser error.
+Function declarations and arrow functions may use `@{ … }` bodies:
+
+```tsrx
+const Card = (props: CardProps) => @{
+	<View {...props} />
+}
+```
+
+A top-level early `return` exits the function and may return JSX, `null`, or a TSRX `@` block; otherwise the final JSX-producing statement supplies the output:
+
+```tsrx
+function Dashboard({ user }: { user: User | null }) @{
+	if (!user) return <p>Please sign in.</p>;
+	<h1>Welcome, {user.name as string}</h1>
+}
+```
+
+## The `@{ … }` result rule
+
+`@{ … }` creates a local scope whose final statement may produce JSX:
+
+```tsrx
+@{
+	const value = compute();
+	<View value={value} />
+}
+```
+
+- Any TSRX block that produces no JSX output evaluates to `null` — `@{}` templates, control-flow branches, loop iterations, `@try`/`@pending`/`@catch` blocks, and TSRX function bodies. Useful for side-effect-only statements such as logging.
+- Final JSX-producing forms: a JSX element, a fragment, `@if`, `@for`, `@switch`, or `@try`. Wrap final text or expression values in a fragment: `<>{label}</>`.
+- `return` is available only in top-level TSRX function bodies. Other TSRX blocks yield their final JSX-producing statement.
+- In JSX child position, mirror the formatter's shape: `<div>@{ … }</div>` inline.
+
+Nested `@{ }` blocks also work in expression position — Octane gives the block a local lifetime for any hooks it declares (see Hooks below); a JSX-only nested block is transparent until it gets setup.
+
+## JSX conveniences
+
+- JS comments may appear directly in JSX: `// …` and `/* … */`.
+- `{foo}` in attribute position means `foo={foo}`: `<Input {value} {onInput} />`.
+- Dynamic tag names use expression tags: `<{props.as}>…</{props.as}>` or self-closing `<{props.icon} />`. Opening and closing expressions must match syntactically.
 
 ## Text holes
 
@@ -32,44 +73,77 @@ export function Greeting({ name }: { name: string }) @{
 
 ## Template control flow
 
-Directives replace JSX-era ternaries/`map` inside markup; plain JS control flow stays in setup.
+Directives replace JSX-era ternaries/`map` inside markup; plain JS control flow stays in setup. Each branch or iteration may run local JS statements before producing output.
+
+### `@if` / `@else if` / `@else`
 
 ```tsrx
 @if (status === 'loading') {
-	<p>Loading…</p>
-} @else {
+	const label = compute();
 	<p>{label as string}</p>
-}
-
-@for (const item of items; key item.id) {
-	<li>{item.text as string}</li>
-} @empty {
-	<li>Nothing here.</li>
-}
-
-@switch (tab) {
-	@case ('a') { <PanelA /> }
-	@default { <PanelB /> }
-}
-
-@try {
-	<Profile id={id} />
-} @pending {
-	<p>Loading profile…</p>
-} @catch (error) {
-	<p role="alert">{String(error)}</p>
+} @else if (status === 'idle') {
+	<p>Idle.</p>
+} @else {
+	<p>Ready.</p>
 }
 ```
 
-Inside JSX children, `@{ const x = …; <markup/> }` opens a nested setup block beside its JSX. A JSX-only nested block is transparent until it gets setup; moving a hook into a nested block gives the hook that block's local lifetime. Hooks/effects used only by conditional, keyed, switch, or try arms may stay in the parent scope to keep the parent's lifetime.
+`@else` is optional in root and nested positions; if no branch matches the result is `null`.
+
+### `@for` / `@empty`
+
+```tsrx
+@for (const item of items; index i; key item.id) {
+	<Item item={item} index={i} />
+} @empty {
+	<Empty />
+}
+```
+
+- The suffix after `;` may declare `index`, `key`, or `index` then `key`. The `index` variable is in scope for `key`. A `key` propagates to rendered elements, including through shorthand fragments. Octane compiles keyed `@for` to its fast path — always supply `key` for dynamic collections.
+- `@empty` renders for empty iterables.
+- `break` and `continue` are excluded from `@for` bodies — use keyed extraction or a child component for conditional item output.
+
+### `@switch`
+
+```tsrx
+@switch (status) {
+	@case 'warning':
+	@case 'error': {
+		<Alert />
+	}
+	@default: {
+		<Info />
+	}
+}
+```
+
+`@case` and `@default` use a trailing `:`. Stacked `@case` labels share the next block (the replacement for fallthrough — `break` is omitted). `@default` is optional; if no branch matches the result is `null`.
+
+### `@try` / `@pending` / `@catch`
+
+```tsrx
+@try {
+	<Content />
+} @pending {
+	<Loading />
+} @catch (error, reset) {
+	<ErrorState error={error} onRetry={reset} />
+}
+```
+
+`@try` protects the main render tree, `@pending` supplies async fallback UI, and `@catch` supplies error UI with `error` and an optional `reset` callback. Use empty `@pending {}` or `@catch (…) {}` blocks when there is no fallback UI — do not add an empty fragment to satisfy the block.
 
 ## Hooks
 
-### No rules of hooks
+### No rules of hooks (Octane divergence)
 
-Hooks are tracked by a compiler-assigned call-site slot, not call order. A hook may sit behind a condition or after an early return. A hook in a plain JS loop is a compile error — every iteration would share one slot. Loop with keyed `@for` or extract a child component. `use()` and `useContext` are exempt (not slot-keyed).
+Octane hooks are tracked by a compiler-assigned call-site slot, not call order — a hook may sit behind a condition or after an early return. Generic TSRX guidance restricts hooks to unconditional top-level statements because its other targets enforce rules of hooks; that restriction does not apply to Octane.
 
-Standard hooks match React: `useState`, `useEffect`, `useLayoutEffect`, `useInsertionEffect`, `useMemo`, `useCallback`, `useRef`, `useId`, `useTransition`, `useDeferredValue`, `useImperativeHandle`, `useContext`, `use`, `useSyncExternalStore`-era APIs, plus `memo`, context, portals, Suspense, transitions, and the actions API.
+- A hook in a plain JS loop is a compile error — every iteration would share one slot. Loop with keyed `@for` or extract a child component. `use()` and `useContext` are exempt (not slot-keyed).
+- Hooks/effects used only by conditional, keyed, switch, or try arms may stay in the parent scope to keep the parent's lifetime; moving a hook into a nested `@{…}` block gives it that block's local lifetime.
+
+Standard hooks match React: `useState`, `useEffect`, `useLayoutEffect`, `useInsertionEffect`, `useMemo`, `useCallback`, `useRef`, `useId`, `useTransition`, `useDeferredValue`, `useImperativeHandle`, `useContext`, `use`, plus `memo`, context, portals, Suspense, transitions, and the actions API.
 
 ### Dependency inference
 
@@ -113,3 +187,22 @@ function Avatar({ id }: { id: number }) @{
 
 - `ref` is a prop (React-19 style): `ref={callback}`, `ref={refObject}`, or `ref={[a, b]}` for multi-ref. No `forwardRef`.
 - `class`/`className` accept clsx-style values: strings, numbers, arrays, objects, arbitrary nesting; falsy values drop out.
+
+## Legacy `.tsrx` code
+
+When maintaining files written for older TSRX dialects, migrate to the current forms:
+
+| Legacy | Current |
+| --- | --- |
+| `component Name(props) { … }` | `function Name(props) @{ … }` |
+| Statement-position JSX throughout | Standard JSX plus explicit `@` templates |
+| Multiple top-level JSX statements | One final JSX-producing statement, usually a fragment |
+| Local JS inside JSX children | `@{ … }` statement containers or `@` control blocks |
+| Quoted text child `"Text"` | Standard JSX text |
+| `<tsrx>…</tsrx>` / `<tsx>…</tsx>` islands | `@{ … }` or ordinary JSX/fragments |
+| `if`/`for`/`switch`/`try` keywords in templates | `@if`/`@for`/`@switch`/`@try` directives |
+| `switch` fallthrough with `break` | Stacked `@case` labels sharing a block |
+| Guard fallback + bare `return;` | `return <Fallback />` or `return null` |
+| `continue`/`break` in loop bodies | Removed from `@for` — extract or restructure |
+| `{text expr}`, `{html expr}`, `{style "…"}` | Removed — use text holes and target APIs |
+| `{ref expr}`, `inputRef={ref x}` | Removed — use `ref` props |

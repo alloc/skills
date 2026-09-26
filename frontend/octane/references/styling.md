@@ -4,7 +4,7 @@ Contents: sibling scoping, block placement rules, themes and `apply`, class maps
 
 ## Sibling-scoped blocks
 
-A `<style>` block inside `.tsrx` markup is scoped to its **siblings**: it styles the items beside it and everything below them — never the element that contains it.
+A `<style>` block inside `.tsrx` markup contains direct CSS, is extracted and scoped at compile time, and renders as `null`. It is scoped to its **siblings**: it styles the items beside it and everything below them — never the element that contains it.
 
 ```tsrx
 // Styles .card and everything inside it.
@@ -42,7 +42,7 @@ export function Card() @{
 }
 ```
 
-- A class map has `$class` (the block's hash, preceded by applied themes' classes) plus one key per class selector (`theme.card` → `hash card`). `$class` is reserved.
+- The variable-initializer form works locally or at module scope. A class map has `$class` (the block's hash, preceded by applied themes' classes) plus one typed key per class selector (`theme.card` → `hash card`). `$class` is reserved.
 - Elements carrying a class-map entry also match its element rules, because the entry includes the hash.
 - `<style apply={theme} />` adds `theme.$class` to the items beside it and everything below (never the containing element). `<style apply={theme}>…</style>` with CSS also declares that scope's block. `apply={[a, b]}` composes in order; a theme may apply another theme; a theme must be declared before the block that applies it.
 - A same-module theme compiles to a string literal; an imported theme is read at runtime via `theme.$class`.

@@ -46,6 +46,8 @@ frontend:
   octane: |-
     Fetch https://octanejs.dev/llms.txt for source material only; do not include the raw file in the skill. When a section references a deeper guide at octanejs.dev/docs/* or a github.com/octanejs/octane doc that the llms.txt only summarizes, fetch that page too before rewriting the affected reference file.
 
+    Also fetch https://github.com/aleclarson/tsrx-resources/blob/main/skills/tsrx/SKILL.md (and its references/migration.md) for shared TSRX syntax mechanics — the `@{ … }` result rule, JSX conveniences, directive shapes, and legacy-syntax mapping. Where generic TSRX guidance conflicts with Octane behavior (hooks must be unconditional in generic TSRX; Octane's call-site slots allow conditional hooks), keep Octane's semantics and flag the divergence. Do not document deprecated TSRX features such as lazy destructuring.
+
     Rework the fetched material into concise, task-oriented guidance. Keep `frontend/octane/SKILL.md` as a routing signpost holding the cross-cutting facts every edit needs (native events/`onInput`, conditional hooks vs loops, inferred dependency arrays, ref-as-prop, the `useState` third tuple member, `.tsrx` essentials, the import map), and keep topic detail in `frontend/octane/references/`. Preserve the existing reference split — authoring, events-and-forms, styling, signals, ssr-and-hydration, react-interop, strong-mode, setup-and-tooling, bindings — unless the docs structure has clearly moved.
 
 game-development:

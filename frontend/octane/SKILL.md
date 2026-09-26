@@ -42,14 +42,15 @@ export function Counter() @{
 }
 ```
 
-- `@{ … }` desugars to `return <jsx>` — setup and output sit together; the block ends with exactly one output node.
+- `@{ … }` desugars to `return <jsx>` — setup and output sit together; the block ends with exactly one output node. Blocks producing no JSX yield `null`; a top-level early `return` may return JSX or `null`.
 - Dynamic text needs `{expr as string}` unless the expression is provably a string.
-- Template control flow: `@if (c) {} @else {}`, `@for (const x of xs; key x.id) {} @empty {}`, `@switch`, `@try {} @pending {} @catch (e) {}`. Plain JS control flow stays in setup.
+- `{foo}` in attribute position means `foo={foo}`; dynamic tag names use `<{expr}>…</{expr}>`.
+- Template control flow: `@if (c) {} @else if {} @else {}`, `@for (const x of xs; index i; key x.id) {} @empty {}`, `@switch (v) { @case 'a': {} @default: {} }`, `@try {} @pending {} @catch (error, reset) {}`. Plain JS control flow stays in setup.
 
 ## Start here
 
 - Read [references/setup-and-tooling.md](./references/setup-and-tooling.md) before scaffolding (`npm create octane`), wiring Vite/Rspack/Rsbuild, running the `octane` CLI (`doctor`, `analyze`, `init`, `add`, `explain`), profiling, publishing libraries, or checking browser support.
-- Read [references/authoring.md](./references/authoring.md) before writing or editing components: `.tsrx` vs `.tsx` choice, `@{ … }`, text holes, directive control flow, hook placement and dependency inference, state hooks, `useLinkedState`, `use()` data flow.
+- Read [references/authoring.md](./references/authoring.md) before writing or editing components: `.tsrx` vs `.tsx` choice, `@{ … }` result rule, JSX conveniences, text holes, directive control flow, hook placement and dependency inference, state hooks, `useLinkedState`, `use()` data flow, and legacy `.tsrx` migration.
 - Read [references/events-and-forms.md](./references/events-and-forms.md) before touching event handlers, controlled/uncontrolled inputs, checkbox/radio rollback, or observer callbacks (`createResizeObserver`).
 - Read [references/styling.md](./references/styling.md) before adding `<style>` blocks, themes (`apply`, `$class` maps), or `:global()` selectors, or when hitting `STYLE_*`/`CSS_*` diagnostics.
 - Read [references/signals.md](./references/signals.md) before using `signal$`/`derived$`/`query$`/`useSignal$`, explicit scopes, streams, optimistic actions, transitions over signals, or signal SSR/seeding.
