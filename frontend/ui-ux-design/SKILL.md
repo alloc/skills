@@ -31,6 +31,17 @@ Do not generate design-system documents, style catalogs, or new dependencies by 
 
 Read [design-judgment.md](references/design-judgment.md) when establishing a visual direction or diagnosing generic, cluttered, or poorly composed UI. Its examples are diagnostic clues, not a ban list.
 
+Load the relevant detailed reference when designing or reviewing these areas; do not load every reference for a focused change. They provide decision criteria, common failures, and implementation considerations rather than fixed recipes.
+
+| Area | Reference |
+| --- | --- |
+| Field design, validation, submission, async feedback, recovery | [Forms and feedback](references/forms-and-feedback.md) |
+| Navigation structure, search, overlays, back behavior, restored context | [Navigation and orientation](references/navigation-and-orientation.md) |
+| Composition, density, resizing, overflow, localization | [Layout and responsive behavior](references/layout-and-responsive.md) |
+| Type hierarchy, readable content, semantic color, themes, icon use | [Typography and color](references/typography-and-color.md) |
+| Interaction timing, interruption, reduced motion, rendering cost | [Motion and performance](references/motion-and-performance.md) |
+| Chart selection, honest comparisons, tables, filtering, live data | [Data presentation](references/data-presentation.md) |
+
 ## Apply guidance at the right level
 
 Keep these distinct when making decisions or reporting findings:
