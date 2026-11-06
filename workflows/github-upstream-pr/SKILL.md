@@ -41,6 +41,8 @@ Use `git` and `gh` only. Do not use GitHub skills, MCP tools, or connector-backe
 
 ## Write the PR body
 
-- Keep the PR body to one short paragraph.
-- Use plain language and state what is being fixed or added.
-- Avoid headings, checklists, formal templates, and overly polished wording.
+- Lead with the real-world use case: who encounters the problem, what triggers it, and how this change improves the outcome. For internal changes, explain the concrete developer or operational benefit.
+- Describe the resulting behavior, using a brief before/after example when it makes the change clearer. Ground the explanation in available evidence; do not invent motivation or impact.
+- Make the description easy to scan. Use short paragraphs, bullets, and descriptive headings when useful. Follow the repository's PR template.
+- Scale detail to the change. Include validation and material limitations; omit implementation narration and exhaustive file-by-file summaries.
+- Describe the final scope for a reviewer who has not seen the conversation. Update the title and body if the scope changes.
