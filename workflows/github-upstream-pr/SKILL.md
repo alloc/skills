@@ -1,11 +1,20 @@
 ---
 name: github-upstream-pr
-description: Create a GitHub PR from local changes using git and `gh`, branching from upstream/main or origin/main, committing, pushing, and opening a concise pull request.
+description: Write clear GitHub issues and pull requests using git and `gh`. For PRs from local changes, branch from upstream/main or origin/main, commit, push, and open the PR.
 ---
 
 # github-upstream-pr
 
 Use `git` and `gh` only. Do not use GitHub skills, MCP tools, or connector-backed GitHub actions.
+
+For issue requests, use the shared writing guidance and the issue workflow below; skip the PR branch, commit, and push workflow. Drafting an issue does not authorize publishing it.
+
+## Write for humans
+
+- Lead with the real-world use case: who encounters the problem, what triggers it, and why it matters. For internal work, explain the concrete developer or operational impact.
+- Make the description easy to scan. Use short paragraphs, bullets, and descriptive headings when useful. Follow the repository's relevant issue or PR template and scale detail to the scope.
+- Ground claims in available evidence. Distinguish observations, unverified reports, and suspected causes; do not invent motivation, impact, or reproduction results.
+- Write for someone who has not seen the conversation. Keep the title and body aligned with the final scope.
 
 ## Inspect the repo first
 
@@ -43,8 +52,13 @@ Use `git` and `gh` only. Do not use GitHub skills, MCP tools, or connector-backe
 
 ## Write the PR body
 
-- Lead with the real-world use case: who encounters the problem, what triggers it, and how this change improves the outcome. For internal changes, explain the concrete developer or operational benefit.
-- Describe the resulting behavior, using a brief before/after example when it makes the change clearer. Ground the explanation in available evidence; do not invent motivation or impact.
-- Make the description easy to scan. Use short paragraphs, bullets, and descriptive headings when useful. Follow the repository's PR template.
-- Scale detail to the change. Include validation and material limitations; omit implementation narration and exhaustive file-by-file summaries.
-- Describe the final scope for a reviewer who has not seen the conversation. Update the title and body if the scope changes.
+- Explain how the change improves the use case and describe the resulting behavior, using a brief before/after example when it makes the change clearer.
+- Include validation and material limitations; omit implementation narration and exhaustive file-by-file summaries.
+
+## Write and open issues
+
+- Use the repository specified by the user. Otherwise, resolve the target from `upstream` when it exists, falling back to `origin`. Check its contribution guidance, issue templates, and related issues before opening a new issue to avoid duplicates.
+- For bugs, describe expected and actual behavior, the smallest known reproduction, and relevant environment or version details. State when reproduction is incomplete or unverified; include only evidence that helps assess the problem.
+- For feature requests, explain the blocked use case, current workaround, and desired outcome when known. Keep proposed implementation separate from the need so maintainers can assess other solutions.
+- Use a specific title that identifies the problem or requested capability. Keep each issue focused on one actionable problem; link related issues instead of combining independent requests.
+- Match the requested action: return a draft when asked to draft; when asked to open the issue, use `gh issue create --repo <owner>/<repo> --title <title> --body-file <path>` and return its URL. Preserve actual newlines in the body file.
