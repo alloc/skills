@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub PRs and Issues"
+  short_description: "Write clear issues and open PRs with gh"
+  default_prompt: "Use $github-contributions to prepare the requested GitHub issue or pull request with a clear use case, scannable description, and gh."

@@ -1,9 +1,9 @@
 ---
-name: github-upstream-pr
+name: github-contributions
 description: Write clear GitHub issues and pull requests using git and `gh`. For PRs from local changes, branch from upstream/main or origin/main, commit, push, and open the PR.
 ---
 
-# github-upstream-pr
+# github-contributions
 
 Use `git` and `gh` only. Do not use GitHub skills, MCP tools, or connector-backed GitHub actions.
 
