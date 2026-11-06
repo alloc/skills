@@ -71,6 +71,12 @@ typescript:
 
     Rework the fetched documentation into concise, task-oriented guidance for building typed TypeScript CLIs with cmd-ts. Keep `typescript/cmd-ts/SKILL.md` focused on workflow, design decisions, and common implementation patterns, and keep parser/type/runtime API details in `typescript/cmd-ts/references/api.md`.
 
+media:
+  raea: |-
+    Fetch `sdk/skills/raea/` from https://github.com/shinyobjectz/raea at the latest main commit, including all bundled reference files. Import the upstream skill and references without rewriting them, and remove obsolete bundled reference files when upstream removes them.
+
+    Refresh `media/raea/LICENSE` from the upstream repository's root LICENSE and update `media/raea/UPSTREAM.md` with the exact source commit and license information. Keep all imported resources inside `media/raea/`. Validate the skill and check that its local reference links resolve.
+
 protocols:
   agent-client-protocol: |-
     Run `sitefetch https://agentclientprotocol.com/protocol/overview -m '/protocol/**'` to fetch the full protocol docs, then update `protocols/agent-client-protocol/SKILL.md` and its bundled references from the fetched documentation.
